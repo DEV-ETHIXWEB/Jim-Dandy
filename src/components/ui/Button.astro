@@ -1,0 +1,51 @@
+---
+type Props = {
+  href?: string;
+  variant?: "primary" | "secondary" | "ghost";
+  size?: "md" | "lg";
+  class?: string;
+  type?: "button" | "submit";
+  fullWidth?: boolean;
+};
+
+const {
+  href,
+  variant = "primary",
+  size = "lg",
+  class: className = "",
+  type = "button",
+  fullWidth = false,
+} = Astro.props;
+
+const Tag = href ? "a" : "button";
+
+const base =
+  "group relative inline-flex items-center justify-center gap-2 rounded-full font-sans font-semibold tracking-wide transition-all duration-200 ease-brand will-change-transform hover:-translate-y-0.5 hover:brightness-105 active:translate-y-0 active:brightness-95 focus-visible:outline-offset-4";
+
+const sizes = {
+  md: "px-6 py-3 text-base",
+  lg: "px-12 py-4 text-xl",
+};
+
+const variants = {
+  primary:
+    "text-navy-900 bg-[linear-gradient(135deg,#9bd36f_0%,#69be28_55%,#4b871c_100%)] shadow-[var(--shadow-pill-green)] border border-brand-green-600/40",
+  secondary:
+    "text-white bg-[linear-gradient(135deg,#3d5b78_0%,#002244_55%,#001830_100%)] shadow-[var(--shadow-pill-navy)] border border-navy-900/40",
+  ghost:
+    "text-navy-800 bg-white/90 border border-navy-200 shadow-sm hover:bg-white",
+};
+---
+
+<Tag
+  href={href}
+  type={!href ? type : undefined}
+  class:list={[base, sizes[size], variants[variant], fullWidth && "w-full", className]}
+>
+  <span
+    class="pointer-events-none absolute inset-0 rounded-full opacity-40 mix-blend-overlay"
+    style="background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.9), transparent 60%);"
+    aria-hidden="true"
+  ></span>
+  <slot />
+</Tag>

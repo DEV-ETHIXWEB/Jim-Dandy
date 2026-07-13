@@ -1,0 +1,130 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Button from "@components/ui/Button.astro";
+import SectionHeading from "@components/ui/SectionHeading.astro";
+import PhotoFrame from "@components/ui/PhotoFrame.astro";
+import ServiceIcon from "@components/ui/ServiceIcon";
+import FinalCta from "@components/sections/FinalCta.astro";
+import { business, services } from "@data/site";
+import { breadcrumbSchema } from "@lib/seo";
+import { CheckCircle2, ChevronRight } from "lucide-react";
+
+export function getStaticPaths() {
+  return services.map((service) => ({
+    params: { slug: service.slug },
+    props: { service },
+  }));
+}
+
+const { service } = Astro.props;
+const otherServices = services.filter((s) => s.slug !== service.slug);
+
+const crumbs = breadcrumbSchema([
+  { name: "Home", path: "/" },
+  { name: "Services", path: "/services" },
+  { name: service.label, path: `/services/${service.slug}` },
+]);
+---
+
+<Layout
+  title={`${service.label} Plumbing Services | Jim Dandy Sewer & Plumbing`}
+  description={`${service.description} Licensed, insured, and available 24/7 across the Puget Sound region.`}
+  path={`/services/${service.slug}`}
+>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(crumbs)} slot="head" />
+
+  <section class="relative overflow-hidden bg-navy-900 py-16 lg:py-24">
+    <div
+      class="pointer-events-none absolute inset-0 opacity-40"
+      style="background: radial-gradient(600px circle at 15% 20%, rgba(105,190,40,0.18), transparent 60%);"
+      aria-hidden="true"
+    ></div>
+    <div class="container-page relative grid grid-cols-1 items-center gap-12 lg:grid-cols-[1.1fr_1fr]">
+      <div class="flex flex-col items-start gap-6">
+        <nav aria-label="Breadcrumb" class="flex items-center gap-1.5 text-sm text-white/60">
+          <a href="/" class="hover:text-white">Home</a>
+          <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
+          <a href="/services" class="hover:text-white">Services</a>
+          <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
+          <span class="text-white">{service.label}</span>
+        </nav>
+
+        <span class="grid h-16 w-16 place-items-center rounded-2xl bg-white/10 text-brand-green-400">
+          <ServiceIcon name={service.icon} className="h-9 w-9" strokeWidth={1.5} aria-hidden="true" />
+        </span>
+
+        <h1 class="font-display text-[38px] font-black italic leading-[1.05] text-cloud sm:text-[52px]">
+          {service.label} Services
+        </h1>
+        <p class="max-w-lg text-lg leading-relaxed text-white/80">{service.intro}</p>
+
+        <div class="flex w-full flex-col gap-4 sm:w-auto sm:flex-row">
+          <Button href={business.scheduleUrl} variant="primary">Schedule Online</Button>
+          <Button href={business.phoneHref} variant="secondary">Call {business.phone}</Button>
+        </div>
+      </div>
+
+      <PhotoFrame
+        tone="green"
+        label={`${service.label} service photo`}
+        class="relative aspect-[4/3] w-full rounded-[40px] border-4 border-brand-green-400/60 shadow-2xl"
+      />
+    </div>
+  </section>
+
+  <section class="bg-white py-20 lg:py-28">
+    <div class="container-page grid grid-cols-1 gap-14 lg:grid-cols-2">
+      <div class="flex flex-col gap-6">
+        <SectionHeading title="Signs You Need This" align="left" />
+        <ul class="flex flex-col gap-4">
+          {service.signs.map((sign) => (
+            <li class="flex items-start gap-3 text-base leading-relaxed text-navy-700">
+              <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-brand-green-600" aria-hidden="true" />
+              {sign}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="flex flex-col gap-6">
+        <SectionHeading title="What's Included" align="left" />
+        <ul class="flex flex-col gap-4">
+          {service.benefits.map((benefit) => (
+            <li class="flex items-start gap-3 text-base leading-relaxed text-navy-700">
+              <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-brand-green-600" aria-hidden="true" />
+              {benefit}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface py-20 lg:py-28">
+    <div class="container-page flex flex-col gap-14">
+      <SectionHeading title="Explore Other Services" subtitle="Jim Dandy handles the full range of plumbing and sewer work." />
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {otherServices.map((s) => (
+          <a
+            href={`/services/${s.slug}`}
+            class="group relative flex items-center justify-between gap-4 overflow-hidden rounded-[45px] border border-navy-400 bg-surface-muted p-8 shadow-card transition-transform duration-200 hover:-translate-y-1"
+          >
+            <div class="flex h-full flex-col justify-between gap-6">
+              <h3 class="font-display text-[26px] font-bold leading-none text-navy-600">{s.label}</h3>
+              <span class="flex items-center gap-3 font-sans text-sm text-navy-600">
+                Learn more
+              </span>
+            </div>
+            <ServiceIcon
+              name={s.icon}
+              className="h-16 w-16 shrink-0 text-navy-300 transition-colors duration-200 group-hover:text-brand-green-500"
+              strokeWidth={1.5}
+              aria-hidden="true"
+            />
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <FinalCta />
+</Layout>

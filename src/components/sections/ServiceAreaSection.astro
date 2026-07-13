@@ -1,0 +1,14 @@
+---
+import SectionHeading from "@components/ui/SectionHeading.astro";
+import ServiceArea from "./ServiceArea";
+---
+
+<section id="service-area" class="bg-white py-20 lg:py-28">
+  <div class="container-page flex flex-col gap-14">
+    <SectionHeading
+      title="Proudly Serving the Puget Sound Region"
+      subtitle="Licensed plumbers dispatched same-day across King, Snohomish, and Pierce Counties."
+    />
+    <ServiceArea client:visible />
+  </div>
+</section>

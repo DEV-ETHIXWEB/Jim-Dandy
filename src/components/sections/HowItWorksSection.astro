@@ -1,0 +1,210 @@
+---
+import SectionHeading from "@components/ui/SectionHeading.astro";
+import { howItWorks } from "@data/site";
+---
+
+<section id="how-it-works" class="bg-navy-800 py-20 lg:py-28">
+  <div class="container-page flex flex-col gap-16">
+    <SectionHeading
+      title="How Jim Dandy Works"
+      subtitle="What to expect from us after contacting"
+      light
+    />
+
+    <div class="hiw-steps relative grid grid-cols-1 gap-12 sm:grid-cols-3 sm:gap-6">
+      <span
+        class="absolute left-[16.5%] right-[16.5%] top-6 hidden border-t-2 border-dashed border-white/25 sm:block"
+        aria-hidden="true"
+      ></span>
+      <span class="hiw-fill hiw-fill-1 absolute top-6 hidden sm:block" aria-hidden="true"></span>
+      <span class="hiw-fill hiw-fill-2 absolute top-6 hidden sm:block" aria-hidden="true"></span>
+      <span class="hiw-dot absolute top-6 hidden sm:block" aria-hidden="true"></span>
+
+      {howItWorks.map((item, index) => (
+        <div
+          class="hiw-card relative flex flex-col items-center gap-4 rounded-3xl text-center"
+          data-step={index + 1}
+          tabindex="0"
+        >
+          <span class="hiw-circle relative z-10 grid h-12 w-12 shrink-0 place-items-center rounded-full bg-white font-display text-lg font-bold text-navy-900">
+            {item.step}
+          </span>
+          <h3 class="hiw-title font-display text-2xl font-bold text-white sm:text-[28px]">{item.title}</h3>
+          <p class="hiw-desc max-w-xs text-balance text-base leading-relaxed text-white/80">
+            {item.description}
+          </p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .hiw-card {
+    outline: none;
+    transition:
+      transform 520ms cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 520ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+  }
+
+  .hiw-card:hover,
+  .hiw-card:focus-visible {
+    transform: translateY(-13px) scale(1.04);
+    box-shadow: 0 22px 40px -12px rgba(0, 0, 0, 0.45);
+  }
+
+  .hiw-card.is-dim {
+    opacity: 0.87;
+  }
+
+  .hiw-circle {
+    transition:
+      transform 380ms cubic-bezier(0.16, 1, 0.3, 1),
+      background-color 380ms ease,
+      color 380ms ease,
+      box-shadow 380ms ease;
+  }
+
+  .hiw-card:hover .hiw-circle,
+  .hiw-card:focus-visible .hiw-circle {
+    transform: scale(1.12);
+  }
+
+  .hiw-card.is-active .hiw-circle {
+    background-color: var(--color-brand-green-500);
+    color: var(--color-navy-900);
+    box-shadow: 0 0 0 6px rgba(105, 190, 40, 0.25), 0 0 18px 2px rgba(105, 190, 40, 0.55);
+  }
+
+  .hiw-title {
+    transition: color 380ms ease;
+  }
+
+  .hiw-card.is-active .hiw-title {
+    color: var(--color-brand-green-400);
+  }
+
+  .hiw-desc {
+    transition: opacity 380ms ease;
+  }
+
+  .hiw-card.is-active .hiw-desc {
+    opacity: 1;
+  }
+
+  .hiw-fill {
+    height: 2px;
+    background: var(--color-brand-green-500);
+    box-shadow: 0 0 8px 1px rgba(105, 190, 40, 0.6);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 550ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .hiw-fill-1 {
+    left: 16.5%;
+    width: 33.5%;
+  }
+
+  .hiw-fill-2 {
+    left: 50%;
+    width: 33.5%;
+  }
+
+  .hiw-dot {
+    left: 16.5%;
+    width: 10px;
+    height: 10px;
+    margin-top: -4px;
+    border-radius: 9999px;
+    background: var(--color-brand-green-400);
+    box-shadow: 0 0 10px 3px rgba(135, 203, 83, 0.75);
+    opacity: 0;
+    transition:
+      left 550ms cubic-bezier(0.16, 1, 0.3, 1),
+      opacity 300ms ease;
+  }
+</style>
+
+<script>
+  function initHowItWorks(section: Element) {
+    const group = section.querySelector<HTMLElement>(".hiw-steps");
+    if (!group) return;
+
+    const cards = Array.from(group.querySelectorAll<HTMLElement>(".hiw-card"));
+    const fill1 = group.querySelector<HTMLElement>(".hiw-fill-1");
+    const fill2 = group.querySelector<HTMLElement>(".hiw-fill-2");
+    const dot = group.querySelector<HTMLElement>(".hiw-dot");
+    const dotPositions = ["16.5%", "50%", "83.5%"];
+
+    let scrollProgress = 0;
+    let hoverProgress = 0;
+
+    function apply() {
+      const progress = Math.max(scrollProgress, hoverProgress);
+
+      cards.forEach((card, i) => {
+        const isActive = i < progress;
+        card.classList.toggle("is-active", isActive);
+        card.classList.toggle("is-dim", progress > 0 && !isActive);
+      });
+
+      fill1?.style.setProperty("transform", `scaleX(${progress >= 2 ? 1 : 0})`);
+      fill2?.style.setProperty("transform", `scaleX(${progress >= 3 ? 1 : 0})`);
+
+      if (dot) {
+        if (progress > 0) {
+          dot.style.opacity = "1";
+          dot.style.left = dotPositions[Math.min(progress, 3) - 1];
+        } else {
+          dot.style.opacity = "0";
+        }
+      }
+    }
+
+    cards.forEach((card, i) => {
+      card.addEventListener("mouseenter", () => {
+        hoverProgress = i + 1;
+        apply();
+      });
+      card.addEventListener("focus", () => {
+        hoverProgress = i + 1;
+        apply();
+      });
+    });
+
+    group.addEventListener("mouseleave", () => {
+      hoverProgress = 0;
+      apply();
+    });
+
+    group.addEventListener("focusout", (e) => {
+      const next = (e as FocusEvent).relatedTarget as Node | null;
+      if (!next || !group.contains(next)) {
+        hoverProgress = 0;
+        apply();
+      }
+    });
+
+    if (!window.matchMedia("(hover: hover)").matches && "IntersectionObserver" in window) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              const idx = cards.indexOf(entry.target as HTMLElement);
+              if (idx !== -1) {
+                scrollProgress = Math.max(scrollProgress, idx + 1);
+                apply();
+              }
+            }
+          }
+        },
+        { threshold: 0.6 },
+      );
+      cards.forEach((c) => io.observe(c));
+    }
+  }
+
+  document.querySelectorAll("#how-it-works").forEach(initHowItWorks);
+</script>

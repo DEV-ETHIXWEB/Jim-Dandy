@@ -1,0 +1,56 @@
+---
+import { Image } from "astro:assets";
+import SectionHeading from "@components/ui/SectionHeading.astro";
+import { services } from "@data/site";
+import { ArrowUpRight } from "lucide-react";
+import emergencyIcon from "@assets/icons/emergency.webp";
+import drainsClogsIcon from "@assets/icons/drains-clogs.webp";
+import sewerServicesIcon from "@assets/icons/sewer-services.webp";
+import waterHeatersIcon from "@assets/icons/water-heaters.webp";
+import allPlumbingIcon from "@assets/icons/all-plumbing.webp";
+import commercialIcon from "@assets/icons/commercial.webp";
+
+const icons = {
+  emergency: emergencyIcon,
+  "drains-clogs": drainsClogsIcon,
+  "sewer-services": sewerServicesIcon,
+  "water-heaters": waterHeatersIcon,
+  "all-plumbing": allPlumbingIcon,
+  commercial: commercialIcon,
+} as const;
+---
+
+<section id="services" class="py-20 lg:py-28">
+  <div class="container-page flex flex-col gap-14">
+    <SectionHeading
+      title="What Can We Fix For You?"
+      subtitle="From emergency calls to planned upgrades - Jim Dandy handles it all."
+    />
+
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+      {services.map((service) => (
+        <a
+          href={`/services/${service.slug}`}
+          class="group relative flex items-center justify-between gap-4 overflow-hidden rounded-[45px] border border-navy-400 bg-surface-muted p-8 shadow-card transition-transform duration-200 hover:-translate-y-1 sm:min-h-[210px]"
+        >
+          <div class="flex h-full flex-col justify-between gap-6">
+            <h3 class="font-display text-[32px] font-bold leading-none text-navy-800 sm:text-[38px]">
+              {service.label}
+            </h3>
+            <span class="flex items-center gap-3 font-sans text-base text-navy-600">
+              <ArrowUpRight className="h-6 w-6 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
+              Learn more
+            </span>
+          </div>
+          <Image
+            src={icons[service.slug]}
+            alt=""
+            width={112}
+            height={112}
+            class="h-24 w-24 shrink-0 object-contain drop-shadow-md transition-transform duration-200 group-hover:scale-105 sm:h-28 sm:w-28"
+          />
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,67 @@
+---
+// Shield + ribbon badge matching the Figma "118 Years / Est. 1908" mark.
+type Props = {
+  years: number;
+  year: number;
+  class?: string;
+};
+
+const { years, year, class: className = "" } = Astro.props;
+---
+
+<div class:list={["relative isolate", className]}>
+  <svg viewBox="0 0 120 132" class="h-full w-full drop-shadow-lg" aria-hidden="true">
+    <defs>
+      <linearGradient id={`shield-grad-${year}`} x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="var(--color-navy-100)" />
+        <stop offset="100%" stop-color="var(--color-navy-300)" />
+      </linearGradient>
+    </defs>
+    <path
+      d="M60 3 L109 21 C109 61 99.5 97 60 128 C20.5 97 11 61 11 21 Z"
+      fill={`url(#shield-grad-${year})`}
+      stroke="var(--color-navy-700)"
+      stroke-width="2.5"
+    />
+    <text
+      x="60"
+      y="59"
+      text-anchor="middle"
+      font-family="var(--font-badge)"
+      font-weight="700"
+      font-size="32"
+      fill="var(--color-navy-800)">{years}</text
+    >
+    <text
+      x="60"
+      y="75"
+      text-anchor="middle"
+      font-family="var(--font-sans)"
+      font-weight="700"
+      font-size="9"
+      letter-spacing="2.5"
+      fill="var(--color-navy-700)">YEARS</text
+    >
+  </svg>
+  <svg
+    viewBox="0 0 140 32"
+    class="absolute left-1/2 top-[73%] w-[124%] -translate-x-1/2 drop-shadow"
+    aria-hidden="true"
+  >
+    <polygon points="0,3 20,3 11,16 20,29 0,29 9,16" fill="var(--color-brand-green-600)"></polygon>
+    <polygon points="140,3 120,3 129,16 120,29 140,29 131,16" fill="var(--color-brand-green-600)"
+    ></polygon>
+    <rect x="15" y="1.5" width="110" height="29" rx="3" fill="var(--color-brand-green-500)"></rect>
+    <circle cx="27" cy="16" r="1.8" fill="white" opacity="0.75"></circle>
+    <circle cx="113" cy="16" r="1.8" fill="white" opacity="0.75"></circle>
+    <text
+      x="70"
+      y="21"
+      text-anchor="middle"
+      font-family="var(--font-badge)"
+      font-weight="700"
+      font-size="12.5"
+      fill="var(--color-navy-900)">EST. {year}</text
+    >
+  </svg>
+</div>

@@ -1,0 +1,128 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Button from "@components/ui/Button.astro";
+import SectionHeading from "@components/ui/SectionHeading.astro";
+import FinalCta from "@components/sections/FinalCta.astro";
+import { business } from "@data/site";
+import { breadcrumbSchema } from "@lib/seo";
+import { Building2, ChevronRight, Clock, FileText, ShieldCheck, Wrench } from "lucide-react";
+
+const propertyTypes = [
+  { label: "Multi-Family & Apartments", icon: Building2 },
+  { label: "Restaurants & Food Service", icon: Wrench },
+  { label: "Retail & Office Buildings", icon: FileText },
+  { label: "Property Management Portfolios", icon: ShieldCheck },
+];
+
+const commercialServices = [
+  "Preventive maintenance contracts scheduled around your business hours",
+  "Grease trap pumping, service, and code compliance",
+  "Backflow testing and certification",
+  "Priority 24/7 emergency response for commercial accounts",
+  "Commercial water heater and boiler service",
+  "Sewer and drain line maintenance for high-use buildings",
+];
+
+const whyUs = [
+  { label: "Priority emergency response", description: "Commercial accounts get priority dispatch - a plumbing issue doesn't get to become a closed sign." },
+  { label: "Licensed & insured crews", description: "Every technician is a licensed Washington State plumber; Jim Dandy carries full bonding and insurance." },
+  { label: "Clear, itemized invoicing", description: "Detailed invoices built for property management and accounting workflows, not handwritten receipts." },
+  { label: "118 years in the Puget Sound region", description: "We've been the trusted plumber for local businesses since 1908 - long enough to know how to keep yours running." },
+];
+
+const crumbs = breadcrumbSchema([
+  { name: "Home", path: "/" },
+  { name: "Commercial", path: "/commercial" },
+]);
+---
+
+<Layout
+  title="Commercial Plumbing Services | Jim Dandy Sewer & Plumbing"
+  description="Scheduled maintenance and 24/7 emergency response for restaurants, multi-family properties, and commercial buildings across the Puget Sound region."
+  path="/commercial"
+>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(crumbs)} slot="head" />
+
+  <section class="relative overflow-hidden bg-navy-900 py-16 lg:py-24">
+    <div
+      class="pointer-events-none absolute inset-0 opacity-40"
+      style="background: radial-gradient(600px circle at 15% 20%, rgba(105,190,40,0.18), transparent 60%);"
+      aria-hidden="true"
+    ></div>
+    <div class="container-page relative flex flex-col items-start gap-6">
+      <nav aria-label="Breadcrumb" class="flex items-center gap-1.5 text-sm text-white/60">
+        <a href="/" class="hover:text-white">Home</a>
+        <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
+        <span class="text-white">Commercial</span>
+      </nav>
+      <h1 class="font-display text-[38px] font-black italic leading-[1.05] text-cloud sm:text-[52px]">
+        Commercial Plumbing &amp; Sewer Services
+      </h1>
+      <p class="max-w-2xl text-lg leading-relaxed text-white/80">
+        Downtime costs money. We work with property managers, restaurants, and multi-family
+        buildings on scheduled maintenance plans and back them with the same 24/7 emergency
+        response we offer residential customers.
+      </p>
+      <div class="flex w-full flex-col gap-4 sm:w-auto sm:flex-row">
+        <Button href={business.scheduleUrl} variant="primary">Schedule a Consultation</Button>
+        <Button href={business.phoneHref} variant="secondary">Call {business.phone}</Button>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20 lg:py-28">
+    <div class="container-page flex flex-col gap-14">
+      <SectionHeading title="Who We Serve" subtitle="Commercial plumbing built around your operating hours, not ours." />
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {propertyTypes.map(({ label, icon: Icon }) => (
+          <div class="flex flex-col items-center gap-4 rounded-3xl border border-navy-200 bg-surface p-8 text-center shadow-sm">
+            <span class="grid h-14 w-14 place-items-center rounded-2xl bg-navy-50 text-navy-700">
+              <Icon className="h-7 w-7" aria-hidden="true" />
+            </span>
+            <p class="font-display text-lg font-bold text-navy-800">{label}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface py-20 lg:py-28">
+    <div class="container-page grid grid-cols-1 gap-14 lg:grid-cols-2">
+      <div class="flex flex-col gap-6">
+        <SectionHeading title="Commercial Services" align="left" />
+        <ul class="flex flex-col gap-4">
+          {commercialServices.map((item) => (
+            <li class="flex items-start gap-3 text-base leading-relaxed text-navy-700">
+              <Wrench className="mt-0.5 h-5 w-5 shrink-0 text-brand-green-600" aria-hidden="true" />
+              {item}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="flex flex-col gap-6">
+        <SectionHeading title="Why Businesses Choose Jim Dandy" align="left" />
+        <div class="flex flex-col gap-5">
+          {whyUs.map(({ label, description }) => (
+            <div class="rounded-2xl border border-navy-200 bg-white p-5">
+              <p class="font-display text-lg font-bold text-navy-800">{label}</p>
+              <p class="mt-1 text-sm leading-relaxed text-navy-600">{description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-navy-900 py-12">
+    <div class="container-page flex flex-col items-center gap-3 text-center">
+      <Clock className="h-8 w-8 text-brand-green-400" aria-hidden="true" />
+      <p class="font-display text-2xl font-bold text-white">24/7 Priority Emergency Dispatch</p>
+      <p class="max-w-xl text-white/70">
+        Commercial accounts reach a live dispatcher any hour of the day - no answering machines,
+        no waiting until morning.
+      </p>
+    </div>
+  </section>
+
+  <FinalCta />
+</Layout>

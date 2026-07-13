@@ -1,0 +1,23 @@
+---
+import { Image } from "astro:assets";
+import legacyPhoto from "@assets/photos/legacy-crew-truck.webp";
+import { business } from "@data/site";
+---
+
+<section class="relative overflow-hidden">
+  <Image
+    src={legacyPhoto}
+    alt="A Jim Dandy technician standing in front of a company service van outside a customer's home"
+    width={1600}
+    height={533}
+    loading="lazy"
+    class="relative h-72 w-full object-cover sm:h-96"
+  />
+  <div class="flex items-center justify-center bg-navy-800 px-4 py-8 sm:py-10">
+    <h2
+      class="select-none text-balance text-center font-display text-5xl font-black italic leading-tight tracking-wide text-brand-green-500 sm:text-7xl sm:tracking-wider xl:text-[140px]"
+    >
+      {business.yearsInBusiness} Years Of Legacy
+    </h2>
+  </div>
+</section>

@@ -1,0 +1,59 @@
+---
+import { Image } from "astro:assets";
+import SectionHeading from "@components/ui/SectionHeading.astro";
+import Button from "@components/ui/Button.astro";
+import finalCtaPhoto from "@assets/photos/final-cta-crew.webp";
+import { business } from "@data/site";
+---
+
+<section class="relative overflow-hidden bg-white py-20 lg:py-28">
+  <div
+    class="pointer-events-none absolute inset-0"
+    style="background: radial-gradient(120% 100% at 12% 45%,
+      rgba(220,255,194,0.95) 0%,
+      rgba(220,255,194,0.7) 30%,
+      rgba(220,255,194,0.35) 50%,
+      rgba(220,255,194,0.1) 68%,
+      rgba(220,255,194,0) 82%);"
+    aria-hidden="true"
+  ></div>
+
+  <div class="container-page relative flex flex-col gap-12">
+    <SectionHeading
+      title="Ready to Fix Your Plumbing Problem?"
+      subtitle={`Jim Dandy has served Seattle since ${business.founded}. We're available 24/7 - call or schedule online.`}
+    />
+
+    <div class="grid grid-cols-1 items-center gap-10 lg:grid-cols-[auto_1fr] lg:[min-height:clamp(255px,27.6vw,706px)]">
+      <div class="relative flex flex-col gap-4 sm:flex-row lg:flex-col lg:w-72">
+        <div
+          class="pointer-events-none absolute -inset-10 -z-10 rounded-full opacity-80 blur-3xl"
+          style="background: radial-gradient(circle, rgba(105,190,40,0.16), rgba(105,190,40,0) 70%);"
+          aria-hidden="true"
+        ></div>
+        <Button href={business.scheduleUrl} variant="primary" fullWidth>Schedule Online</Button>
+        <Button href={business.financingUrl} variant="secondary" fullWidth>Get Financed</Button>
+      </div>
+
+      <Image
+        src={finalCtaPhoto}
+        alt="The full Jim Dandy Sewer & Plumbing crew standing together in front of a service truck"
+        width={2670}
+        height={1217}
+        loading="lazy"
+        class="-mx-5 h-auto w-[calc(100%+2.5rem)] lg:hidden"
+      />
+    </div>
+  </div>
+
+  <div class="pointer-events-none absolute right-0 hidden lg:block lg:bottom-28 lg:[width:clamp(560px,60.5vw,1550px)]" aria-hidden="true">
+    <Image
+      src={finalCtaPhoto}
+      alt=""
+      width={2670}
+      height={1217}
+      loading="lazy"
+      class="h-auto w-full"
+    />
+  </div>
+</section>

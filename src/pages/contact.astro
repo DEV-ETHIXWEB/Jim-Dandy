@@ -1,0 +1,75 @@
+---
+import Layout from "@layouts/Layout.astro";
+import ContactSection from "@components/sections/ContactSection.astro";
+import { business } from "@data/site";
+import { breadcrumbSchema } from "@lib/seo";
+import { ChevronRight, Clock, Mail, MapPin, Phone } from "lucide-react";
+
+const crumbs = breadcrumbSchema([
+  { name: "Home", path: "/" },
+  { name: "Contact", path: "/contact" },
+]);
+
+const directionsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(business.address.full)}`;
+
+const contactCards = [
+  { icon: Phone, label: "Call or Text", value: business.phone, href: business.phoneHref },
+  { icon: Mail, label: "Email", value: business.email, href: `mailto:${business.email}` },
+  { icon: MapPin, label: "Address", value: business.address.full, href: directionsUrl },
+  { icon: Clock, label: "Hours", value: business.hours, href: undefined },
+];
+---
+
+<Layout
+  title="Contact Us | Jim Dandy Sewer & Plumbing"
+  description="Reach Jim Dandy Sewer & Plumbing 24/7 by phone, or schedule online. Serving the Puget Sound region from Mountlake Terrace, WA."
+  path="/contact"
+>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(crumbs)} slot="head" />
+
+  <section class="relative overflow-hidden bg-navy-900 py-16 lg:py-20">
+    <div
+      class="pointer-events-none absolute inset-0 opacity-40"
+      style="background: radial-gradient(600px circle at 15% 20%, rgba(105,190,40,0.18), transparent 60%);"
+      aria-hidden="true"
+    ></div>
+    <div class="container-page relative flex flex-col items-start gap-6">
+      <nav aria-label="Breadcrumb" class="flex items-center gap-1.5 text-sm text-white/60">
+        <a href="/" class="hover:text-white">Home</a>
+        <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
+        <span class="text-white">Contact</span>
+      </nav>
+      <h1 class="font-display text-[38px] font-black italic leading-[1.05] text-cloud sm:text-[52px]">
+        Contact Jim Dandy
+      </h1>
+      <p class="max-w-xl text-lg leading-relaxed text-white/80">
+        Call anytime for emergencies, or fill out the form below and a dispatcher will reach out
+        to confirm your appointment.
+      </p>
+    </div>
+  </section>
+
+  <section class="bg-white py-12">
+    <div class="container-page grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {contactCards.map(({ icon: Icon, label, value, href }) => {
+        const Tag = href ? "a" : "div";
+        return (
+          <Tag
+            href={href}
+            class="flex flex-col items-start gap-3 rounded-2xl border border-navy-200 bg-surface p-6 transition-colors hover:border-brand-green-500"
+          >
+            <span class="grid h-11 w-11 place-items-center rounded-xl bg-navy-50 text-navy-700">
+              <Icon className="h-5 w-5" aria-hidden="true" />
+            </span>
+            <div>
+              <p class="text-xs font-bold uppercase tracking-wider text-navy-400">{label}</p>
+              <p class="mt-1 text-sm font-semibold leading-snug text-navy-800">{value}</p>
+            </div>
+          </Tag>
+        );
+      })}
+    </div>
+  </section>
+
+  <ContactSection />
+</Layout>

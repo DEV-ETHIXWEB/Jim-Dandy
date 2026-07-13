@@ -1,0 +1,146 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Button from "@components/ui/Button.astro";
+import SectionHeading from "@components/ui/SectionHeading.astro";
+import AnimatedCounter from "@components/ui/AnimatedCounter";
+import FinalCta from "@components/sections/FinalCta.astro";
+import { business } from "@data/site";
+import { breadcrumbSchema } from "@lib/seo";
+import { BadgeCheck, ChevronRight, Clock, HeartHandshake, ShieldCheck, Wrench } from "lucide-react";
+
+const values = [
+  {
+    icon: BadgeCheck,
+    title: "Upfront Pricing",
+    description: "Flat-rate quotes before any work begins - no hourly guesswork and no surprise invoices.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Licensed & Insured",
+    description: "Every technician is a licensed Washington State plumber, fully bonded and insured.",
+  },
+  {
+    icon: HeartHandshake,
+    title: "Workmanship Guarantee",
+    description: "If something isn't right after we leave, call us and we'll make it right at no extra charge.",
+  },
+  {
+    icon: Clock,
+    title: "Always Available",
+    description: "A real dispatcher answers any hour of the day for emergency plumbing and sewer issues.",
+  },
+];
+
+const crumbs = breadcrumbSchema([
+  { name: "Home", path: "/" },
+  { name: "About", path: "/about" },
+]);
+---
+
+<Layout
+  title="About Us | Jim Dandy Sewer & Plumbing"
+  description={`Jim Dandy Sewer & Plumbing has served the Puget Sound region since ${business.founded}. Licensed, bonded, and insured plumbing and sewer experts.`}
+  path="/about"
+>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(crumbs)} slot="head" />
+
+  <section class="relative overflow-hidden bg-navy-900 py-16 lg:py-24">
+    <div
+      class="pointer-events-none absolute inset-0 opacity-40"
+      style="background: radial-gradient(600px circle at 15% 20%, rgba(105,190,40,0.18), transparent 60%);"
+      aria-hidden="true"
+    ></div>
+    <div class="container-page relative flex flex-col items-start gap-6">
+      <nav aria-label="Breadcrumb" class="flex items-center gap-1.5 text-sm text-white/60">
+        <a href="/" class="hover:text-white">Home</a>
+        <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
+        <span class="text-white">About</span>
+      </nav>
+      <h1 class="font-display text-[38px] font-black italic leading-[1.05] text-cloud sm:text-[52px]">
+        {business.yearsInBusiness} Years of Jim Dandy
+      </h1>
+      <p class="max-w-2xl text-lg leading-relaxed text-white/80">
+        Since {business.founded}, Jim Dandy Sewer &amp; Plumbing has been the Puget Sound region's
+        trusted name for honest, upfront plumbing and sewer service - from first-time repairs to
+        multi-generation customers who call us for everything.
+      </p>
+      <Button href={business.scheduleUrl} variant="primary">Schedule Online</Button>
+    </div>
+  </section>
+
+  <section class="bg-white py-16">
+    <div class="container-page grid grid-cols-2 gap-8 sm:grid-cols-4">
+      <div class="flex flex-col items-center gap-1 text-center">
+        <span class="font-badge text-4xl font-bold text-navy-800">
+          <AnimatedCounter client:visible target={business.yearsInBusiness} />
+        </span>
+        <span class="text-sm font-semibold text-navy-500">Years in Business</span>
+      </div>
+      <div class="flex flex-col items-center gap-1 text-center">
+        <span class="font-badge text-4xl font-bold text-navy-800">
+          <AnimatedCounter client:visible target={business.rating.value} decimals={1} />
+        </span>
+        <span class="text-sm font-semibold text-navy-500">Google Rating</span>
+      </div>
+      <div class="flex flex-col items-center gap-1 text-center">
+        <span class="font-badge text-4xl font-bold text-navy-800">
+          <AnimatedCounter client:visible target={business.rating.count} />
+        </span>
+        <span class="text-sm font-semibold text-navy-500">Google Reviews</span>
+      </div>
+      <div class="flex flex-col items-center gap-1 text-center">
+        <span class="font-badge text-4xl font-bold text-navy-800">
+          <AnimatedCounter client:visible target={16} />
+        </span>
+        <span class="text-sm font-semibold text-navy-500">Cities Served</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface py-20 lg:py-28">
+    <div class="container-page flex flex-col gap-14">
+      <SectionHeading title="What We Stand For" subtitle="The same standard since 1908." />
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {values.map(({ icon: Icon, title, description }) => (
+          <div class="flex flex-col items-start gap-4 rounded-3xl border border-navy-200 bg-white p-7 shadow-sm">
+            <span class="grid h-14 w-14 place-items-center rounded-2xl bg-brand-green-50 text-brand-green-600">
+              <Icon className="h-7 w-7" aria-hidden="true" />
+            </span>
+            <p class="font-display text-xl font-bold text-navy-800">{title}</p>
+            <p class="text-sm leading-relaxed text-navy-600">{description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-20 lg:py-28">
+    <div class="container-page grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
+      <div class="flex flex-col gap-5">
+        <SectionHeading title="Licensed, Bonded & Insured" align="left" />
+        <p class="text-base leading-relaxed text-navy-600">
+          Jim Dandy Sewer &amp; Plumbing is licensed by Washington State, bonded, and fully
+          insured. We're proud members of PHCC and BBB-accredited, and our technicians carry
+          current licenses on every call.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          {business.licenses.map((license) => (
+            <span class="rounded-full border border-navy-200 bg-white px-5 py-2 font-mono text-sm font-semibold text-navy-800 shadow-sm">
+              {license}
+            </span>
+          ))}
+        </div>
+      </div>
+      <div class="flex flex-col gap-4 rounded-[32px] bg-navy-900 p-8 text-white">
+        <Wrench className="h-8 w-8 text-brand-green-400" aria-hidden="true" />
+        <p class="font-display text-2xl font-bold">Our Guarantee</p>
+        <p class="text-white/75">
+          Every repair is backed by our workmanship guarantee. We diagnose, quote upfront, and fix
+          it right the first time - or we come back and make it right.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <FinalCta />
+</Layout>

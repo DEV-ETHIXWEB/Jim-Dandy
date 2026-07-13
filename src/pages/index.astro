@@ -1,0 +1,30 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Hero from "@components/sections/Hero.astro";
+import TrustBar from "@components/sections/TrustBar.astro";
+import ServicesGrid from "@components/sections/ServicesGrid.astro";
+import LegacyBanner from "@components/sections/LegacyBanner.astro";
+import HowItWorksSection from "@components/sections/HowItWorksSection.astro";
+import ReviewsSection from "@components/sections/ReviewsSection.astro";
+import ContactSection from "@components/sections/ContactSection.astro";
+import ServiceAreaSection from "@components/sections/ServiceAreaSection.astro";
+import FinalCta from "@components/sections/FinalCta.astro";
+---
+
+<Layout
+  title="Seattle's Plumber Since 1908 | Jim Dandy Sewer & Plumbing"
+  description="Licensed plumbing & sewer experts serving the Puget Sound region 24/7. Upfront pricing, same-day service, and 118 years of trusted repairs."
+  path="/"
+>
+  <Hero />
+  <div class="bg-gradient-to-b from-[#e7f2fe] via-brand-green-50 to-white">
+    <TrustBar />
+    <ServicesGrid />
+  </div>
+  <LegacyBanner />
+  <HowItWorksSection />
+  <ReviewsSection />
+  <ContactSection />
+  <ServiceAreaSection />
+  <FinalCta />
+</Layout>

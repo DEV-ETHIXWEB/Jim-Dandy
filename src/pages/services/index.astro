@@ -1,0 +1,52 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Button from "@components/ui/Button.astro";
+import ServicesGrid from "@components/sections/ServicesGrid.astro";
+import FinalCta from "@components/sections/FinalCta.astro";
+import { business } from "@data/site";
+import { breadcrumbSchema } from "@lib/seo";
+import { ChevronRight } from "lucide-react";
+
+const crumbs = breadcrumbSchema([
+  { name: "Home", path: "/" },
+  { name: "Services", path: "/services" },
+]);
+---
+
+<Layout
+  title="Plumbing Services | Jim Dandy Sewer & Plumbing"
+  description="Emergency plumbing, drain cleaning, sewer repair, water heaters, and full-service plumbing across the Puget Sound region. Licensed, insured, available 24/7."
+  path="/services"
+>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(crumbs)} slot="head" />
+
+  <section class="relative overflow-hidden bg-navy-900 py-16 lg:py-20">
+    <div
+      class="pointer-events-none absolute inset-0 opacity-40"
+      style="background: radial-gradient(600px circle at 15% 20%, rgba(105,190,40,0.18), transparent 60%);"
+      aria-hidden="true"
+    ></div>
+    <div class="container-page relative flex flex-col items-start gap-6">
+      <nav aria-label="Breadcrumb" class="flex items-center gap-1.5 text-sm text-white/60">
+        <a href="/" class="hover:text-white">Home</a>
+        <ChevronRight className="h-3.5 w-3.5" aria-hidden="true" />
+        <span class="text-white">Services</span>
+      </nav>
+      <h1 class="font-display text-[38px] font-black italic leading-[1.05] text-cloud sm:text-[52px]">
+        Plumbing &amp; Sewer Services
+      </h1>
+      <p class="max-w-xl text-lg leading-relaxed text-white/80">
+        From same-hour emergencies to planned upgrades, Jim Dandy's licensed techs cover the full
+        range of residential and commercial plumbing - with upfront pricing every time.
+      </p>
+      <div class="flex w-full flex-col gap-4 sm:w-auto sm:flex-row">
+        <Button href={business.scheduleUrl} variant="primary">Schedule Online</Button>
+        <Button href={business.phoneHref} variant="secondary">Call {business.phone}</Button>
+      </div>
+    </div>
+  </section>
+
+  <ServicesGrid />
+
+  <FinalCta />
+</Layout>

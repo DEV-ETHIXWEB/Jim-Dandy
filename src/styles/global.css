@@ -1,0 +1,125 @@
+@import "tailwindcss";
+
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+@import "@fontsource/barlow-condensed/500.css";
+@import "@fontsource/barlow-condensed/600.css";
+@import "@fontsource/barlow-condensed/700.css";
+@import "@fontsource/barlow-condensed/700-italic.css";
+@import "@fontsource/barlow-condensed/900-italic.css";
+@import "@fontsource/oswald/500.css";
+@import "@fontsource/oswald/700.css";
+@import "@fontsource/plus-jakarta-sans/800.css";
+@import "@fontsource/roboto-slab/700.css";
+
+@theme {
+  /* Brand color scale, extracted from Figma variables */
+  --color-navy-900: #001830;
+  --color-navy-800: #002244;
+  --color-navy-700: #0a2c4e;
+  --color-navy-600: #334e69;
+  --color-navy-400: #546b82;
+  --color-navy-300: #8a99a9;
+  --color-navy-200: #b0bac5;
+  --color-navy-100: #e6e9ec;
+  --color-navy-50: #f5f7fa;
+
+  --color-brand-green-600: #4b871c;
+  --color-brand-green-500: #69be28;
+  --color-brand-green-400: #87cb53;
+  --color-brand-green-100: #dcffc2;
+  --color-brand-green-50: #f0f9ea;
+
+  --color-ink: #191a23;
+  --color-surface: #f8f9fa;
+  --color-surface-muted: #f3f3f3;
+  --color-cloud: #fafcff;
+
+  /* Typography */
+  --font-display: "Barlow Condensed", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Oswald", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-accent: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-badge: "Roboto Slab", ui-serif, Georgia, serif;
+
+  /* Container */
+  --container-page: 1200px;
+
+  /* Shadows (agency-grade, matched to Figma "hard offset" style) */
+  --shadow-brutal-sm: 0px 4px 0px 0px var(--color-ink);
+  --shadow-brutal: 0px 5px 0px 0px var(--color-ink);
+  --shadow-brutal-navy: 0px 5px 0px 0px var(--color-navy-800);
+  --shadow-card: 0px 12px 16px 0px rgba(0, 34, 68, 0.16), 0px 5px 0px 0px var(--color-navy-800);
+  --shadow-pill-green: 0px 0px 12px 0px rgba(135, 203, 83, 0.5), 0px 0px 2px 0px rgba(0, 0, 0, 0.1), 0px 1px 8px 0px rgba(0, 0, 0, 0.1);
+  --shadow-pill-navy: 0px 0px 12px 0px rgba(0, 34, 68, 0.5), 0px 0px 2px 0px rgba(0, 0, 0, 0.1), 0px 1px 8px 0px rgba(0, 0, 0, 0.1);
+  --shadow-review: 0px 14px 12px 0px rgba(0, 39, 78, 0.08);
+
+  --ease-brand: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 96px;
+    overflow-x: hidden;
+  }
+
+  section[id] {
+    scroll-margin-top: 96px;
+  }
+
+  body {
+    overflow-x: hidden;
+    font-family: var(--font-sans);
+    color: var(--color-navy-800);
+    background-color: white;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-heading);
+  }
+
+  ::selection {
+    background-color: var(--color-brand-green-500);
+    color: var(--color-navy-900);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-brand-green-500);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+@utility container-page {
+  width: 100%;
+  max-width: var(--container-page);
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+@utility text-outline-green {
+  -webkit-text-stroke: 1.5px var(--color-brand-green-500);
+  color: transparent;
+}

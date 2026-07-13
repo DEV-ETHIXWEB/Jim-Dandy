@@ -1,0 +1,36 @@
+---
+import Seo from "@components/layout/Seo.astro";
+import Header from "@components/layout/Header";
+import Footer from "@components/layout/Footer.astro";
+import "@styles/global.css";
+import type { SeoProps } from "@lib/seo";
+
+type Props = SeoProps;
+
+const { title, description, path, image, noindex } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#002244" />
+    <Seo title={title} description={description} path={path} image={image} noindex={noindex} />
+    <slot name="head" />
+  </head>
+  <body class="antialiased">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-full focus:bg-brand-green-500 focus:px-6 focus:py-3 focus:font-semibold focus:text-navy-900"
+    >
+      Skip to main content
+    </a>
+    <Header client:load currentPath={Astro.url.pathname} />
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
