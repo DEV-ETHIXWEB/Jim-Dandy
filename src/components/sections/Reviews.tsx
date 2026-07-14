@@ -1,7 +1,5 @@
-import { useState } from "react";
 import { BadgeCheck, Star } from "lucide-react";
-import { reviews } from "@data/site";
-import reviewerAvatar from "@assets/photos/reviewer-avatar.webp";
+import { business, reviews } from "@data/site";
 
 function GoogleG({ className }: { className?: string }) {
   return (
@@ -17,8 +15,6 @@ function GoogleG({ className }: { className?: string }) {
 type Review = (typeof reviews)[number];
 
 function ReviewCard({ review, hidden }: { review: Review; hidden?: boolean }) {
-  const [expanded, setExpanded] = useState(false);
-
   return (
     <article
       className="flex h-full w-[320px] shrink-0 flex-col gap-4 rounded-3xl border-b-4 border-navy-800 bg-[#f7f7f7] p-6 shadow-review sm:w-[360px]"
@@ -26,17 +22,9 @@ function ReviewCard({ review, hidden }: { review: Review; hidden?: boolean }) {
     >
       <div className="flex flex-col gap-3">
         <div className="flex items-start justify-between">
-          <div className="flex items-center gap-3">
-            <img
-              src={reviewerAvatar.src}
-              alt=""
-              className="h-12 w-12 shrink-0 rounded-full object-cover"
-              aria-hidden="true"
-            />
-            <div className="leading-tight">
-              <p className="font-sans text-lg font-semibold text-navy-900">{review.name}</p>
-              <p className="text-sm text-navy-400">{review.timeAgo}</p>
-            </div>
+          <div className="leading-tight">
+            <p className="font-sans text-lg font-semibold text-navy-900">{review.name}</p>
+            <p className="text-sm text-navy-400">{review.timeAgo}</p>
           </div>
           <GoogleG className="h-6 w-6 shrink-0" />
         </div>
@@ -49,21 +37,16 @@ function ReviewCard({ review, hidden }: { review: Review; hidden?: boolean }) {
           <BadgeCheck className="h-4 w-4 text-navy-400" aria-label="Verified review" />
         </div>
       </div>
-      <p className={`flex-1 text-base leading-relaxed text-navy-700 ${expanded ? "" : "line-clamp-3"}`}>
-        {review.text}
-      </p>
-      {hidden ? (
-        <span className="text-left text-sm font-semibold text-navy-500">Read more</span>
-      ) : (
-        <button
-          type="button"
-          onClick={() => setExpanded((v) => !v)}
-          aria-expanded={expanded}
-          className="-my-2 self-start py-2 text-left text-sm font-semibold text-navy-500 hover:text-navy-700"
-        >
-          {expanded ? "Show less" : `Read more from ${review.name.split(" ")[0]}`}
-        </button>
-      )}
+      <p className="flex-1 text-base leading-relaxed text-navy-700 line-clamp-3">{review.text}</p>
+      <a
+        href={business.social.google}
+        target="_blank"
+        rel="noopener noreferrer"
+        tabIndex={hidden ? -1 : undefined}
+        className="-my-2 self-start py-2 text-left text-sm font-semibold text-navy-500 hover:text-navy-700"
+      >
+        Read more on Google
+      </a>
     </article>
   );
 }

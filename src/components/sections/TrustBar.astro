@@ -1,108 +1,78 @@
 ---
-import { Image } from "astro:assets";
 import SectionHeading from "@components/ui/SectionHeading.astro";
 import { business } from "@data/site";
-import bbbLogo from "@assets/logos/bbb.webp";
-import angiLogo from "@assets/logos/angi.webp";
-import phccLogo from "@assets/logos/phcc.webp";
 
 const logoBadges = [
-  { label: "BBB Accredited Business", logo: bbbLogo },
-  { label: "Angi Super Service Award 2024", logo: angiLogo },
-  { label: "PHCC Certified Member", logo: phccLogo },
-  { label: "BBB Accredited Business", logo: bbbLogo },
+  {
+    label: "BBB Accredited Business",
+    idle: "/default/Components/Logos/Idle.png",
+    hover: "/default/Components/Logos/Hover.png",
+  },
+  {
+    label: "Angi Super Service Award 2024",
+    idle: "/default/Components/Logos/Idle-1.png",
+    hover: "/default/Components/Logos/Hover-1.png",
+  },
+  {
+    label: "PHCC Certified Member",
+    idle: "/default/Components/Logos/Idle-2.png",
+    hover: "/default/Components/Logos/Hover-2.png",
+  },
 ];
 
-// Repeated 3x for a seamless, long-feeling loop from just 4 logos.
+// Repeated 3x for a seamless, long-feeling loop from just 3 logos.
 const marqueeLogos = [...logoBadges, ...logoBadges, ...logoBadges];
 ---
 
-<section class="relative overflow-hidden py-20 lg:py-28">
+<section class="relative overflow-hidden pt-20 pb-[45px] lg:pt-28 lg:pb-[62px]">
   <div class="container-page relative flex flex-col items-center gap-10">
     <SectionHeading title="Licensed & Insured" subtitle="Your home is in good hands." />
 
-    <div class="flex flex-col items-center gap-5">
-      <span class="font-display text-3xl font-bold uppercase text-navy-800 sm:text-4xl">
-        License No.
-      </span>
-      <div class="flex flex-wrap items-center justify-center gap-4">
-        {business.licenses.map((license, i) => (
-          <>
-            {i > 0 && <span class="h-6 w-px bg-navy-300" aria-hidden="true"></span>}
-            <span class="stamp-pill relative rounded-full bg-navy-800 px-7 py-3 font-mono text-base font-semibold tracking-wide text-white">
-              {license}
-            </span>
-          </>
-        ))}
-      </div>
+    <img
+      src="/NEW/Licence%20No%20Header%20and%20Cards.webp"
+      alt={`License No. ${business.licenses.join(", ")}`}
+      width="1152"
+      height="257"
+      class="h-auto w-full max-w-sm sm:max-w-md"
+    />
+  </div>
+
+  <div class="trustbar-viewport relative left-1/2 mt-[100px] w-screen -translate-x-1/2">
+    <div
+      class="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-brand-green-50 via-brand-green-50/70 to-transparent backdrop-blur-[6px] [mask-image:linear-gradient(to_right,black,black_40%,transparent)] sm:w-24 md:w-40 lg:w-[228px] xl:w-[324px]"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-brand-green-50 via-brand-green-50/70 to-transparent backdrop-blur-[6px] [mask-image:linear-gradient(to_left,black,black_40%,transparent)] sm:w-24 md:w-40 lg:w-[228px] xl:w-[324px]"
+      aria-hidden="true"
+    >
     </div>
 
-    <div class="trustbar-viewport relative left-1/2 w-screen max-w-[1300px] -translate-x-1/2">
-      <div
-        class="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-brand-green-50 via-brand-green-50/70 to-transparent backdrop-blur-[3px] sm:w-36"
-        aria-hidden="true"
-      >
-      </div>
-      <div
-        class="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-brand-green-50 via-brand-green-50/70 to-transparent backdrop-blur-[3px] sm:w-36"
-        aria-hidden="true"
-      >
-      </div>
-
-      <div class="trustbar-track flex w-max items-center gap-20" aria-hidden="true">
-        {marqueeLogos.map(({ label, logo }) => (
-          <div class="trustbar-logo shrink-0">
-            <Image
-              src={logo}
-              alt={label}
-              height={128}
-              loading="lazy"
-              class="h-16 w-auto object-contain grayscale"
-            />
-          </div>
-        ))}
-      </div>
-      <span class="sr-only">BBB Accredited Business, Angi Super Service Award 2024, PHCC Certified Member</span>
+    <div class="trustbar-track flex w-max items-center gap-40" aria-hidden="true">
+      {marqueeLogos.map(({ label, hover }) => (
+        <div class="trustbar-logo relative shrink-0">
+          <img src={hover} alt={label} loading="lazy" class="h-[156px] w-auto object-contain grayscale" />
+        </div>
+      ))}
     </div>
+    <span class="sr-only">BBB Accredited Business, Angi Super Service Award 2024, PHCC Certified Member</span>
   </div>
 </section>
 
 <style>
-  .stamp-pill::before,
-  .stamp-pill::after {
-    content: "";
-    position: absolute;
-    left: 12px;
-    right: 12px;
-    height: 13px;
-    background: var(--color-navy-800);
-    -webkit-mask-image: radial-gradient(circle at 6.5px 6.5px, black 5.5px, transparent 6px);
-    mask-image: radial-gradient(circle at 6.5px 6.5px, black 5.5px, transparent 6px);
-    -webkit-mask-size: 13px 13px;
-    mask-size: 13px 13px;
-    -webkit-mask-repeat: repeat-x;
-    mask-repeat: repeat-x;
-  }
-  .stamp-pill::before {
-    top: -6.5px;
-  }
-  .stamp-pill::after {
-    bottom: -6.5px;
-  }
-
   .trustbar-track {
     animation: trustbar-scroll 28s linear infinite;
   }
 
-  .trustbar-viewport:hover .trustbar-track {
-    animation-play-state: paused;
+  .trustbar-logo {
+    transition: transform 120ms linear;
+    will-change: transform;
   }
 
-  .trustbar-logo {
-    transition:
-      transform 120ms linear,
-      filter 120ms linear;
-    will-change: transform, filter;
+  .trustbar-logo img {
+    transition: filter 120ms linear;
+    will-change: filter;
   }
 
   @keyframes trustbar-scroll {
@@ -135,9 +105,9 @@ const marqueeLogos = [...logoBadges, ...logoBadges, ...logoBadges];
         const distance = Math.abs(itemCenter - centerX);
         const proximity = Math.max(0, 1 - distance / falloff);
         const scale = 1 + proximity * 0.4;
-        const gray = 1 - proximity;
         item.style.transform = `scale(${scale.toFixed(3)})`;
-        item.style.filter = `grayscale(${gray.toFixed(3)})`;
+        const img = item.querySelector<HTMLElement>("img");
+        if (img) img.style.filter = `grayscale(${(1 - proximity).toFixed(3)})`;
       }
 
       raf = requestAnimationFrame(tick);

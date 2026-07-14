@@ -12,13 +12,13 @@ export const business = {
   hours: "Mon–Fri 7am–7pm · 24/7 Emergency",
   founded: 1908,
   yearsInBusiness: new Date().getFullYear() - 1908,
-  licenses: ["JIMDADE791MG", "JIMDADS679B3"],
+  licenses: ["JIMDADE791MG", "JIMDADS879B3"],
   rating: { value: 4.8, count: 177 },
   scheduleUrl: "/contact",
   financingUrl: "/coupons",
   social: {
     facebook: "https://www.facebook.com/",
-    google: "https://www.google.com/maps",
+    google: "https://share.google/L2jpUnfSMJK7ZRCk8",
     x: "https://x.com/",
   },
 } as const;

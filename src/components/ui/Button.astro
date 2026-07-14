@@ -6,6 +6,7 @@ type Props = {
   class?: string;
   type?: "button" | "submit";
   fullWidth?: boolean;
+  external?: boolean;
 };
 
 const {
@@ -15,6 +16,7 @@ const {
   class: className = "",
   type = "button",
   fullWidth = false,
+  external = false,
 } = Astro.props;
 
 const Tag = href ? "a" : "button";
@@ -40,6 +42,8 @@ const variants = {
 <Tag
   href={href}
   type={!href ? type : undefined}
+  target={external ? "_blank" : undefined}
+  rel={external ? "noopener noreferrer" : undefined}
   class:list={[base, sizes[size], variants[variant], fullWidth && "w-full", className]}
 >
   <span

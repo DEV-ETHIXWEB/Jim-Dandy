@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import SectionHeading from "@components/ui/SectionHeading.astro";
 import Button from "@components/ui/Button.astro";
-import finalCtaPhoto from "@assets/photos/final-cta-crew.webp";
+import finalCtaPhoto from "@assets/photos/legacy-crew-framed.webp";
 import { business } from "@data/site";
 ---
 
@@ -38,22 +38,22 @@ import { business } from "@data/site";
       <Image
         src={finalCtaPhoto}
         alt="The full Jim Dandy Sewer & Plumbing crew standing together in front of a service truck"
-        width={2670}
-        height={1217}
+        width={5505}
+        height={2196}
         loading="lazy"
         class="-mx-5 h-auto w-[calc(100%+2.5rem)] lg:hidden"
       />
     </div>
   </div>
 
-  <div class="pointer-events-none absolute right-0 hidden lg:block lg:bottom-28 lg:[width:clamp(560px,60.5vw,1550px)]" aria-hidden="true">
+  <div class="pointer-events-none absolute -right-[50px] hidden lg:block lg:bottom-28 lg:[width:clamp(630px,calc(60.5vw_+_70px),1620px)]" aria-hidden="true">
     <Image
       src={finalCtaPhoto}
       alt=""
-      width={2670}
-      height={1217}
+      width={5505}
+      height={2196}
       loading="lazy"
-      class="h-auto w-full"
+      class="pointer-events-auto h-auto w-full transition-all duration-500 ease-out will-change-transform hover:-translate-y-2 hover:scale-[1.03] hover:drop-shadow-[0_25px_50px_rgba(105,190,40,0.45)]"
     />
   </div>
 </section>

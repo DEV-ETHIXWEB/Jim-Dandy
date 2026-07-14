@@ -27,11 +27,11 @@ const icons = {
       subtitle="From emergency calls to planned upgrades - Jim Dandy handles it all."
     />
 
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+    <div class="grid grid-cols-1 gap-6 min-[560px]:grid-cols-2 min-[560px]:gap-x-10">
       {services.map((service) => (
         <a
           href={`/services/${service.slug}`}
-          class="group relative flex items-center justify-between gap-4 overflow-hidden rounded-[45px] border border-navy-400 bg-surface-muted p-8 shadow-card transition-transform duration-200 hover:-translate-y-1 sm:min-h-[210px]"
+          class="group relative flex items-center justify-between gap-4 overflow-hidden rounded-[36px] border border-navy-400 bg-surface-muted p-8 shadow-card transition-transform duration-200 hover:-translate-y-1 sm:min-h-[210px]"
         >
           <div class="flex h-full flex-col justify-between gap-6">
             <h3 class="font-display text-[32px] font-bold leading-none text-navy-800 sm:text-[38px]">
@@ -45,9 +45,9 @@ const icons = {
           <Image
             src={icons[service.slug]}
             alt=""
-            width={112}
-            height={112}
-            class="h-24 w-24 shrink-0 object-contain drop-shadow-md transition-transform duration-200 group-hover:scale-105 sm:h-28 sm:w-28"
+            width={160}
+            height={160}
+            class="h-24 w-24 shrink-0 object-contain drop-shadow-md transition-transform duration-200 group-hover:scale-105 min-[560px]:h-20 min-[560px]:w-20 lg:h-36 lg:w-36"
           />
         </a>
       ))}

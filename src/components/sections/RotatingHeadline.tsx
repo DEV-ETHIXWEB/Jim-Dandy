@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import TextType from "@components/ui/TextType";
 
 type Line = { question: string; answer: string };
 
@@ -11,19 +11,15 @@ const lines: Line[] = [
   { question: "Sewer backup nightmare?", answer: "Dandy digs you out!" },
 ];
 
-const INTERVAL_MS = 2000;
+const texts = lines.map((line) => `${line.question}\n${line.answer}`);
 
 export default function RotatingHeadline({ className }: { className?: string }) {
-  const [index, setIndex] = useState(0);
   const [minHeight, setMinHeight] = useState<number>();
+  const [reducedMotion, setReducedMotion] = useState(false);
   const measureRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const id = setInterval(() => {
-      setIndex((i) => (i + 1) % lines.length);
-    }, INTERVAL_MS);
-    return () => clearInterval(id);
+    setReducedMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   }, []);
 
   useLayoutEffect(() => {
@@ -39,25 +35,40 @@ export default function RotatingHeadline({ className }: { className?: string }) 
     return () => window.removeEventListener("resize", measure);
   }, []);
 
-  const current = lines[index];
-
   return (
     <h1 className={className}>
       <span className="relative block" style={minHeight ? { minHeight } : undefined}>
-        <AnimatePresence mode="popLayout" initial={false}>
-          <motion.span
-            key={index}
-            initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            exit={{ opacity: 0, y: -20, filter: "blur(8px)" }}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-            className="block"
-          >
-            {current.question}
+        {reducedMotion ? (
+          <span className="block">
+            {lines[0].question}
             <br />
-            {current.answer}
-          </motion.span>
-        </AnimatePresence>
+            {lines[0].answer.split(/(Dandy)/).map((part, i) =>
+              part === "Dandy" ? (
+                <span key={i} className="text-brand-green-500">
+                  {part}
+                </span>
+              ) : (
+                part
+              ),
+            )}
+          </span>
+        ) : (
+          <TextType
+            as="span"
+            className="block"
+            text={texts}
+            typingSpeed={55}
+            deletingSpeed={25}
+            pauseDuration={1600}
+            initialDelay={300}
+            loop
+            showCursor
+            cursorCharacter="|"
+            cursorClassName="text-brand-green-400"
+            highlightWords={["Dandy"]}
+            highlightClassName="text-brand-green-500"
+          />
+        )}
 
         <span ref={measureRef} className="invisible absolute inset-x-0 top-0" aria-hidden="true">
           {lines.map((line, i) => (

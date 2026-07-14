@@ -1,0 +1,55 @@
+import { useState } from "react";
+import { ShieldCheck, Star } from "lucide-react";
+import ContactForm from "./ContactForm";
+import ContactProgress from "./ContactProgress";
+import { business } from "@data/site";
+
+const progressSteps = [{ title: "Basic Info" }, { title: "Some More" }, { title: "Let's Finalise" }];
+
+function GoogleG({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} aria-hidden="true">
+      <path fill="#4285F4" d="M23.52 12.27c0-.85-.08-1.67-.22-2.45H12v4.64h6.47a5.53 5.53 0 0 1-2.4 3.63v3h3.88c2.27-2.09 3.57-5.17 3.57-8.82z" />
+      <path fill="#34A853" d="M12 24c3.24 0 5.96-1.07 7.95-2.91l-3.88-3c-1.08.72-2.46 1.15-4.07 1.15-3.13 0-5.78-2.11-6.73-4.96H1.27v3.1A12 12 0 0 0 12 24z" />
+      <path fill="#FBBC05" d="M5.27 14.28A7.2 7.2 0 0 1 4.89 12c0-.79.14-1.56.38-2.28v-3.1H1.27A12 12 0 0 0 0 12c0 1.94.46 3.77 1.27 5.38z" />
+      <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.44-3.44C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.69 1.27 6.62l4 3.1C6.22 6.86 8.87 4.75 12 4.75z" />
+    </svg>
+  );
+}
+
+export default function ContactPanel() {
+  const [step, setStep] = useState(1);
+
+  return (
+    <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1.7fr_1fr]">
+      <div>
+        <ContactForm onStepChange={setStep} />
+      </div>
+
+      <aside className="flex flex-col gap-10 p-2 text-navy-800">
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center gap-2">
+            <GoogleG className="h-7 w-7 shrink-0" />
+            <div className="flex items-center gap-1">
+              <span className="font-accent text-xl font-extrabold text-navy-800">{business.rating.value}</span>
+              <div className="flex" aria-hidden="true">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} className="h-4 w-4 fill-[#fea500] text-[#fea500]" />
+                ))}
+              </div>
+            </div>
+          </div>
+          <h3 className="font-display text-3xl font-black italic leading-tight text-navy-800">
+            Jim Dandy To The Rescue!
+          </h3>
+          <p className="flex items-center gap-2 text-navy-600">
+            <ShieldCheck className="h-5 w-5 shrink-0 text-brand-green-600" aria-hidden="true" />
+            Fully Licensed &amp; Insured
+          </p>
+        </div>
+
+        <ContactProgress steps={progressSteps} current={step} />
+      </aside>
+    </div>
+  );
+}

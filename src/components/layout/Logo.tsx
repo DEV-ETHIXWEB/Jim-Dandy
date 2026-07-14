@@ -16,7 +16,7 @@ export default function Logo({ className = "" }: LogoProps) {
         width={logoImage.width}
         height={logoImage.height}
         alt="Jim Dandy Sewer & Plumbing"
-        className="h-12 w-auto sm:h-14 lg:h-16"
+        className="h-[48px] w-auto sm:h-[54px] lg:h-[82px] xl:h-[112px]"
       />
     </a>
   );

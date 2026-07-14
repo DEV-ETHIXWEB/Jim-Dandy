@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence, motion } from "framer-motion";
-import { CheckCircle2, Loader2, XCircle } from "lucide-react";
+import { Check, CheckCircle2, Loader2, XCircle } from "lucide-react";
 import { contactSchema, serviceOptions, type ContactFormValues } from "@lib/schemas/contact";
 import ServiceIcon from "@components/ui/ServiceIcon";
 
-export default function ContactForm() {
+type Props = { onStepChange?: (step: number) => void };
+
+export default function ContactForm({ onStepChange }: Props) {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const {
     register,
@@ -17,11 +19,22 @@ export default function ContactForm() {
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<ContactFormValues>({
     resolver: zodResolver(contactSchema),
-    defaultValues: { consent: undefined },
+    defaultValues: { consent: undefined, serviceNeeded: [] },
   });
 
-  const selectedService = watch("serviceNeeded");
+  const fullName = watch("fullName");
+  const email = watch("email");
+  const phone = watch("phone");
+  const selectedService = watch("serviceNeeded") ?? [];
   const consent = watch("consent");
+
+  const basicInfoDone = Boolean(fullName && email && phone);
+  const serviceDone = selectedService.length > 0;
+  const step = isSubmitSuccessful ? 4 : !basicInfoDone ? 1 : !serviceDone ? 2 : 3;
+
+  useEffect(() => {
+    onStepChange?.(step);
+  }, [step, onStepChange]);
 
   const onSubmit = async (values: ContactFormValues) => {
     setSubmitError(null);
@@ -121,31 +134,38 @@ export default function ContactForm() {
       </div>
 
       <fieldset className="flex flex-col gap-3">
-        <legend className="font-sans text-sm font-semibold text-navy-700">Service needed*</legend>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <legend className="font-sans text-sm font-semibold text-navy-700">
+          Service needed* <span className="font-normal text-navy-400">(select all that apply)</span>
+        </legend>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-4">
           {serviceOptions.map((option) => {
-            const isActive = selectedService === option.value;
+            const isActive = selectedService.includes(option.value);
             return (
               <label
                 key={option.value}
-                className={`flex cursor-pointer items-center gap-2 rounded-lg border border-l-4 p-4 transition-colors ${
+                className={`relative flex cursor-pointer items-center gap-2 rounded-lg border p-4 transition-all duration-150 ease-out active:scale-[0.96] ${
                   isActive
-                    ? "border-navy-800 bg-white"
-                    : "border-navy-200 border-l-navy-800 bg-white hover:border-navy-300"
+                    ? "border-navy-800 bg-navy-800 shadow-[0_8px_20px_-8px_rgba(0,34,68,0.6)]"
+                    : "border-navy-200 bg-white hover:-translate-y-0.5 hover:border-navy-300 hover:shadow-sm"
                 }`}
               >
                 <input
-                  type="radio"
+                  type="checkbox"
                   value={option.value}
                   className="sr-only"
                   {...register("serviceNeeded")}
                 />
+                {isActive && (
+                  <span className="absolute -right-2 -top-2 grid h-6 w-6 place-items-center rounded-full bg-brand-green-500 text-navy-900 shadow-[var(--shadow-pill-green)]">
+                    <Check className="h-3.5 w-3.5" strokeWidth={3} aria-hidden="true" />
+                  </span>
+                )}
                 <ServiceIcon
                   name={option.icon}
-                  className="h-6 w-6 shrink-0 text-navy-800"
+                  className={`h-6 w-6 shrink-0 ${isActive ? "text-brand-green-400" : "text-navy-800"}`}
                   aria-hidden="true"
                 />
-                <span className="text-sm font-semibold text-navy-800">
+                <span className={`min-w-0 text-nowrap text-sm font-semibold ${isActive ? "text-white" : "text-navy-800"}`}>
                   {option.label}
                 </span>
               </label>
@@ -157,6 +177,39 @@ export default function ContactForm() {
             {errors.serviceNeeded.message}
           </p>
         )}
+
+        <AnimatePresence initial={false}>
+          {selectedService.includes("other") && (
+            <motion.div
+              key="other-detail"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              className="overflow-hidden"
+            >
+              <div className="flex flex-col gap-2 pt-1">
+                <label htmlFor="otherServiceDetail" className="font-sans text-sm font-semibold text-navy-700">
+                  What do you need help with?
+                </label>
+                <input
+                  id="otherServiceDetail"
+                  type="text"
+                  placeholder="Eg. Gas line inspection"
+                  aria-invalid={!!errors.otherServiceDetail}
+                  aria-describedby={errors.otherServiceDetail ? "otherServiceDetail-error" : undefined}
+                  className="rounded-2xl border border-navy-200 bg-navy-50/60 px-5 py-3.5 text-navy-900 shadow-[var(--shadow-inset)] outline-none transition-colors placeholder:text-navy-300 focus:border-brand-green-500 focus:bg-white"
+                  {...register("otherServiceDetail")}
+                />
+                {errors.otherServiceDetail && (
+                  <p id="otherServiceDetail-error" role="alert" className="text-sm text-red-600">
+                    {errors.otherServiceDetail.message}
+                  </p>
+                )}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </fieldset>
 
       <div className="flex flex-col gap-3">

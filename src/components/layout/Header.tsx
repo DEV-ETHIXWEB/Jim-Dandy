@@ -62,20 +62,34 @@ export default function Header({ currentPath = "/" }: Props) {
         solid ? "shadow-lg backdrop-blur-md" : ""
       }`}
     >
-      <div className="container-page flex items-center justify-between gap-4 py-3 lg:py-4">
+      <div className="container-page flex items-center justify-between gap-4 py-4 lg:py-[14px]">
         <Logo />
 
-        <div className="hidden flex-col items-end xl:flex">
+        <div
+          className="relative hidden shrink-0 xl:block"
+          style={{ width: 712, aspectRatio: "3475 / 530" }}
+        >
+          <img
+            src="/NEW/Nav%20Bar%20Top%20Updated.webp"
+            alt=""
+            aria-hidden="true"
+            draggable={false}
+            className="pointer-events-none absolute inset-0 h-full w-full select-none"
+          />
+
           <a
             href={business.phoneHref}
-            className="relative z-10 mr-3 flex items-center gap-2 whitespace-nowrap rounded-full bg-[linear-gradient(135deg,#9bd36f_0%,#69be28_55%,#4b871c_100%)] px-6 py-2.5 font-display text-base font-bold text-navy-900 shadow-[var(--shadow-pill-green)] transition-transform hover:-translate-y-0.5"
+            className="absolute z-10 flex translate-y-[2px] items-center justify-center gap-2 whitespace-nowrap font-display text-3xl font-bold text-navy-900 transition-transform hover:-translate-y-0.5"
+            style={{ left: "57%", top: "4%", width: "42%", height: "50%" }}
           >
-            <Phone className="h-4 w-4 shrink-0" aria-hidden="true" />
+            <Phone className="h-7 w-7 shrink-0" aria-hidden="true" />
             {business.phone}
           </a>
+
           <nav
             aria-label="Primary"
-            className="flex items-center gap-1 rounded-full bg-navy-200 p-1.5"
+            className="absolute flex items-center justify-center gap-0.5"
+            style={{ left: "1%", top: "55%", width: "97%", height: "44%" }}
           >
           {navLinks.map((link) =>
             link.children ? (
@@ -91,7 +105,7 @@ export default function Header({ currentPath = "/" }: Props) {
                   aria-haspopup="true"
                   aria-controls={servicesMenuId}
                   onClick={() => setIsServicesOpen((v) => !v)}
-                  className={`flex items-center gap-1 rounded-full px-3.5 py-2 font-sans text-[15px] font-medium transition-colors hover:bg-white/70 ${
+                  className={`flex items-center gap-1 whitespace-nowrap rounded-full px-3 py-2 font-sans text-sm font-medium transition-colors hover:bg-white/60 ${
                     isLinkActive(link.href, currentPath)
                       ? "text-black underline underline-offset-4"
                       : "text-black/80 hover:text-black"
@@ -155,7 +169,7 @@ export default function Header({ currentPath = "/" }: Props) {
                 key={link.href}
                 href={link.href}
                 aria-current={isLinkActive(link.href, currentPath) ? "page" : undefined}
-                className={`whitespace-nowrap rounded-full px-3 py-2 font-sans text-[15px] font-medium transition-colors hover:bg-white/70 xl:px-3.5 ${
+                className={`whitespace-nowrap rounded-full px-3 py-2 font-sans text-sm font-medium transition-colors hover:bg-white/60 ${
                   isLinkActive(link.href, currentPath)
                     ? "text-black underline underline-offset-4"
                     : "text-black/80 hover:text-black"

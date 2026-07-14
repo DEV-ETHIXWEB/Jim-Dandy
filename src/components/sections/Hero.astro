@@ -4,26 +4,43 @@ import Button from "@components/ui/Button.astro";
 import AnimatedCounter from "@components/ui/AnimatedCounter";
 import YearsBadge from "@components/ui/YearsBadge.astro";
 import RotatingHeadline from "./RotatingHeadline";
-import heroPhoto from "@assets/photos/hero-technician.webp";
+import heroPhotoClean from "@assets/photos/hero-technician-clean.webp";
+import heroPhotoFramed from "@assets/photos/hero-technician-framed.webp";
 import { business } from "@data/site";
 ---
 
 <section class="relative overflow-hidden bg-navy-800">
+  <div class="absolute inset-0 lg:hidden" aria-hidden="true">
+    <Image
+      src={heroPhotoClean}
+      alt=""
+      width={1200}
+      height={1200}
+      loading="eager"
+      fetchpriority="high"
+      class="h-full w-full object-cover opacity-[0.14]"
+    />
+    <div class="absolute inset-0 bg-gradient-to-b from-navy-900/70 via-navy-800/80 to-navy-900/95"></div>
+  </div>
+
   <div
     class="pointer-events-none absolute inset-0 opacity-40"
     style="background: radial-gradient(600px circle at 15% 20%, rgba(105,190,40,0.18), transparent 60%), radial-gradient(500px circle at 85% 80%, rgba(105,190,40,0.12), transparent 60%);"
     aria-hidden="true"
   ></div>
 
-  <div class="pointer-events-none absolute inset-y-8 right-0 hidden w-[48%] lg:block xl:w-[44%]" aria-hidden="true">
+  <div
+    class="pointer-events-none absolute inset-y-8 -right-[80px] z-10 hidden w-[calc(48%+140px)] -translate-y-[40px] items-center justify-end lg:flex xl:w-[calc(44%+140px)]"
+    aria-hidden="true"
+  >
     <Image
-      src={heroPhoto}
+      src={heroPhotoFramed}
       alt=""
-      width={1200}
-      height={1400}
+      width={4090}
+      height={3000}
       loading="eager"
       fetchpriority="high"
-      class="h-full w-full rounded-l-[40px] object-cover"
+      class="pointer-events-auto h-auto w-full transition-all duration-500 ease-out will-change-transform hover:-translate-y-2 hover:scale-[1.03] hover:drop-shadow-[0_25px_50px_rgba(105,190,40,0.45)]"
     />
   </div>
 
@@ -66,20 +83,8 @@ import { business } from "@data/site";
           </div>
         </div>
 
-        <YearsBadge years={business.yearsInBusiness} year={business.founded} class="h-32 w-32 shrink-0" />
+        <YearsBadge years={business.yearsInBusiness} year={business.founded} class="h-[131px] w-[131px] shrink-0" />
       </div>
-    </div>
-
-    <div class="relative mx-auto w-full max-w-lg lg:hidden">
-      <Image
-        src={heroPhoto}
-        alt="A Jim Dandy Sewer & Plumbing technician smiling from the driver's seat of a company service van"
-        width={900}
-        height={900}
-        loading="eager"
-        fetchpriority="high"
-        class="relative aspect-[4/3] w-full rounded-[32px] object-cover shadow-2xl"
-      />
     </div>
   </div>
 </section>

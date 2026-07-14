@@ -1,4 +1,4 @@
-import { AlertTriangle, Building2, Filter, Flame, Search, Wrench, type LucideProps } from "lucide-react";
+import { AlertTriangle, Building2, Filter, Flame, MoreHorizontal, Search, Wrench, type LucideProps } from "lucide-react";
 
 const ICONS = {
   "alert-triangle": AlertTriangle,
@@ -7,6 +7,7 @@ const ICONS = {
   flame: Flame,
   wrench: Wrench,
   "building-2": Building2,
+  "more-horizontal": MoreHorizontal,
 } as const;
 
 export type ServiceIconName = keyof typeof ICONS;
