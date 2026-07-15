@@ -2,6 +2,8 @@
 import Seo from "@components/layout/Seo.astro";
 import Header from "@components/layout/Header";
 import Footer from "@components/layout/Footer.astro";
+import ChatWidget from "@components/widgets/ChatWidget";
+import AccessibilityWidget from "@components/widgets/AccessibilityWidget";
 import "@styles/global.css";
 import type { SeoProps } from "@lib/seo";
 
@@ -32,5 +34,7 @@ const { title, description, path, image, noindex } = Astro.props;
       <slot />
     </main>
     <Footer />
+    <AccessibilityWidget client:idle />
+    <ChatWidget client:idle />
   </body>
 </html>
