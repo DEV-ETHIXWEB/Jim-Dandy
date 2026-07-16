@@ -40,7 +40,7 @@ const marqueeLogos = [...logoBadges, ...logoBadges, ...logoBadges];
     </div>
   </div>
 
-  <div class="trustbar-viewport relative left-1/2 mt-[100px] w-screen -translate-x-1/2">
+  <div class="trustbar-viewport relative left-1/2 mt-14 w-screen -translate-x-1/2 lg:mt-[100px]">
     <div
       class="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-brand-green-50 via-brand-green-50/70 to-transparent backdrop-blur-[6px] [mask-image:linear-gradient(to_right,black,black_40%,transparent)] sm:w-24 md:w-40 lg:w-[228px] xl:w-[324px]"
       aria-hidden="true"
@@ -52,10 +52,18 @@ const marqueeLogos = [...logoBadges, ...logoBadges, ...logoBadges];
     >
     </div>
 
-    <div class="trustbar-track flex w-max items-center gap-40" aria-hidden="true">
+    {/* Badge size and gap scale with the viewport so phones show ~2 badges
+        instead of one clipped 304px-wide logo. The lg: values pin the desktop
+        marquee to exactly what it was before. */}
+    <div class="trustbar-track flex w-max items-center gap-[clamp(48px,14vw,160px)] lg:gap-40" aria-hidden="true">
       {marqueeLogos.map(({ label, hover }) => (
         <div class="trustbar-logo relative shrink-0">
-          <img src={hover} alt={label} loading="lazy" class="h-[156px] w-auto object-contain" />
+          <img
+            src={hover}
+            alt={label}
+            loading="lazy"
+            class="h-[clamp(88px,24vw,156px)] w-auto object-contain lg:h-[156px]"
+          />
         </div>
       ))}
     </div>
