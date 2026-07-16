@@ -55,7 +55,7 @@ const marqueeLogos = [...logoBadges, ...logoBadges, ...logoBadges];
     <div class="trustbar-track flex w-max items-center gap-40" aria-hidden="true">
       {marqueeLogos.map(({ label, hover }) => (
         <div class="trustbar-logo relative shrink-0">
-          <img src={hover} alt={label} loading="lazy" class="h-[156px] w-auto object-contain grayscale" />
+          <img src={hover} alt={label} loading="lazy" class="h-[156px] w-auto object-contain" />
         </div>
       ))}
     </div>
@@ -71,11 +71,6 @@ const marqueeLogos = [...logoBadges, ...logoBadges, ...logoBadges];
   .trustbar-logo {
     transition: transform 120ms linear;
     will-change: transform;
-  }
-
-  .trustbar-logo img {
-    transition: filter 120ms linear;
-    will-change: filter;
   }
 
   @keyframes trustbar-scroll {
@@ -107,10 +102,10 @@ const marqueeLogos = [...logoBadges, ...logoBadges, ...logoBadges];
         const itemCenter = r.left + r.width / 2;
         const distance = Math.abs(itemCenter - centerX);
         const proximity = Math.max(0, 1 - distance / falloff);
+        // Badges always render in their official brand colours; only the
+        // subtle centre-of-marquee scale remains.
         const scale = 1 + proximity * 0.4;
         item.style.transform = `scale(${scale.toFixed(3)})`;
-        const img = item.querySelector<HTMLElement>("img");
-        if (img) img.style.filter = `grayscale(${(1 - proximity).toFixed(3)})`;
       }
 
       raf = requestAnimationFrame(tick);
