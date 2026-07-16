@@ -1,6 +1,7 @@
 ---
 import Button from "@components/ui/Button.astro";
 import Reviews from "./Reviews";
+import SectionHeading from "@components/ui/SectionHeading.astro";
 import AnimatedCounter from "@components/ui/AnimatedCounter";
 import { business } from "@data/site";
 import { Star } from "lucide-react";
@@ -8,6 +9,8 @@ import { Star } from "lucide-react";
 
 <section id="reviews" class="bg-white py-20 lg:py-28">
   <div class="container-page flex flex-col items-center gap-10">
+    <SectionHeading title="What Our Customers Say" />
+
     <div class="flex items-center gap-2">
       <Star className="h-5 w-5 fill-[#fea500] text-[#fea500]" aria-hidden="true" />
       <p class="font-sans text-base font-semibold text-navy-700">
