@@ -26,7 +26,7 @@ export default function ContactPanel() {
         <ContactForm onStepChange={setStep} />
       </div>
 
-      <aside className="flex flex-col gap-6 text-navy-800">
+      <aside className="flex flex-col gap-6 text-navy-800 max-sm:mt-4">
         <div className="flex flex-col gap-3">
           <div className="flex w-full items-center justify-center gap-2.5 border-b-2 border-brand-green-500 pb-2">
             <GoogleG className="h-9 w-9 shrink-0" />
