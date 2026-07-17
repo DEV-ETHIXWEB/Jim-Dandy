@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ShieldCheck, Star } from "lucide-react";
+import { Star } from "lucide-react";
 import ContactForm from "./ContactForm";
 import ContactProgress from "./ContactProgress";
 import { business } from "@data/site";
@@ -27,8 +27,8 @@ export default function ContactPanel() {
       </div>
 
       <aside className="flex flex-col gap-10 p-2 text-navy-800">
-        <div className="flex flex-col gap-4">
-          <div className="flex items-center gap-2">
+        <div className="flex flex-col gap-3">
+          <div className="flex w-fit items-center gap-2 border-b-2 border-brand-green-500 pb-2 pr-4">
             <GoogleG className="h-7 w-7 shrink-0" />
             <div className="flex items-center gap-1">
               <span className="font-accent text-xl font-extrabold text-navy-800">{business.rating.value}</span>
@@ -39,13 +39,10 @@ export default function ContactPanel() {
               </div>
             </div>
           </div>
-          <h3 className="font-display text-3xl font-black italic leading-tight text-navy-800">
+          <h3 className="font-display text-3xl font-black leading-tight text-navy-800">
             Jim Dandy To The Rescue!
           </h3>
-          <p className="flex items-center gap-2 text-navy-600">
-            <ShieldCheck className="h-5 w-5 shrink-0 text-brand-green-600" aria-hidden="true" />
-            Fully Licensed &amp; Insured
-          </p>
+          <p className="text-navy-600">Fully Licensed &amp; Insured</p>
         </div>
 
         <ContactProgress steps={progressSteps} current={step} />

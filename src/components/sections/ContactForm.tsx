@@ -134,19 +134,17 @@ export default function ContactForm({ onStepChange }: Props) {
       </div>
 
       <fieldset className="flex flex-col gap-4">
-        <legend className="font-sans text-sm font-semibold text-navy-700">
-          Service needed* <span className="font-normal text-navy-400">(select all that apply)</span>
-        </legend>
+        <legend className="font-sans text-sm font-semibold text-navy-700">Service needed*</legend>
         <div className="grid grid-cols-2 gap-3 max-sm:mt-2 sm:grid-cols-3 xl:grid-cols-4">
           {serviceOptions.map((option) => {
             const isActive = selectedService.includes(option.value);
             return (
               <label
                 key={option.value}
-                className={`relative flex cursor-pointer items-center gap-2 rounded-full border px-5 py-3 transition-all duration-150 ease-out active:scale-[0.96] ${
+                className={`relative flex cursor-pointer items-center gap-2.5 rounded-lg border border-l-4 px-4 py-3.5 transition-all duration-150 ease-out active:scale-[0.98] ${
                   isActive
-                    ? "border-navy-800 bg-navy-800 shadow-[0_8px_20px_-8px_rgba(0,34,68,0.6)]"
-                    : "border-navy-200 bg-white hover:-translate-y-0.5 hover:border-navy-300 hover:shadow-sm"
+                    ? "border-navy-800 border-l-navy-800 bg-navy-800 shadow-[0_8px_20px_-8px_rgba(0,34,68,0.6)]"
+                    : "border-navy-200 border-l-navy-800 bg-white hover:border-navy-300 hover:shadow-md"
                 }`}
               >
                 <input
