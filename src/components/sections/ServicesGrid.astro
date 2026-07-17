@@ -56,7 +56,7 @@ const icons = {
             {/* Traced from the approved card art, so they stay sharp at any size.
                 A fixed square box + the SVG's own viewBox keeps every icon the
                 same visual size despite their differing artwork proportions. */}
-            <Icon class="svc-icon pointer-events-none relative z-10 h-24 w-24 shrink-0 self-center object-contain transition-transform duration-300 group-hover:scale-105 min-[560px]:h-20 min-[560px]:w-20 lg:h-32 lg:w-32 max-md:duration-[400ms] max-md:group-[.is-active]:scale-105" />
+            <Icon class="svc-icon pointer-events-none relative z-10 h-24 w-24 shrink-0 self-center object-contain transition-[transform,filter] duration-300 group-hover:scale-105 min-[560px]:h-20 min-[560px]:w-20 lg:h-32 lg:w-32 max-md:duration-[400ms] max-md:group-[.is-active]:scale-105" />
           </a>
         );
       })}
@@ -65,6 +65,16 @@ const icons = {
 </section>
 
 <style is:global>
+  /* The icons' navy (#002244) is the same colour as the card's hover state, so
+     on hover their silhouette disappears and only the green/white details float.
+     Stacked drop-shadows trace the alpha edge - so the outline follows the real
+     icon shape rather than a box - and stay anti-aliased. Only applied on the
+     dark states; over the light card a white edge would be invisible anyway. */
+  #services [data-service-card]:hover .svc-icon,
+  #services [data-service-card].is-active .svc-icon {
+    filter: drop-shadow(0 0 1px #fff) drop-shadow(0 0 1px #fff) drop-shadow(0 0 1.5px #fff);
+  }
+
   /* Reduced-motion users get the same scroll-driven reveal, but with no animated
      motion; transitions collapse to instant. Scoped to mobile so the desktop
      hover experience is left exactly as-is. */
