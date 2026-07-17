@@ -95,9 +95,11 @@ export default function Header({ currentPath = "/" }: Props) {
           >
           {navLinks.map((link) =>
             link.children ? (
+              // No positioning context here on purpose: the dropdown then resolves
+              // against the nav pill wrapper, letting it span the bar end-to-end
+              // instead of floating centred under the button.
               <div
                 key={link.label}
-                className="relative"
                 onMouseEnter={openServices}
                 onMouseLeave={scheduleCloseServices}
               >
@@ -127,10 +129,10 @@ export default function Header({ currentPath = "/" }: Props) {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 8 }}
                       transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
-                      className="absolute left-1/2 top-full z-20 mt-2 w-[560px] -translate-x-1/2 rounded-3xl border border-navy-100 bg-white p-4 shadow-2xl"
+                      className="absolute inset-x-0 top-full z-20 mt-2 rounded-3xl border border-navy-100 bg-white p-5 shadow-2xl"
                       role="menu"
                     >
-                      <div className="grid grid-cols-2 gap-2">
+                      <div className="grid grid-cols-3 gap-2">
                         {link.children.map((child) => (
                           <a
                             key={child.href}
