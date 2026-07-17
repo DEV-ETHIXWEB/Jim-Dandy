@@ -88,7 +88,7 @@ export default function Header({ currentPath = "/" }: Props) {
       ref={headerRef}
       className={`sticky top-0 z-50 w-full transition-[background-color,box-shadow] duration-300 ease-out ${
         light
-          ? "bg-white/90 backdrop-blur-[18px] shadow-[inset_0_-1px_0_0_rgba(105,190,40,0.28),0_10px_30px_-10px_rgba(105,190,40,0.35)]"
+          ? "bg-white/90 backdrop-blur-[18px] shadow-[inset_0_0_0_1px_rgba(105,190,40,0.22),inset_0_-1px_0_0_rgba(105,190,40,0.30),0_6px_16px_-6px_rgba(0,34,68,0.16),0_14px_28px_-10px_rgba(0,34,68,0.12),0_18px_48px_-12px_rgba(105,190,40,0.38)]"
           : solid
             ? "bg-navy-800 backdrop-blur-md shadow-[0_2px_0_0_#69be28,0_10px_28px_-4px_rgba(105,190,40,0.55)]"
             : "bg-navy-800"
