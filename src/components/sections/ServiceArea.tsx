@@ -36,7 +36,10 @@ export default function ServiceArea() {
 
       <Map />
 
-      <div className="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-3">
+      {/* Desktop (xl, where the container is a constant 1160px): force a single
+          no-wrap row and tighten the gap so all city chips + "And more" fit
+          without overflowing. Below xl it keeps wrapping naturally. */}
+      <div className="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-3 xl:flex-nowrap xl:gap-1.5">
         {filteredCities.length > 0 ? (
           <>
             {visibleCities.map((city) => (
