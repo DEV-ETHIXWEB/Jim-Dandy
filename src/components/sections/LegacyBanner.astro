@@ -85,19 +85,13 @@ const slides = [
   </div>
 
   <div class="relative flex items-center overflow-hidden bg-navy-800 py-8 sm:py-10">
-    {/* Transparent music notes from the approved strip art, tiled at two scales.
-        brightness(0) turns the grey glyphs into dark silhouettes so they sit
-        slightly darker than the navy - matching the reference - while staying
-        far quieter than the marquee text. */}
+    {/* Transparent music notes from the approved strip art - a single tiled row
+        (the art already alternates glyph sizes). brightness(0) turns the grey
+        glyphs into dark silhouettes so they sit slightly darker than the navy,
+        matching the reference, while staying quieter than the marquee text. */}
     <div
-      class="pointer-events-none absolute inset-0 opacity-35 [filter:brightness(0)]"
-      style={`background-image: url(${notesTexture.src}); background-size: auto 44%; background-repeat: repeat-x; background-position: left 68%;`}
-      aria-hidden="true"
-    >
-    </div>
-    <div
-      class="pointer-events-none absolute inset-0 opacity-20 [filter:brightness(0)]"
-      style={`background-image: url(${notesTexture.src}); background-size: auto 26%; background-repeat: repeat-x; background-position: 300px 26%;`}
+      class="pointer-events-none absolute inset-0 opacity-30 [filter:brightness(0)]"
+      style={`background-image: url(${notesTexture.src}); background-size: auto 40%; background-repeat: repeat-x; background-position: left 62%;`}
       aria-hidden="true"
     >
     </div>
