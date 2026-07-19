@@ -3,7 +3,22 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, Menu, Phone, X } from "lucide-react";
 import { business, navLinks, secondaryNavLinks } from "@data/site";
 import Logo from "./Logo";
-import ServiceIcon from "@components/ui/ServiceIcon";
+import emergencyIcon from "@assets/icons/emergency.svg";
+import drainsClogsIcon from "@assets/icons/drains-clogs.svg";
+import sewerServicesIcon from "@assets/icons/sewer-services.svg";
+import waterHeatersIcon from "@assets/icons/water-heaters.svg";
+import allPlumbingIcon from "@assets/icons/all-plumbing.svg";
+import commercialIcon from "@assets/icons/commercial.svg";
+
+// Same full-colour brand set used by the Service Cards and lead-form chips.
+const SERVICE_MENU_ICONS: Record<string, { src: string }> = {
+  "/services/emergency": emergencyIcon,
+  "/services/drains-clogs": drainsClogsIcon,
+  "/services/sewer-services": sewerServicesIcon,
+  "/services/water-heaters": waterHeatersIcon,
+  "/services/all-plumbing": allPlumbingIcon,
+  "/services/commercial": commercialIcon,
+};
 
 type Props = { currentPath?: string };
 
@@ -143,17 +158,12 @@ export default function Header({ currentPath = "/" }: Props) {
                             role="menuitem"
                             className="flex items-start gap-3 rounded-2xl p-3 transition-colors hover:bg-navy-50"
                           >
-                            <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-full bg-navy-50 text-navy-600">
-                              <ServiceIcon
-                                name={
-                                  (child.label === "Emergency" && "alert-triangle") ||
-                                  (child.label === "Drains & Clogs" && "filter") ||
-                                  (child.label === "Sewer Services" && "search") ||
-                                  (child.label === "Water Heaters" && "flame") ||
-                                  (child.label === "Commercial" && "building-2") ||
-                                  "wrench"
-                                }
-                                className="h-5 w-5"
+                            <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-full bg-navy-50">
+                              <img
+                                src={SERVICE_MENU_ICONS[child.href]?.src}
+                                alt=""
+                                aria-hidden="true"
+                                className="h-5 w-5 object-contain"
                               />
                             </span>
                             <span>
