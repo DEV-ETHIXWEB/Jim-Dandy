@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { MessageCircle, Send, Sparkles, X } from "lucide-react";
 
 /**
- * Jim Dandy chat launcher — UI PREVIEW ONLY.
+ * Jim Dandy chat launcher - UI PREVIEW ONLY.
  * The conversation is a scripted mock (canned bot reply) so the client can see
  * the experience; there is no backend wired up yet.
  */

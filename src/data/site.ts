@@ -9,7 +9,7 @@ export const business = {
     line2: "Mountlake Terrace, WA 98043",
     full: "6202 214th St SW, Mountlake Terrace, WA 98043, United States",
   },
-  hours: "Mon–Fri 7am–7pm · 24/7 Emergency",
+  hours: "Mon-Fri 7am-7pm · 24/7 Emergency",
   founded: 1908,
   yearsInBusiness: new Date().getFullYear() - 1908,
   licenses: ["JIMDADE791MG", "JIMDADS879B3"],
@@ -54,7 +54,7 @@ export const services = [
     slug: "drains-clogs",
     label: "Drains & Clogs",
     icon: "filter",
-    description: "Slow, gurgling, or fully blocked — we clear it fast and get water moving again.",
+    description: "Slow, gurgling, or fully blocked - we clear it fast and get water moving again.",
     intro:
       "Slow or backed-up drains are almost never just a surface clog. We clear the line and then run a camera to confirm the real cause is gone - not just pushed further down the pipe - so the same drain doesn't back up again in a month.",
     benefits: [
@@ -94,7 +94,7 @@ export const services = [
     slug: "water-heaters",
     label: "Water Heaters",
     icon: "flame",
-    description: "Installs, repairs, and replacements for gas and electric units — hot water, restored fast.",
+    description: "Installs, repairs, and replacements for gas and electric units - hot water, restored fast.",
     intro:
       "From a same-day tank swap to a full tankless conversion, we size the unit to your household and install it to code - then walk you through the warranty and maintenance so it actually lasts as long as it's rated for.",
     benefits: [
@@ -114,7 +114,7 @@ export const services = [
     slug: "all-plumbing",
     label: "All Plumbing",
     icon: "wrench",
-    description: "Leaky faucets, running toilets, low pressure — no job too small for our licensed team.",
+    description: "Leaky faucets, running toilets, low pressure - no job too small for our licensed team.",
     intro:
       "Not every plumbing job is an emergency - sometimes it's a leaky faucet, a fixture install, or a repipe you've been putting off. Our licensed techs handle the full range of residential plumbing with the same upfront pricing and workmanship guarantee.",
     benefits: [

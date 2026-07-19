@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 
 /**
- * Accessibility menu — UI PREVIEW ONLY.
+ * Accessibility menu - UI PREVIEW ONLY.
  * The toggles animate so the client can see the control set; they are not yet
  * wired to real page adjustments.
  */
