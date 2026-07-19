@@ -64,7 +64,10 @@ export default function Header({ currentPath = "/" }: Props) {
           : ""
       }`}
     >
-      <div className="container-page flex items-center justify-between gap-4 py-4 lg:py-[14px]">
+      {/* Mobile (<sm): burger left, logo centre-ish, click-to-call pill right -
+          calls are the primary conversion, so the number gets the premium green
+          treatment. Tablet and desktop keep their original layout untouched. */}
+      <div className="container-page flex items-center justify-between gap-4 py-4 max-sm:gap-2 lg:py-[14px]">
         <Logo />
 
         <div
@@ -188,7 +191,7 @@ export default function Header({ currentPath = "/" }: Props) {
 
         <button
           type="button"
-          className="grid h-11 w-11 place-items-center rounded-full text-white xl:hidden"
+          className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-white max-sm:order-first max-sm:-ml-2 xl:hidden"
           aria-label={isMobileOpen ? "Close menu" : "Open menu"}
           aria-expanded={isMobileOpen}
           aria-controls={mobileMenuId}
@@ -196,6 +199,17 @@ export default function Header({ currentPath = "/" }: Props) {
         >
           {isMobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
+
+        {/* Compact pill so the logo stays the dominant element; full number only
+            where it fits without squeezing the logo (Pro Max class widths). */}
+        <a
+          href={business.phoneHref}
+          className="inline-flex min-h-11 shrink-0 items-center justify-center gap-1 rounded-full border border-brand-green-600/40 bg-[image:var(--btn-primary)] px-2.5 font-display text-[15px] font-bold leading-none text-navy-900 shadow-[var(--shadow-btn-green)] active:brightness-95 sm:hidden"
+        >
+          <Phone className="h-[15px] w-[15px] shrink-0" aria-hidden="true" />
+          <span className="hidden whitespace-nowrap min-[412px]:inline">{business.phone}</span>
+          <span className="min-[412px]:hidden">Call</span>
+        </a>
       </div>
 
       <AnimatePresence>
