@@ -278,14 +278,14 @@ export default function Header({ currentPath = "/" }: Props) {
               <div className="mt-3 flex flex-col gap-3 border-t border-white/10 pt-4">
                 <a
                   href={business.phoneHref}
-                  className="flex items-center justify-center gap-2 rounded-full bg-white/10 px-4 py-3 font-display text-lg font-bold text-white"
+                  className="flex items-center justify-center gap-2 rounded-full bg-white/10 px-4 py-3 font-display text-[21px] font-bold leading-none text-white"
                 >
                   <Phone className="h-4 w-4 text-brand-green-400" aria-hidden="true" />
                   {business.phone}
                 </a>
                 <a
                   href={business.scheduleUrl}
-                  className="rounded-full bg-[image:var(--btn-primary)] px-6 py-3 text-center font-display text-lg font-bold text-navy-900 shadow-[var(--shadow-btn-green)] hover:bg-[image:var(--btn-primary-hover)] hover:shadow-[var(--shadow-btn-green-hover)]"
+                  className="flex items-center justify-center rounded-full bg-[image:var(--btn-primary)] px-6 py-3 text-center font-display text-[21px] font-bold leading-none text-navy-900 shadow-[var(--shadow-btn-green)] hover:bg-[image:var(--btn-primary-hover)] hover:shadow-[var(--shadow-btn-green-hover)]"
                 >
                   Schedule Online
                 </a>
