@@ -62,12 +62,20 @@ export default function ChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 24, scale: 0.94 }}
             transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute bottom-[92px] right-0 flex h-[70vh] max-h-[560px] w-[calc(100vw-2rem)] max-w-[380px] origin-bottom-right flex-col overflow-hidden rounded-[28px] border border-navy-100 bg-white shadow-2xl"
+            className="absolute bottom-[100px] right-0 flex h-[70vh] max-h-[560px] w-[calc(100vw-2rem)] max-w-[380px] origin-bottom-right flex-col overflow-hidden rounded-[28px] border border-navy-100 bg-white shadow-2xl"
           >
             {/* header */}
             <div className="relative flex items-center gap-3 bg-[linear-gradient(135deg,#0a2c4e_0%,#002244_60%,#001830_100%)] px-5 py-4 text-white">
-              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[image:var(--btn-primary)] text-navy-900 shadow-[var(--shadow-pill-green)]">
-                <MessageCircle className="h-6 w-6" aria-hidden="true" />
+              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[image:var(--btn-primary)] shadow-[var(--shadow-pill-green)]">
+                <span className="h-10 w-10 overflow-hidden rounded-full">
+                  <img
+                    src={chatbotAvatar.src}
+                    alt=""
+                    aria-hidden="true"
+                    draggable={false}
+                    className="h-full w-full object-cover [transform:scale(1.18)_translateY(-4px)]"
+                  />
+                </span>
               </span>
               <div className="min-w-0 flex-1">
                 <p className="flex items-center gap-2 font-display text-lg font-bold leading-none">
@@ -173,7 +181,7 @@ export default function ChatWidget() {
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-label={open ? "Close chat assistant" : "Open chat assistant"}
-        className="group relative grid h-[78px] w-[78px] place-items-center rounded-full bg-[image:var(--btn-primary)] text-navy-900 shadow-[0_14px_32px_-8px_rgba(75,135,28,0.75)] transition-transform duration-200 hover:-translate-y-1 active:translate-y-0"
+        className="group relative grid h-[86px] w-[86px] place-items-center rounded-full bg-[image:var(--btn-primary)] text-navy-900 shadow-[0_14px_32px_-8px_rgba(75,135,28,0.75)] transition-transform duration-200 hover:-translate-y-1 active:translate-y-0"
       >
         <AnimatePresence mode="wait" initial={false}>
           {open ? (
@@ -182,15 +190,17 @@ export default function ChatWidget() {
             </motion.span>
           ) : (
             <motion.span key="chat" initial={{ opacity: 0, rotate: 90 }} animate={{ opacity: 1, rotate: 0 }} exit={{ opacity: 0, rotate: -90 }} transition={{ duration: 0.18 }}>
-              {/* Branded avatar sits inside the green ring with an even rim;
-                  320px source keeps it sharp on 3x displays. */}
-              <img
-                src={chatbotAvatar.src}
-                alt=""
-                aria-hidden="true"
-                draggable={false}
-                className="h-[72px] w-[72px] select-none rounded-full object-cover"
-              />
+              {/* Branded avatar sits inside the green ring with an even rim.
+                  The slight zoom + upward shift centres the face in the circle. */}
+              <span className="block h-20 w-20 select-none overflow-hidden rounded-full">
+                <img
+                  src={chatbotAvatar.src}
+                  alt=""
+                  aria-hidden="true"
+                  draggable={false}
+                  className="h-full w-full object-cover [transform:scale(1.18)_translateY(-7px)]"
+                />
+              </span>
             </motion.span>
           )}
         </AnimatePresence>
