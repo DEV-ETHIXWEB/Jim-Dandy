@@ -61,7 +61,9 @@ export default function ServiceArea() {
         )}
       </div>
 
-      <div className="text-center">
+      {/* Mobile: pull the link up under the last chip row (parent gap-10 is too
+          roomy there); desktop/tablet keep the original rhythm. */}
+      <div className="text-center max-sm:-mt-5">
         <a href="/service-area" className="inline-flex items-center gap-1 font-semibold text-navy-700 hover:text-brand-green-600">
           See Full Service Area →
         </a>
