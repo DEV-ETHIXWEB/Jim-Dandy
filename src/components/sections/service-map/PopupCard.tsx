@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, useIsPresent } from "framer-motion";
 import { MapPin, X } from "lucide-react";
 import ServiceIcon from "@components/ui/ServiceIcon";
 import { business, services } from "@data/site";
@@ -9,7 +9,7 @@ type Props = {
   x: number;
   y: number;
   side: "left" | "right";
-  onClose: () => void;
+  onClose: (city: string) => void;
 };
 
 const highlightServices = services.slice(0, 4);
@@ -17,24 +17,43 @@ const highlightServices = services.slice(0, 4);
 export default function PopupCard({ city, x, y, side, onClose }: Props) {
   const closeBtnRef = useRef<HTMLButtonElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
+  // False while AnimatePresence plays the exit animation: a dying card must
+  // neither swallow clicks meant for its replacement nor close it via the
+  // document listeners below.
+  const isPresent = useIsPresent();
 
   useEffect(() => {
-    closeBtnRef.current?.focus();
+    // preventScroll: a focus-triggered scroll jump right as the user is
+    // clicking makes the press land somewhere else entirely.
+    closeBtnRef.current?.focus({ preventScroll: true });
+  }, []);
+
+  useEffect(() => {
+    if (!isPresent) return;
 
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") onClose(city);
     };
-    const onPointerDown = (e: PointerEvent) => {
-      if (cardRef.current && !cardRef.current.contains(e.target as Node)) onClose();
+    // 'click' (not 'pointerdown') so a click on a marker finishes its own
+    // toggle first - pointerdown used to close the popup an instant before
+    // the marker's click reopened it.
+    const onDocClick = (e: MouseEvent) => {
+      if (cardRef.current && !cardRef.current.contains(e.target as Node)) onClose(city);
     };
 
     document.addEventListener("keydown", onKeyDown);
-    document.addEventListener("pointerdown", onPointerDown);
+    // Deferred one task: React flushes this mount synchronously inside the
+    // marker's opening click, so an immediately-attached listener would catch
+    // that same click as it bubbles to document and close the popup at once.
+    const armTimer = window.setTimeout(() => {
+      document.addEventListener("click", onDocClick);
+    }, 0);
     return () => {
+      window.clearTimeout(armTimer);
       document.removeEventListener("keydown", onKeyDown);
-      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("click", onDocClick);
     };
-  }, [onClose]);
+  }, [onClose, city, isPresent]);
 
   const desktopSide =
     side === "left"
@@ -51,6 +70,7 @@ export default function PopupCard({ city, x, y, side, onClose }: Props) {
         "sm:absolute sm:inset-x-auto sm:bottom-auto sm:left-[var(--m-x)] sm:top-[var(--m-y)] sm:mt-4 sm:w-[300px] sm:max-w-[300px] sm:-translate-x-1/2 sm:rounded-3xl",
         "lg:top-[var(--m-y)] lg:mt-0 lg:-translate-y-1/2",
         desktopSide,
+        isPresent ? "" : "pointer-events-none",
       ].join(" ")}
       style={{ ["--m-x" as string]: `calc(${x}% + 50px)`, ["--m-y" as string]: `${y}%` }}
       initial={{ opacity: 0, scale: 0.9, y: 16 }}
@@ -65,12 +85,15 @@ export default function PopupCard({ city, x, y, side, onClose }: Props) {
           aria-hidden="true"
         />
 
+        {/* z-10: the header row below is a later positioned sibling, so
+            without it the header paints over the button and swallows most
+            clicks on the X. */}
         <button
           ref={closeBtnRef}
           type="button"
-          onClick={onClose}
+          onClick={() => onClose(city)}
           aria-label="Close"
-          className="absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full text-white/70 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-green-400"
+          className="absolute right-2.5 top-2.5 z-10 grid h-9 w-9 touch-manipulation place-items-center rounded-full text-white/70 transition-colors hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand-green-400"
         >
           <X className="h-4 w-4" aria-hidden="true" />
         </button>

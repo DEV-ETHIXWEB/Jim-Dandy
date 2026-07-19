@@ -1,28 +1,22 @@
-import { motion } from "framer-motion";
+import { motion, type MotionValue } from "framer-motion";
 
 type Props = {
   isInView: boolean;
-  parallaxX: number;
-  parallaxY: number;
-  reduceMotion: boolean;
+  parallaxX: MotionValue<number>;
+  parallaxY: MotionValue<number>;
 };
 
-export default function GridBackground({ isInView, parallaxX, parallaxY, reduceMotion }: Props) {
+// Parallax arrives as spring-smoothed motion values wired straight into the
+// transform, so mouse movement never triggers a React re-render.
+export default function GridBackground({ isInView, parallaxX, parallaxY }: Props) {
   return (
     <motion.div
       className="pointer-events-none absolute -inset-3"
       aria-hidden="true"
+      style={{ x: parallaxX, y: parallaxY }}
       initial={{ opacity: 0 }}
-      animate={{
-        opacity: isInView ? 1 : 0,
-        x: reduceMotion ? 0 : parallaxX,
-        y: reduceMotion ? 0 : parallaxY,
-      }}
-      transition={{
-        opacity: { duration: 1.1, ease: [0.16, 1, 0.3, 1] },
-        x: { type: "spring", stiffness: 40, damping: 18 },
-        y: { type: "spring", stiffness: 40, damping: 18 },
-      }}
+      animate={{ opacity: isInView ? 1 : 0 }}
+      transition={{ opacity: { duration: 1.1, ease: [0.16, 1, 0.3, 1] } }}
     >
       <svg className="h-full w-full opacity-25">
         <defs>

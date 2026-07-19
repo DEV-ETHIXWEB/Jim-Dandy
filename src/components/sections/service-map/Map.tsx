@@ -1,11 +1,21 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { AnimatePresence, useInView, useReducedMotion } from "framer-motion";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  AnimatePresence,
+  motion,
+  useInView,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 import GridBackground from "./GridBackground";
 import Marker from "./Marker";
 import PopupCard from "./PopupCard";
 import AnimatedConnection from "./AnimatedConnection";
 import TravelingDot from "./TravelingDot";
 import CoverageWave from "./CoverageWave";
+import RadarPulse from "./RadarPulse";
+import AmbientDots from "./AmbientDots";
 import FloatingCenterIcon from "./FloatingCenterIcon";
 import RegionHighlight from "./RegionHighlight";
 import type { CityPin } from "./types";
@@ -32,6 +42,7 @@ function distance(a: CityPin, b: CityPin) {
 const maxDistance = Math.max(...CITIES.map((c) => distance(HUB, c)));
 const WAVE_TRAVEL_SECONDS = 2.2;
 const WAVE_INTERVAL_MS = 6000;
+const PARALLAX_SPRING = { stiffness: 40, damping: 18 };
 
 export default function Map() {
   const reduceMotion = Boolean(useReducedMotion());
@@ -41,7 +52,15 @@ export default function Map() {
   const [activeCity, setActiveCity] = useState<string | null>(null);
   const [hoveredCity, setHoveredCity] = useState<string | null>(null);
   const [waveKey, setWaveKey] = useState(0);
-  const [parallax, setParallax] = useState({ x: 0, y: 0 });
+
+  // Parallax lives in motion values wired straight into transforms, so
+  // mousemove never re-renders the React tree (it used to setState per event).
+  const parallaxX = useMotionValue(0);
+  const parallaxY = useMotionValue(0);
+  const springX = useSpring(parallaxX, PARALLAX_SPRING);
+  const springY = useSpring(parallaxY, PARALLAX_SPRING);
+  const glowX = useTransform(springX, (v) => v * 0.6);
+  const glowY = useTransform(springY, (v) => v * 0.6);
 
   useEffect(() => {
     if (reduceMotion) return;
@@ -52,15 +71,29 @@ export default function Map() {
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (reduceMotion) return;
     const rect = e.currentTarget.getBoundingClientRect();
-    const nx = (e.clientX - rect.left) / rect.width - 0.5;
-    const ny = (e.clientY - rect.top) / rect.height - 0.5;
-    setParallax({ x: nx * 10, y: ny * 10 });
+    parallaxX.set(((e.clientX - rect.left) / rect.width - 0.5) * 10);
+    parallaxY.set(((e.clientY - rect.top) / rect.height - 0.5) * 10);
   };
 
-  const handleMouseLeave = () => setParallax({ x: 0, y: 0 });
+  const handleMouseLeave = () => {
+    parallaxX.set(0);
+    parallaxY.set(0);
+  };
+
+  // Stable identity and city-aware: an exiting popup's listeners can only
+  // close their own city, never the popup that replaced it. Stability also
+  // keeps PopupCard's document listeners from re-registering (and re-stealing
+  // focus) on every Map re-render.
+  const closeCity = useCallback((city: string) => {
+    setActiveCity((prev) => (prev === city ? null : prev));
+  }, []);
 
   const activePin = useMemo(() => ALL_PINS.find((p) => p.label === activeCity) ?? null, [activeCity]);
   const activeSide: "left" | "right" = activePin && activePin.x > 55 ? "left" : "right";
+
+  // Hovering the hub pin lights up every route at once - a quick read of
+  // "we dispatch to all of these from here".
+  const hubEmphasized = hoveredCity === HUB.label || activeCity === HUB.label;
 
   return (
     <div ref={outerRef} className="relative">
@@ -69,23 +102,23 @@ export default function Map() {
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
       >
-        <GridBackground
-          isInView={isInView}
-          parallaxX={parallax.x}
-          parallaxY={parallax.y}
-          reduceMotion={reduceMotion}
-        />
+        <GridBackground isInView={isInView} parallaxX={springX} parallaxY={springY} />
 
-        <div
-          className="pointer-events-none absolute inset-0 transition-transform duration-300 ease-out"
+        <AmbientDots isInView={isInView} reduceMotion={reduceMotion} />
+
+        <motion.div
+          className="pointer-events-none absolute inset-0"
           style={{
             background: "radial-gradient(400px circle at 50% 45%, rgba(105,190,40,0.18), transparent 70%)",
-            transform: reduceMotion ? undefined : `translate(${parallax.x * 0.6}px, ${parallax.y * 0.6}px)`,
+            x: glowX,
+            y: glowY,
           }}
           aria-hidden="true"
         />
 
         <RegionHighlight x={activePin?.x ?? HUB.x} y={activePin?.y ?? HUB.y} visible={Boolean(activePin)} />
+
+        <RadarPulse x={HUB.x} y={HUB.y} reduceMotion={reduceMotion} />
 
         <CoverageWave x={HUB.x} y={HUB.y} waveKey={waveKey} reduceMotion={reduceMotion} />
 
@@ -106,7 +139,7 @@ export default function Map() {
                 to={city}
                 isInView={isInView}
                 delay={reduceMotion ? 0 : 0.6 + i * 0.15}
-                emphasized={hoveredCity === city.label || activeCity === city.label}
+                emphasized={hubEmphasized || hoveredCity === city.label || activeCity === city.label}
               />
             ))}
           </svg>
@@ -142,7 +175,15 @@ export default function Map() {
 
           {/* Lives inside the same translated space as the connections/markers so
               the pin's point lands exactly on the hub the lines converge at. */}
-          <FloatingCenterIcon x={HUB.x} y={HUB.y} isInView={isInView} reduceMotion={reduceMotion} />
+          <FloatingCenterIcon
+            x={HUB.x}
+            y={HUB.y}
+            isInView={isInView}
+            reduceMotion={reduceMotion}
+            isActive={activeCity === HUB.label}
+            onHoverChange={(hovering) => setHoveredCity(hovering ? HUB.label : null)}
+            onSelect={() => setActiveCity((prev) => (prev === HUB.label ? null : HUB.label))}
+          />
         </div>
       </div>
 
@@ -154,7 +195,7 @@ export default function Map() {
             x={activePin.x}
             y={activePin.y}
             side={activeSide}
-            onClose={() => setActiveCity(null)}
+            onClose={closeCity}
           />
         )}
       </AnimatePresence>
