@@ -81,7 +81,10 @@ const icons = {
      This higher-specificity rule replaces the resting navy hairline on hover. */
   #services [data-service-card]:hover .svc-icon,
   #services [data-service-card].is-active .svc-icon {
-    filter: drop-shadow(0 0 1px #fff) drop-shadow(0 0 1px #fff) drop-shadow(0 0 1.5px #fff);
+    /* Chained order matters: the navy hairline traces the icon edge first, then
+       the white glows trace that expanded silhouette - icon -> navy -> white. */
+    filter: drop-shadow(0 0 0.5px #001a33) drop-shadow(0 0 1px #fff) drop-shadow(0 0 1px #fff)
+      drop-shadow(0 0 1.5px #fff);
   }
 
   /* Reduced-motion users get the same scroll-driven reveal, but with no animated
