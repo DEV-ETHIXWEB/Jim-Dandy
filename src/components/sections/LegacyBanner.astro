@@ -3,7 +3,7 @@ import { Image } from "astro:assets";
 import { business } from "@data/site";
 import LegacyScrollText from "./LegacyScrollText";
 
-import notesTexture from "@assets/textures/legacy-notes.webp";
+import notesTexture from "@assets/textures/legacy-notes-trimmed.webp";
 import crewPhoto from "@assets/photos/legacy-crew-truck.webp";
 import truckPhoto from "@assets/photos/legacy-jd-truck.webp";
 import drainPhoto from "@assets/photos/legacy-drain-cleaning.webp";
@@ -90,14 +90,14 @@ const slides = [
         slightly darker than the navy - matching the reference - while staying
         far quieter than the marquee text. */}
     <div
-      class="pointer-events-none absolute inset-0 opacity-25 [filter:brightness(0)]"
-      style={`background-image: url(${notesTexture.src}); background-size: auto 72%; background-repeat: repeat-x; background-position: left center;`}
+      class="pointer-events-none absolute inset-0 opacity-35 [filter:brightness(0)]"
+      style={`background-image: url(${notesTexture.src}); background-size: auto 46%; background-repeat: repeat-x; background-position: left center;`}
       aria-hidden="true"
     >
     </div>
     <div
-      class="pointer-events-none absolute inset-0 opacity-15 [filter:brightness(0)]"
-      style={`background-image: url(${notesTexture.src}); background-size: auto 44%; background-repeat: repeat-x; background-position: 190px 20%;`}
+      class="pointer-events-none absolute inset-0 opacity-20 [filter:brightness(0)]"
+      style={`background-image: url(${notesTexture.src}); background-size: auto 28%; background-repeat: repeat-x; background-position: 260px 12%;`}
       aria-hidden="true"
     >
     </div>
