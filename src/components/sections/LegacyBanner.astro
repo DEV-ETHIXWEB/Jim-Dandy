@@ -3,7 +3,7 @@ import { Image } from "astro:assets";
 import { business } from "@data/site";
 import LegacyScrollText from "./LegacyScrollText";
 
-import notesTexture from "@assets/textures/legacy-notes-trimmed.webp";
+import notesTexture from "@assets/textures/legacy-notes-dense.webp";
 import crewPhoto from "@assets/photos/legacy-crew-truck.webp";
 import truckPhoto from "@assets/photos/legacy-jd-truck.webp";
 import drainPhoto from "@assets/photos/legacy-drain-cleaning.webp";
@@ -91,7 +91,7 @@ const slides = [
         darker than the navy, per the reference. */}
     <div
       class="pointer-events-none absolute inset-0 opacity-30 [filter:brightness(0)]"
-      style={`background-image: url(${notesTexture.src}); background-size: auto 56%; background-repeat: repeat-x; background-position: left center;`}
+      style={`background-image: url(${notesTexture.src}); background-size: auto 46%; background-repeat: repeat-x; background-position: left center;`}
       aria-hidden="true"
     >
     </div>
