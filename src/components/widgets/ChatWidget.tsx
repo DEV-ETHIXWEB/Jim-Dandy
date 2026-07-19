@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { MessageCircle, Send, Sparkles, X } from "lucide-react";
+import chatbotAvatar from "@assets/photos/chatbot-avatar.webp";
 
 /**
  * Jim Dandy chat launcher - UI PREVIEW ONLY.
@@ -181,7 +182,15 @@ export default function ChatWidget() {
             </motion.span>
           ) : (
             <motion.span key="chat" initial={{ opacity: 0, rotate: 90 }} animate={{ opacity: 1, rotate: 0 }} exit={{ opacity: 0, rotate: -90 }} transition={{ duration: 0.18 }}>
-              <MessageCircle className="h-9 w-9" aria-hidden="true" />
+              {/* Branded avatar sits inside the green ring with an even rim;
+                  320px source keeps it sharp on 3x displays. */}
+              <img
+                src={chatbotAvatar.src}
+                alt=""
+                aria-hidden="true"
+                draggable={false}
+                className="h-[66px] w-[66px] select-none rounded-full object-cover"
+              />
             </motion.span>
           )}
         </AnimatePresence>
