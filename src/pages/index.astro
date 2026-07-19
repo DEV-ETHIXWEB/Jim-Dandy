@@ -16,6 +16,23 @@ import FinalCta from "@components/sections/FinalCta.astro";
   description="Licensed plumbing & sewer experts serving the Puget Sound region 24/7. Upfront pricing, same-day service, and 118 years of trusted repairs."
   path="/"
 >
+  {/* Hero LCP assets, scoped to the breakpoint that actually renders them:
+      phones/tablets paint the poster behind the video, desktop paints the
+      masked frame. */}
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    href="/pages/home/hero/seattle-hero-poster.jpg"
+    media="(max-width: 1023px)"
+  />
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    href="/pages/home/hero/header-frame.webp"
+    media="(min-width: 1024px)"
+  />
   <Hero />
   <div class="bg-gradient-to-b from-[#e7f2fe] from-0% via-brand-green-50 via-30% to-white to-60%">
     <TrustBar />

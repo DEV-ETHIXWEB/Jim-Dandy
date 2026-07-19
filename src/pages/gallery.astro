@@ -96,9 +96,11 @@ const items = [
             data-caption={item.caption}
             aria-label={`View larger: ${item.caption}`}
           >
+            {/* The wrapping button already announces the caption via aria-label,
+                so the image is decorative here - avoids triple-announcement. */}
             <Image
               src={item.src}
-              alt={item.caption}
+              alt=""
               widths={[360, 560, 760]}
               sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
               quality={80}

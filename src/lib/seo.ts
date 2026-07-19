@@ -20,7 +20,7 @@ export function localBusinessSchema() {
     "@context": "https://schema.org",
     "@type": "Plumber",
     name: business.name,
-    image: `${SITE_URL}/images/jim-dandy-truck.jpg`,
+    image: `${SITE_URL}/shared/seo/og-default.jpg`,
     "@id": SITE_URL,
     url: SITE_URL,
     telephone: business.phoneHref.replace("tel:", ""),

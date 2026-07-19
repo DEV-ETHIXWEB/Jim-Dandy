@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { MessageCircle, Send, Sparkles, X } from "lucide-react";
+import { Send, X } from "lucide-react";
 import chatbotAvatar from "@assets/photos/chatbot-avatar-face.webp";
 
 /**
