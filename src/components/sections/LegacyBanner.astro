@@ -85,13 +85,20 @@ const slides = [
   </div>
 
   <div class="relative flex items-center overflow-hidden bg-navy-800 py-8 sm:py-10">
-    {/* Transparent music notes from the approved strip art: one generous row,
-        vertically centred so it sits directly behind the marquee text.
-        brightness(0) turns the grey glyphs into dark silhouettes, slightly
-        darker than the navy, per the reference. */}
+    {/* Approved update (per design feedback): the marquee text stays clean -
+        the note glyphs never overlap it. The same strip art renders as two
+        slim rows hugging the top and bottom edges of the band, offset from
+        each other, leaving a clear centre lane for the text. brightness(0)
+        keeps the glyphs as dark silhouettes, slightly darker than the navy. */}
     <div
-      class="pointer-events-none absolute inset-0 opacity-30 [filter:brightness(0)]"
-      style={`background-image: url(${notesTexture.src}); background-size: auto 46%; background-repeat: repeat-x; background-position: left center;`}
+      class="pointer-events-none absolute inset-x-0 top-1 h-[22%] opacity-30 [filter:brightness(0)]"
+      style={`background-image: url(${notesTexture.src}); background-size: auto 100%; background-repeat: repeat-x; background-position: left center;`}
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="pointer-events-none absolute inset-x-0 bottom-1 h-[22%] opacity-30 [filter:brightness(0)]"
+      style={`background-image: url(${notesTexture.src}); background-size: auto 100%; background-repeat: repeat-x; background-position: 42px center;`}
       aria-hidden="true"
     >
     </div>

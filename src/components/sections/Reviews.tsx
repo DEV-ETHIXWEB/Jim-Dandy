@@ -1,4 +1,6 @@
-import { BadgeCheck, Star } from "lucide-react";
+import { useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { BadgeCheck, ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { business, reviews } from "@data/site";
 
 function GoogleG({ className }: { className?: string }) {
@@ -14,10 +16,10 @@ function GoogleG({ className }: { className?: string }) {
 
 type Review = (typeof reviews)[number];
 
-function ReviewCard({ review, hidden }: { review: Review; hidden?: boolean }) {
+function ReviewCard({ review, hidden, fluid }: { review: Review; hidden?: boolean; fluid?: boolean }) {
   return (
     <article
-      className="flex h-full w-[320px] shrink-0 flex-col gap-4 rounded-3xl border-b-4 border-navy-800 bg-[#f7f7f7] p-6 shadow-review sm:w-[360px]"
+      className={`flex h-full ${fluid ? "w-full" : "w-[320px] sm:w-[360px]"} shrink-0 flex-col gap-4 rounded-3xl border-b-4 border-navy-800 bg-[#f7f7f7] p-6 shadow-review`}
       aria-hidden={hidden || undefined}
     >
       <div className="flex flex-col gap-3">
@@ -51,17 +53,76 @@ function ReviewCard({ review, hidden }: { review: Review; hidden?: boolean }) {
   );
 }
 
-export default function Reviews() {
+const slideVariants = {
+  enter: (dir: number) => ({ opacity: 0, x: dir >= 0 ? 48 : -48 }),
+  center: { opacity: 1, x: 0 },
+  exit: (dir: number) => ({ opacity: 0, x: dir >= 0 ? -48 : 48 }),
+};
+
+/** Mobile-only: one review at a time, browsed manually with arrows - no auto-scroll. */
+function MobileSlider() {
+  const reduceMotion = Boolean(useReducedMotion());
+  const [[index, direction], setState] = useState<[number, number]>([0, 0]);
+
+  const go = (delta: number) =>
+    setState(([i]) => [(i + delta + reviews.length) % reviews.length, delta]);
+
   return (
-    <div className="group/marquee relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]">
-      <div className="flex w-max animate-[marquee_36s_linear_infinite] gap-6 group-hover/marquee:[animation-play-state:paused]">
-        {reviews.map((review) => (
-          <ReviewCard key={review.name} review={review} />
-        ))}
-        {reviews.map((review) => (
-          <ReviewCard key={`${review.name}-dup`} review={review} hidden />
-        ))}
+    <div className="sm:hidden">
+      <div className="relative overflow-hidden" aria-live="polite">
+        <AnimatePresence mode="popLayout" initial={false} custom={direction}>
+          <motion.div
+            key={index}
+            custom={direction}
+            variants={slideVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={reduceMotion ? { duration: 0 } : { duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <ReviewCard review={reviews[index]} fluid />
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      <div className="mt-4 flex items-center justify-center gap-3">
+        <button
+          type="button"
+          onClick={() => go(-1)}
+          aria-label="Previous review"
+          className="grid h-11 w-11 place-items-center rounded-full border border-navy-200 bg-white text-navy-700 transition-colors hover:border-brand-green-500 hover:text-navy-900 active:bg-brand-green-50"
+        >
+          <ChevronLeft className="h-5 w-5" aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          onClick={() => go(1)}
+          aria-label="Next review"
+          className="grid h-11 w-11 place-items-center rounded-full border border-navy-200 bg-white text-navy-700 transition-colors hover:border-brand-green-500 hover:text-navy-900 active:bg-brand-green-50"
+        >
+          <ChevronRight className="h-5 w-5" aria-hidden="true" />
+        </button>
       </div>
     </div>
+  );
+}
+
+export default function Reviews() {
+  return (
+    <>
+      <MobileSlider />
+
+      {/* Desktop (sm+): the original infinite marquee, unchanged. */}
+      <div className="group/marquee relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)] max-sm:hidden">
+        <div className="flex w-max animate-[marquee_36s_linear_infinite] gap-6 group-hover/marquee:[animation-play-state:paused]">
+          {reviews.map((review) => (
+            <ReviewCard key={review.name} review={review} />
+          ))}
+          {reviews.map((review) => (
+            <ReviewCard key={`${review.name}-dup`} review={review} hidden />
+          ))}
+        </div>
+      </div>
+    </>
   );
 }
