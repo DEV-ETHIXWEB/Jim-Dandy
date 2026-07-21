@@ -1,0 +1,83 @@
+---
+// Same technique as Gary's Pipelining SparkleField: individual sprites,
+// absolutely positioned, each twinkling on its own staggered opacity-pulse
+// loop. Built from the real Jim Dandy note art (public/pages/home/JD Asset
+// Music), copied into src/assets/decor with clean filenames so Astro can
+// hash/optimize them. Notes are silhouetted (brightness(0)) to match the
+// existing dark-on-navy legacy-strip treatment, kept to the top/bottom
+// lanes so the "118 Years Of Legacy" text stays clean and unobstructed.
+import noteBig1 from "@assets/decor/note-big-1.png";
+import noteBig2 from "@assets/decor/note-big-2.png";
+import noteBig3 from "@assets/decor/note-big-3.png";
+import noteSmall1 from "@assets/decor/note-small-1.png";
+import noteSmall2 from "@assets/decor/note-small-2.png";
+import noteSmall3 from "@assets/decor/note-small-3.png";
+
+type ImgSrc = { src: string };
+type Note = { src: ImgSrc; top: string; left: string; size: "big" | "small"; delay: string; rotate: number };
+
+const notes: Note[] = [
+  { src: noteBig1, top: "12%", left: "3%", size: "big", delay: "0s", rotate: -6 },
+  { src: noteSmall2, top: "19%", left: "15%", size: "small", delay: "0.7s", rotate: 8 },
+  { src: noteSmall1, top: "8%", left: "27%", size: "small", delay: "1.6s", rotate: -4 },
+  { src: noteBig3, top: "20%", left: "38%", size: "big", delay: "0.3s", rotate: 5 },
+  { src: noteSmall3, top: "9%", left: "50%", size: "small", delay: "2s", rotate: -7 },
+  { src: noteSmall2, top: "21%", left: "61%", size: "small", delay: "0.9s", rotate: 6 },
+  { src: noteBig2, top: "10%", left: "73%", size: "big", delay: "2.1s", rotate: -5 },
+  { src: noteSmall3, top: "18%", left: "85%", size: "small", delay: "0.5s", rotate: 4 },
+  { src: noteSmall1, top: "8%", left: "95%", size: "small", delay: "1.4s", rotate: -8 },
+  { src: noteSmall3, top: "78%", left: "8%", size: "small", delay: "1.2s", rotate: 5 },
+  { src: noteBig2, top: "87%", left: "20%", size: "big", delay: "0.2s", rotate: -6 },
+  { src: noteSmall1, top: "74%", left: "32%", size: "small", delay: "1.9s", rotate: 7 },
+  { src: noteSmall2, top: "89%", left: "44%", size: "small", delay: "0.6s", rotate: -4 },
+  { src: noteBig1, top: "76%", left: "56%", size: "big", delay: "1.5s", rotate: 6 },
+  { src: noteSmall3, top: "88%", left: "68%", size: "small", delay: "0.4s", rotate: -5 },
+  { src: noteSmall2, top: "75%", left: "80%", size: "small", delay: "2.2s", rotate: 8 },
+  { src: noteBig3, top: "86%", left: "92%", size: "big", delay: "1s", rotate: -6 },
+];
+---
+
+<div aria-hidden="true" class="pointer-events-none absolute inset-0 overflow-hidden">
+  {notes.map((note) => (
+    <span
+      class="note-twinkle absolute [filter:brightness(0)]"
+      style={`top:${note.top}; left:${note.left}; animation-delay:${note.delay}; transform:rotate(${note.rotate}deg);`}
+    >
+      <img
+        src={note.src.src}
+        alt=""
+        class:list={[
+          "object-contain",
+          note.size === "big"
+            ? "h-9 w-9 sm:h-11 sm:w-11 lg:h-14 lg:w-14"
+            : "h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10",
+        ]}
+      />
+    </span>
+  ))}
+</div>
+
+<style>
+  .note-twinkle {
+    opacity: 0.14;
+    animation: note-twinkle 3.6s ease-in-out infinite;
+    will-change: opacity;
+  }
+
+  @keyframes note-twinkle {
+    0%,
+    100% {
+      opacity: 0.14;
+    }
+    50% {
+      opacity: 0.42;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .note-twinkle {
+      animation: none;
+      opacity: 0.26;
+    }
+  }
+</style>

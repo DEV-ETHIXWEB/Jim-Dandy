@@ -2,8 +2,8 @@
 import { Image } from "astro:assets";
 import { business } from "@data/site";
 import LegacyScrollText from "./LegacyScrollText";
+import MusicNoteField from "@components/ui/MusicNoteField.astro";
 
-import notesTexture from "@assets/textures/legacy-notes-dense.webp";
 import crewPhoto from "@assets/photos/legacy-crew-truck.webp";
 import truckPhoto from "@assets/photos/legacy-jd-truck.webp";
 import drainPhoto from "@assets/photos/legacy-drain-cleaning.webp";
@@ -85,23 +85,12 @@ const slides = [
   </div>
 
   <div class="relative flex items-center overflow-hidden bg-navy-800 py-8 sm:py-10">
-    {/* Approved update (per design feedback): the marquee text stays clean -
-        the note glyphs never overlap it. The same strip art renders as two
-        slim rows hugging the top and bottom edges of the band, offset from
-        each other, leaving a clear centre lane for the text. brightness(0)
-        keeps the glyphs as dark silhouettes, slightly darker than the navy. */}
-    <div
-      class="pointer-events-none absolute inset-x-0 top-1 h-[22%] opacity-30 [filter:brightness(0)]"
-      style={`background-image: url(${notesTexture.src}); background-size: auto 100%; background-repeat: repeat-x; background-position: left center;`}
-      aria-hidden="true"
-    >
-    </div>
-    <div
-      class="pointer-events-none absolute inset-x-0 bottom-1 h-[22%] opacity-30 [filter:brightness(0)]"
-      style={`background-image: url(${notesTexture.src}); background-size: auto 100%; background-repeat: repeat-x; background-position: 42px center;`}
-      aria-hidden="true"
-    >
-    </div>
+    {/* Real Jim Dandy note art (public/pages/home/JD Asset Music), scattered
+        as individually twinkling sprites - same technique as Gary's
+        Pipelining SparkleField (staggered opacity-pulse, GPU-only). Notes
+        stay in the top/bottom lanes so the "118 Years Of Legacy" marquee
+        text underneath is never crossed. */}
+    <MusicNoteField />
     <div class="relative w-full leading-none" aria-hidden="true">
       <LegacyScrollText client:visible text={`${business.yearsInBusiness} Years Of Legacy`} />
     </div>
