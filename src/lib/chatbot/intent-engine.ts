@@ -101,6 +101,9 @@ function extractServiceSlug(rawText: string): ServiceSlug | undefined {
   const clean = normalize(rawText);
   for (const { name, slug } of serviceNameIndex) {
     if (clean.includes(name)) return slug;
+    // Tolerate singular/plural mismatches ("water heater" vs "water heaters")
+    // since service labels are plural but users often ask in the singular.
+    if (name.endsWith("s") && clean.includes(name.slice(0, -1))) return slug;
   }
   return undefined;
 }
@@ -163,8 +166,49 @@ export function matchIntent(message: string, ctx: ChatContext): IntentMatch {
   }
 
   scored.sort((a, b) => b.score - a.score || b.def.priority - a.def.priority);
-  const top = scored[0];
-  const second = scored[1];
+
+  // Misrouting a genuine emergency (e.g. into a generic "Emergency service"
+  // description instead of the urgent, call-now response) is the costliest
+  // failure mode this bot can make. If EMERGENCY cleared its own minScore
+  // at all, it wins outright regardless of what other intent scored higher -
+  // we never want a strong service-name match to outrank a real emergency.
+  const emergencyCandidate = scored.find((s) => s.def.name === "EMERGENCY");
+  const emergencyWins = emergencyCandidate && emergencyCandidate.score >= emergencyCandidate.def.minScore;
+
+  // "How much does a water heater cost" is still a pricing question, not a
+  // request for the Water Heaters service description - a strong service-
+  // name phrase/keyword match (SPECIFIC_SERVICE) can otherwise outscore
+  // PRICING_COST just because the service name is longer/more specific than
+  // a single price word. If PRICING_COST cleared its own minScore, it wins
+  // over a competing SPECIFIC_SERVICE match (but not over EMERGENCY).
+  const pricingCandidate = scored.find((s) => s.def.name === "PRICING_COST");
+  const pricingWins =
+    !emergencyWins &&
+    pricingCandidate &&
+    pricingCandidate.score >= pricingCandidate.def.minScore &&
+    scored[0]?.def.name === "SPECIFIC_SERVICE";
+
+  // An explicit, literal service-name mention ("tell me about drains") is a
+  // stronger signal than a fuzzy single-token overlap against symptom sign
+  // text (SERVICE_RECOMMENDATION), which can otherwise misfire when a bare
+  // word like "drains" happens to also appear inside a *different* service's
+  // sign copy (e.g. "multiple drains backing up" under Sewer Services).
+  const specificServiceCandidate = scored.find((s) => s.def.name === "SPECIFIC_SERVICE");
+  const specificServiceWins =
+    !emergencyWins &&
+    !pricingWins &&
+    specificServiceCandidate &&
+    specificServiceCandidate.score >= specificServiceCandidate.def.minScore &&
+    scored[0]?.def.name === "SERVICE_RECOMMENDATION";
+
+  const top = emergencyWins
+    ? emergencyCandidate
+    : pricingWins
+      ? pricingCandidate
+      : specificServiceWins
+        ? specificServiceCandidate
+        : scored[0];
+  const second = top === scored[0] ? scored[1] : scored[0];
 
   if (!top || top.score < top.def.minScore) {
     return {

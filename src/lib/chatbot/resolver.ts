@@ -198,11 +198,13 @@ export function resolve(message: string, ctx: ChatContext, match: IntentMatch): 
     }
 
     case "PRICING_COST": {
+      const pricingSlug = entities.serviceSlug ?? ctx.activeService;
       const faq = allFaqs.find((f) => f.question.toLowerCase().includes("cost"));
-      const svcNote = ctx.activeService ? ` for your ${serviceBySlug.get(ctx.activeService)?.label} request` : "";
+      const svcNote = pricingSlug ? ` for your ${serviceBySlug.get(pricingSlug)?.label} request` : "";
       return {
         text: `${faq?.answer ?? "We diagnose on-site and give flat-rate, upfront pricing before any work begins."} Want a free estimate${svcNote}?`,
         quickReplies: [{ label: "Get an estimate", value: "Get an estimate" }, { label: `Call ${business.phone}`, value: "call" }],
+        setEntity: pricingSlug ? { service: pricingSlug } : undefined,
       };
     }
 

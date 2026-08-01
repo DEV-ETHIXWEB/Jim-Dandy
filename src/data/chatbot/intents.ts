@@ -44,9 +44,14 @@ export type IntentDef = {
 const BASE_INTENTS: IntentDef[] = [
   {
     name: "EMERGENCY",
-    phrases: ["burst pipe", "pipe burst", "sewage backup", "no water at all", "water everywhere", "flooding my house"],
+    phrases: [
+      "burst pipe", "pipe burst", "sewage backup", "sewage is backing up", "sewage backing up",
+      "no water at all", "no water anywhere", "water everywhere", "flooding my house",
+      "flooding", "toilet is overflowing", "overflowing toilet",
+      "it's an emergency", "its an emergency", "leaking everywhere", "just failed",
+    ],
     keywords: [
-      { term: "emergency", weight: 10 },
+      { term: "emergency", weight: 12 },
       { term: "urgent", weight: 6 },
       { term: "flooding", weight: 8 },
       { term: "burst", weight: 8 },
@@ -54,6 +59,8 @@ const BASE_INTENTS: IntentDef[] = [
       { term: "gas smell", weight: 9 },
       { term: "asap", weight: 5 },
       { term: "right now", weight: 4 },
+      { term: "overflowing", weight: 8 },
+      { term: "everywhere", weight: 5 },
     ],
     minScore: 8,
     priority: 100,

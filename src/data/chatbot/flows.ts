@@ -53,8 +53,15 @@ export const STEP_QUICK_REPLIES: Partial<Record<WizardStep, { label: string; val
     { label: "Residential", value: "residential" },
     { label: "Commercial", value: "commercial" },
   ],
+  timing: [{ label: "Flexible / ASAP", value: "skip" }],
   notes: [{ label: "Skip", value: "skip" }],
 };
+
+const SKIPPABLE_STEPS: WizardStep[] = ["timing", "notes"];
+
+export function isSkipValue(value: string): boolean {
+  return value.trim().toLowerCase() === "skip";
+}
 
 export function nextStep(current: WizardStep): WizardStep {
   const idx = STEP_ORDER.indexOf(current);
@@ -67,7 +74,7 @@ export function validateStep(step: WizardStep, value: string): { ok: true; value
   const field = STEP_FIELD[step];
   if (!field) return { ok: true, value };
 
-  if (step === "notes" && value.trim().toLowerCase() === "skip") {
+  if (SKIPPABLE_STEPS.includes(step) && isSkipValue(value)) {
     return { ok: true, value: "" };
   }
 
