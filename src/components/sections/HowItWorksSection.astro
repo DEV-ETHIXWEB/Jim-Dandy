@@ -39,7 +39,7 @@ import { howItWorks } from "@data/site";
               class="hiw-connector absolute left-1/2 top-full z-0 h-24 w-[3px] -translate-x-1/2 overflow-hidden rounded-full bg-white/15 sm:hidden"
               aria-hidden="true"
             >
-              <span class="hiw-connector-fill absolute inset-x-0 top-0 h-0 rounded-full"></span>
+              <span class="hiw-connector-fill absolute inset-x-0 top-0 rounded-full"></span>
             </span>
           )}
         </div>
@@ -144,13 +144,17 @@ import { howItWorks } from "@data/site";
      fill grows toward the next step as it scroll-activates, echoing the desktop
      horizontal progress line. */
   .hiw-connector-fill {
+    height: 100%;
+    transform: scaleY(0);
+    transform-origin: top;
     background: linear-gradient(
       to bottom,
       var(--color-brand-green-400),
       var(--color-brand-green-500)
     );
     box-shadow: 0 0 10px 1px rgba(105, 190, 40, 0.55);
-    transition: height 600ms cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -189,7 +193,7 @@ import { howItWorks } from "@data/site";
       fill2?.style.setProperty("transform", `scaleX(${progress >= 3 ? 1 : 0})`);
 
       connFills.forEach((f, i) => {
-        f.style.height = progress >= i + 2 ? "100%" : "0%";
+        f.style.transform = `scaleY(${progress >= i + 2 ? 1 : 0})`;
       });
 
       if (dot) {

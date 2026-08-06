@@ -160,6 +160,7 @@ const slides = [
   }
 
   .legacy-dot {
+    position: relative;
     height: 8px;
     width: 8px;
     border-radius: 9999px;
@@ -169,6 +170,14 @@ const slides = [
       width 300ms ease,
       background-color 300ms ease;
     cursor: pointer;
+  }
+
+  /* Invisible hit-area extension: the visual dot stays 8px, but the tappable
+     area meets the 24x24 minimum touch-target size without changing layout. */
+  .legacy-dot::before {
+    content: "";
+    position: absolute;
+    inset: -8px;
   }
   .legacy-dot.is-active {
     width: 24px;

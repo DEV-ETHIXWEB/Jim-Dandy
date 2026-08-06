@@ -33,7 +33,7 @@ export default function ContactPanel() {
           <div className="flex w-full items-center justify-center gap-2.5 border-b-2 border-brand-green-500 pb-2 max-md:gap-2 max-md:pb-1.5">
             <GoogleG className="h-9 w-9 shrink-0 max-md:h-6 max-md:w-6" />
             <div className="flex items-center gap-1.5">
-              <span className="font-accent text-2xl font-extrabold text-[#fea500] max-md:text-lg">{business.rating.value}</span>
+              <span className="font-accent text-2xl font-extrabold text-[#996300] max-md:text-lg">{business.rating.value}</span>
               <div className="flex" aria-hidden="true">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star key={i} className="h-5 w-5 fill-[#fea500] text-[#fea500] max-md:h-3.5 max-md:w-3.5" />

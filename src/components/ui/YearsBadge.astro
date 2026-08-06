@@ -27,8 +27,10 @@ for (let z = -(HALF - 1); z <= HALF - 1 + 0.001; z += STEP) edgeZ.push(Math.roun
 
 <div class:list={["legacy-badge-perspective", className]} style={`--badge-half:${HALF}px;`}>
   <div class="legacy-badge-spin">
-    <!-- perpendicular core: keeps the rim solid at the exact edge-on profile -->
-    <img src={coreSrc} alt="" aria-hidden="true" draggable="false" class="legacy-badge-core" />
+    <!-- perpendicular core: keeps the rim solid at the exact edge-on profile.
+         A background-image div (not <img>) since this strip is intentionally
+         stretched non-uniformly per breakpoint and isn't real content. -->
+    <div class="legacy-badge-core" style={`background-image: url('${coreSrc}');`} aria-hidden="true"></div>
     <!-- extruded hollow metal rim wall -->
     {edgeZ.map((z) => (
       <img
@@ -115,7 +117,8 @@ for (let z = -(HALF - 1); z <= HALF - 1 + 0.001; z += STEP) edgeZ.push(Math.roun
     top: 7%;
     height: 87%;
     width: calc(2 * var(--badge-half));
-    object-fit: fill;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
     transform: translateX(-50%) rotateY(90deg);
   }
 
