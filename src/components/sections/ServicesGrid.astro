@@ -1,0 +1,189 @@
+---
+import SectionHeading from "@components/ui/SectionHeading.astro";
+import { services } from "@data/site";
+import { ArrowRight } from "lucide-react";
+import emergencyIcon from "@assets/icons/emergency.svg";
+import drainsClogsIcon from "@assets/icons/drains-clogs.svg";
+import sewerServicesIcon from "@assets/icons/sewer-services.svg";
+import waterHeatersIcon from "@assets/icons/water-heaters.svg";
+import allPlumbingIcon from "@assets/icons/all-plumbing.svg";
+import commercialIcon from "@assets/icons/commercial.svg";
+
+const icons = {
+  emergency: emergencyIcon,
+  "drains-clogs": drainsClogsIcon,
+  "sewer-services": sewerServicesIcon,
+  "water-heaters": waterHeatersIcon,
+  "all-plumbing": allPlumbingIcon,
+  commercial: commercialIcon,
+} as const;
+---
+
+<section id="services" class="py-20 lg:py-28">
+  <div class="container-page flex flex-col gap-14">
+    <SectionHeading
+      title="What Can We Fix For You?"
+      subtitle="From emergency calls to planned upgrades - Jim Dandy handles it all."
+    />
+
+    {/* auto-rows-[1fr] at every width so all six cards match the tallest: the new
+        copy runs to different line counts, which otherwise left rows 8px apart. */}
+    <div class="grid grid-cols-1 auto-rows-[1fr] gap-6 min-[560px]:grid-cols-2 min-[560px]:gap-x-10">
+      {services.map((service) => {
+        const Icon = icons[service.slug];
+        return (
+          <a
+            href={`/services/${service.slug}`}
+            data-service-card
+            class="group relative flex h-full items-stretch justify-between gap-4 overflow-hidden rounded-[36px] border border-navy-200 bg-navy-50 p-8 shadow-[0_12px_26px_-16px_rgba(0,42,64,0.45)] transition-[transform,background-color,border-color,box-shadow] duration-300 ease-brand hover:-translate-y-1 hover:border-navy-800 hover:bg-navy-800 hover:shadow-xl sm:min-h-[230px] max-md:duration-[400ms] max-md:ease-out max-md:[&.is-active]:-translate-y-1 max-md:[&.is-active]:border-navy-800 max-md:[&.is-active]:bg-navy-800 max-md:[&.is-active]:shadow-xl"
+          >
+            <div class="relative z-10 flex min-w-0 flex-col gap-4 pr-1">
+              <h3 class="font-display text-[32px] font-bold leading-none text-navy-800 transition-colors duration-300 group-hover:text-white/50 sm:text-[38px] max-md:duration-[400ms] max-md:group-[.is-active]:text-white/50">
+                {service.label}
+              </h3>
+              {/* The approved card shows the copy at rest, so it sits in navy and
+                  flips to white with the card on hover instead of fading in. */}
+              <p class="max-w-xs text-base leading-snug text-navy-600 transition-colors duration-300 group-hover:text-white/85 max-md:duration-[400ms] max-md:group-[.is-active]:text-white/85">
+                {service.description}
+              </p>
+              <span class="mt-auto flex items-center gap-3 font-sans text-base font-medium text-navy-600 transition-colors duration-300 group-hover:text-white max-md:duration-[400ms] max-md:group-[.is-active]:text-white">
+                <span class="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-navy-100 text-navy-700 transition-colors duration-300 group-hover:bg-navy-600 group-hover:text-white max-md:duration-[400ms] max-md:group-[.is-active]:bg-navy-600 max-md:group-[.is-active]:text-white">
+                  <ArrowRight className="svc-arrow h-5 w-5 transition-transform duration-200 group-hover:translate-x-0.5 max-md:duration-[400ms] max-md:group-[.is-active]:translate-x-0.5" aria-hidden="true" />
+                </span>
+                Learn more
+              </span>
+            </div>
+            {/* Traced from the approved card art, so they stay sharp at any size.
+                A fixed square box + the SVG's own viewBox keeps every icon the
+                same visual size despite their differing artwork proportions. */}
+            <Icon class="svc-icon pointer-events-none relative z-10 h-24 w-24 shrink-0 self-center object-contain transition-[transform,filter] duration-300 group-hover:scale-105 min-[560px]:h-20 min-[560px]:w-20 lg:h-32 lg:w-32 max-md:duration-[400ms] max-md:group-[.is-active]:scale-105" />
+          </a>
+        );
+      })}
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  /* At rest, a hairline navy drop-shadow traces the icon's alpha edge (so it
+     follows the artwork shape, not a box) to sharpen definition against the
+     light card. Kept at 1px and slightly darker than the brand navy so it
+     reads as edge crispness, not an outline. */
+  #services [data-service-card] .svc-icon {
+    filter: drop-shadow(0 0 1px #001a33);
+  }
+
+  /* The icons' navy (#002244) is the same colour as the card's hover state, so
+     on hover their silhouette disappears and only the green/white details float.
+     Stacked drop-shadows trace the alpha edge - so the outline follows the real
+     icon shape rather than a box - and stay anti-aliased. Only applied on the
+     dark states; over the light card a white edge would be invisible anyway.
+     This higher-specificity rule replaces the resting navy hairline on hover. */
+  #services [data-service-card]:hover .svc-icon,
+  #services [data-service-card].is-active .svc-icon {
+    /* Chained order matters: the navy hairline traces the icon edge first, then
+       the white glows trace that expanded silhouette - icon -> navy -> white. */
+    filter: drop-shadow(0 0 1px #001a33) drop-shadow(0 0 1px #fff) drop-shadow(0 0 1px #fff)
+      drop-shadow(0 0 1.5px #fff);
+  }
+
+  /* Reduced-motion users get the same scroll-driven reveal, but with no animated
+     motion; transitions collapse to instant. Scoped to mobile so the desktop
+     hover experience is left exactly as-is. */
+  @media (prefers-reduced-motion: reduce) and (max-width: 767px) {
+    #services [data-service-card],
+    #services [data-service-card] * {
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+
+<script>
+  // Mobile only: touch devices have no hover, so we spotlight the most-centered
+  // service card as the user scrolls, reproducing the desktop hover state via an
+  // `is-active` class. One card active at a time, reversible, IntersectionObserver
+  // based (no scroll listeners), and fully disabled on desktop.
+  function initServiceCards() {
+    const section = document.getElementById("services");
+    if (!section) return;
+    const cards = Array.from(
+      section.querySelectorAll<HTMLElement>("[data-service-card]"),
+    );
+    if (!cards.length) return;
+
+    const mq = window.matchMedia("(max-width: 767px)");
+    const ratios = new Map<Element, number>();
+    let observer: IntersectionObserver | null = null;
+    let active: HTMLElement | null = null;
+    let raf = 0;
+    let delay = 0;
+
+    const setActive = (card: HTMLElement | null) => {
+      if (active === card) return;
+      if (active) active.classList.remove("is-active");
+      active = card;
+      if (active) active.classList.add("is-active");
+    };
+
+    const evaluate = () => {
+      raf = 0;
+      let best: HTMLElement | null = null;
+      let bestRatio = 0;
+      ratios.forEach((ratio, card) => {
+        if (ratio > bestRatio) {
+          bestRatio = ratio;
+          best = card as HTMLElement;
+        }
+      });
+      // Hysteresis: only promote a new card once it's clearly centered (>=0.5),
+      // and only clear the active card once nothing is meaningfully visible.
+      if (best && bestRatio >= 0.5) {
+        if (best !== active) {
+          window.clearTimeout(delay);
+          const next = best;
+          // Small settle delay avoids accidental flips during fast scrolling.
+          delay = window.setTimeout(() => setActive(next), 90);
+        }
+      } else if (bestRatio < 0.2) {
+        window.clearTimeout(delay);
+        setActive(null);
+      }
+    };
+
+    const onIntersect = (entries: IntersectionObserverEntry[]) => {
+      for (const entry of entries) {
+        ratios.set(entry.target, entry.isIntersecting ? entry.intersectionRatio : 0);
+      }
+      if (!raf) raf = requestAnimationFrame(evaluate);
+    };
+
+    const enable = () => {
+      if (observer) return;
+      observer = new IntersectionObserver(onIntersect, {
+        threshold: [0, 0.25, 0.5, 0.75, 1],
+        rootMargin: "-12% 0px -12% 0px",
+      });
+      cards.forEach((card) => observer!.observe(card));
+    };
+
+    const disable = () => {
+      if (observer) {
+        observer.disconnect();
+        observer = null;
+      }
+      ratios.clear();
+      window.clearTimeout(delay);
+      if (raf) {
+        cancelAnimationFrame(raf);
+        raf = 0;
+      }
+      setActive(null);
+    };
+
+    const sync = () => (mq.matches ? enable() : disable());
+    sync();
+    mq.addEventListener("change", sync);
+  }
+
+  initServiceCards();
+</script>

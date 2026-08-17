@@ -1,0 +1,207 @@
+---
+import Button from "@components/ui/Button.astro";
+import AnimatedCounter from "@components/ui/AnimatedCounter";
+import YearsBadge from "@components/ui/YearsBadge.astro";
+import RotatingHeadline from "./RotatingHeadline";
+import { business } from "@data/site";
+---
+
+<section class="hero-section relative overflow-hidden bg-navy-800 max-sm:flex max-sm:min-h-[calc(100svh-96px)] max-sm:flex-col">
+  <div class="absolute inset-0 lg:hidden" aria-hidden="true">
+    {/* `media` on <source> is what actually gates the download. The wrapper's
+        `lg:hidden` only hides the element - a video with preload/autoplay still
+        fetches, so both this and the desktop framed video were each pulling the
+        same 4.3MB file on every viewport (one then aborted mid-flight).
+
+        fetchpriority="high" was also removed: this is an aria-hidden decorative
+        background at 30% opacity behind a gradient, and boosting it made a 4.3MB
+        video outrank the hero's own text for bandwidth. */}
+    <video
+      class="hero-video h-full w-full object-cover opacity-[0.3]"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      poster="/pages/home/hero/seattle-hero-poster.webp"
+    >
+      <source src="/pages/home/hero/seattle-hero.mp4" type="video/mp4" media="(max-width: 1023.98px)" />
+    </video>
+    <div class="absolute inset-0 bg-gradient-to-b from-navy-900/55 via-navy-800/65 to-navy-900/90"></div>
+  </div>
+
+  <div
+    class="pointer-events-none absolute inset-0 opacity-40"
+    style="background: radial-gradient(600px circle at 15% 20%, rgba(105,190,40,0.18), transparent 60%), radial-gradient(500px circle at 85% 80%, rgba(105,190,40,0.12), transparent 60%);"
+    aria-hidden="true"
+  ></div>
+
+  {/* Two things clipped the frame's top once the hero got shorter: the -40px
+      lift, and the frame growing taller than its inset-y-8 slot (598 vs 567 at
+      1536x720). Dropping the lift re-centres it and trimming ~10% keeps it
+      inside the slot at every width. */}
+  <div
+    class="pointer-events-none absolute inset-y-8 -right-[80px] z-10 hidden w-[calc(43%+126px)] items-center justify-end lg:flex xl:w-[calc(40%+126px)]"
+    aria-hidden="true"
+  >
+    <div
+      class="hero-video-frame pointer-events-auto relative aspect-[4090/3000] w-full transition-transform duration-500 ease-out will-change-transform hover:-translate-y-2 hover:scale-[1.02]"
+      style="--frame-mask: url('/pages/home/hero/header-frame.webp');"
+    >
+      <div
+        class="hero-video-fill absolute inset-0"
+        style="background: url('/pages/home/hero/header-frame.webp') center / cover no-repeat;"
+      >
+        <video
+          class="hero-video hero-frame-video absolute inset-0 h-full w-full object-cover"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          poster="/pages/home/hero/seattle-hero-poster.webp"
+        >
+          {/* Desktop-only counterpart to the background video above; see that
+              comment for why the download has to be gated on <source media>. */}
+          <source src="/pages/home/hero/seattle-hero.mp4" type="video/mp4" media="(min-width: 1024px)" />
+        </video>
+      </div>
+    </div>
+  </div>
+
+  {/* py trimmed on desktop so the rating + 118 badge clear the fold: at 96px the
+      badge landed at 926px, past both 1440x900 and 1536x864. */}
+  <div class="container-page relative grid grid-cols-1 items-center gap-12 py-16 max-sm:flex max-sm:flex-1 max-sm:flex-col max-sm:items-stretch max-sm:pt-6 max-sm:pb-[calc(1.5rem+env(safe-area-inset-bottom))] lg:grid-cols-[1fr_1fr] lg:py-14">
+    {/* Wider column on desktop: the rotating headline reserves the tallest of the
+        five, and at 576px that was 4 lines (328px). At 672px the longest wraps to
+        3, cutting 82px of reserved space with no change to the type itself. */}
+    <div class="hero-content flex flex-col items-start gap-10 max-sm:flex-1 max-sm:justify-center max-sm:gap-7 lg:max-w-2xl lg:gap-7">
+      <div class="flex flex-col gap-6 max-sm:gap-5 lg:gap-4">
+        <RotatingHeadline
+          client:load
+          className="font-display text-[clamp(3.25rem,14.5vw,4rem)] font-extrabold italic leading-[1.05] tracking-tight text-cloud max-sm:leading-[1.03] sm:text-[56px] lg:text-[78px]"
+        />
+        <p class="max-w-lg text-lg leading-relaxed text-white/80 sm:text-xl">
+          Licensed experts available 24/7 - from burst pipes to full sewer replacement.
+          Upfront pricing, no surprises.
+        </p>
+      </div>
+
+      <div class="grid w-full grid-cols-2 gap-3 sm:inline-grid sm:w-auto sm:grid-cols-2 sm:gap-4">
+        <Button href={business.scheduleUrl} variant="primary" fullWidth class="max-sm:px-3">Schedule Online</Button>
+        <Button href={business.financingUrl} variant="secondary" fullWidth class="max-sm:px-3">Get Financed</Button>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-8 max-sm:w-full max-sm:justify-between max-sm:gap-4">
+        <div class="inline-flex items-center gap-3 border-b border-brand-green-600/40 pb-2">
+          <svg viewBox="0 0 24 24" class="h-8 w-8 shrink-0" aria-hidden="true">
+            <path fill="#4285F4" d="M23.52 12.27c0-.85-.08-1.67-.22-2.45H12v4.64h6.47a5.53 5.53 0 0 1-2.4 3.63v3h3.88c2.27-2.09 3.57-5.17 3.57-8.82z"/>
+            <path fill="#34A853" d="M12 24c3.24 0 5.96-1.07 7.95-2.91l-3.88-3c-1.08.72-2.46 1.15-4.07 1.15-3.13 0-5.78-2.11-6.73-4.96H1.27v3.1A12 12 0 0 0 12 24z"/>
+            <path fill="#FBBC05" d="M5.27 14.28A7.2 7.2 0 0 1 4.89 12c0-.79.14-1.56.38-2.28v-3.1H1.27A12 12 0 0 0 0 12c0 1.94.46 3.77 1.27 5.38z"/>
+            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.44-3.44C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.69 1.27 6.62l4 3.1C6.22 6.86 8.87 4.75 12 4.75z"/>
+          </svg>
+          <div class="flex items-center gap-1.5">
+            <span class="font-accent text-lg font-extrabold text-[#fea500]">
+              <AnimatedCounter client:load target={business.rating.value} decimals={1} />
+            </span>
+            <div class="flex" aria-hidden="true">
+              {Array.from({ length: 5 }).map(() => (
+                <svg viewBox="0 0 20 20" class="h-5 w-5 fill-[#fea500]"><path d="M10 1.5l2.6 5.6 6.1.7-4.5 4.2 1.2 6-5.4-3-5.4 3 1.2-6-4.5-4.2 6.1-.7z"/></svg>
+              ))}
+            </div>
+            <span class="sr-only">{business.rating.value} out of 5 stars from {business.rating.count} Google reviews</span>
+          </div>
+        </div>
+
+        <YearsBadge years={business.yearsInBusiness} year={business.founded} class="hero-badge h-[131px] w-[131px] shrink-0" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-video-frame {
+    filter: drop-shadow(0 24px 36px rgba(0, 0, 0, 0.5));
+  }
+
+  /* Clip the video to the same frame shape, scaled down just enough that the
+     real textured border from the frame image shows evenly all the way around. */
+  .hero-frame-video {
+    -webkit-mask-image: var(--frame-mask);
+    mask-image: var(--frame-mask);
+    -webkit-mask-size: 95.5% 95.5%;
+    mask-size: 95.5% 95.5%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+  }
+</style>
+
+<style is:global>
+  /* Short desktop viewports - a 1080p screen at 125% scaling is only ~720px of
+     CSS height, and a 1440x900 laptop loses ~140px to the sticky header. The
+     rotating headline reserves the tallest of the five, so at 78px it holds
+     4 lines (328px) and pushes the rating + 118 badge past the fold. Stepping
+     the headline down lets it wrap to fewer lines, which shortens the reserve
+     and lifts the whole hero back above the fold. Tall viewports keep 78px. */
+  @media (min-width: 1024px) and (max-height: 860px) {
+    .hero-section h1 {
+      font-size: 68px;
+    }
+  }
+  @media (min-width: 1024px) and (max-height: 780px) {
+    .hero-section h1 {
+      font-size: 60px;
+    }
+  }
+
+  /* Mobile hero: the rotating headline reserves the tallest line-count so the
+     content below never jumps while it types. On phones we bottom-align that
+     reserved box so the description always hugs the current headline (no gap
+     between them); any slack while typing sits above the headline as breathing
+     room. Desktop/tablet keep the original top-aligned headline. */
+  @media (max-width: 639px) {
+    .hero-section h1 .rh-live {
+      align-self: end;
+    }
+  }
+
+  /* Mobile hero fit: on SHORT phone viewports the full-height hero can't fit a
+     52px headline, the description, both CTAs, the rating AND the 131px badge.
+     So we scale the headline + badge (and tighten the copy) down by available
+     height, keeping everything inside the fold. Taller phones are untouched and
+     keep the large, dominant headline. Phone-width scoped; desktop/tablet never
+     see these rules. */
+  @media (max-width: 639px) and (max-height: 740px) {
+    .hero-section h1 {
+      font-size: clamp(2.3rem, 10.5vw, 2.7rem);
+    }
+    .hero-badge {
+      height: 108px !important;
+      width: 108px !important;
+    }
+    .hero-content p {
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+  }
+  @media (max-width: 639px) and (max-height: 650px) {
+    .hero-section h1 {
+      font-size: clamp(1.95rem, 9vw, 2.25rem);
+    }
+    .hero-badge {
+      height: 94px !important;
+      width: 94px !important;
+    }
+  }
+</style>
+
+<script>
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    document.querySelectorAll<HTMLVideoElement>(".hero-video").forEach((video) => {
+      video.removeAttribute("autoplay");
+      video.pause();
+    });
+  }
+</script>

@@ -1,0 +1,90 @@
+---
+import { Image } from "astro:assets";
+import SectionHeading from "@components/ui/SectionHeading.astro";
+import Button from "@components/ui/Button.astro";
+import YearsBadge from "@components/ui/YearsBadge.astro";
+import finalCtaPhoto from "@assets/photos/team-crew-gradient.webp";
+import { business } from "@data/site";
+---
+
+<section class="relative overflow-hidden bg-white pt-8 pb-20 lg:pt-10 lg:pb-28">
+  {/* The tint is still ~30% opaque where it meets the white section above, so
+      inset-0 sliced it into a visible band. Feathering the overlay's own edges
+      lets it fade out before the boundary instead of being cut. Anchored right
+      so the glow sits behind the team photo instead of fighting the green CTA. */}
+  <div
+    class="pointer-events-none absolute inset-0"
+    style="background: radial-gradient(120% 100% at 88% 45%,
+      rgba(220,255,194,0.95) 0%,
+      rgba(220,255,194,0.7) 30%,
+      rgba(220,255,194,0.35) 50%,
+      rgba(220,255,194,0.1) 68%,
+      rgba(220,255,194,0) 82%);
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 88%, transparent 100%);
+      mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 88%, transparent 100%);"
+    aria-hidden="true"
+  ></div>
+
+  <div class="container-page relative flex flex-col gap-12">
+    <SectionHeading
+      title="Ready to Fix Your Plumbing Problem?"
+      subtitle={`Jim Dandy has served Seattle since ${business.founded}. We're available 24/7 - call or schedule online.`}
+    />
+
+    <div class="grid grid-cols-1 items-center gap-10 lg:grid-cols-[auto_1fr] lg:[min-height:clamp(255px,27.6vw,706px)]">
+      <div class="relative grid grid-cols-2 gap-3 sm:flex sm:flex-row sm:gap-4 lg:flex-col lg:w-72">
+        <div
+          class="pointer-events-none absolute -inset-10 -z-10 rounded-full opacity-80 blur-3xl"
+          style="background: radial-gradient(circle, rgba(105,190,40,0.16), rgba(105,190,40,0) 70%);"
+          aria-hidden="true"
+        ></div>
+        <Button href={business.scheduleUrl} variant="primary" fullWidth class="max-sm:px-3">Schedule Online</Button>
+        <Button href={business.financingUrl} variant="secondary" fullWidth class="max-sm:px-3">Get Financed</Button>
+      </div>
+
+      {/* Mobile/tablet image. Wrapped so the rotating badge can sit over its
+          bottom-left corner; the image keeps its exact bleed positioning. The
+          badge is anchored with a flex overlay rather than percentage bottom,
+          which wouldn't resolve against the image's auto height. */}
+      <div class="relative lg:hidden">
+        <Image
+          src={finalCtaPhoto}
+          alt="The full Jim Dandy Sewer & Plumbing crew standing together in front of a service truck"
+          width={2600}
+          height={980}
+          loading="lazy"
+          class="ml-[calc(1.25rem-10%)] mr-0 h-auto w-[125%] max-w-none md:mx-[-1.25rem] md:w-[calc(100%+2.5rem)] md:max-w-full"
+        />
+        <div class="pointer-events-none absolute inset-0 z-20 flex items-end justify-start">
+          <YearsBadge
+            years={business.yearsInBusiness}
+            year={business.founded}
+            class="mb-[2%] ml-[4%] h-[clamp(78px,17vw,122px)] w-[clamp(78px,17vw,122px)] max-sm:h-[clamp(68px,14.8vw,106px)] max-sm:w-[clamp(68px,14.8vw,106px)]"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="group pointer-events-none absolute -right-[50px] hidden lg:block lg:bottom-28 lg:[width:clamp(630px,calc(60.5vw_+_70px),1620px)]" aria-hidden="true">
+    <Image
+      src={finalCtaPhoto}
+      alt=""
+      width={2600}
+      height={980}
+      loading="lazy"
+      class="pointer-events-auto h-auto w-full transition-all duration-500 ease-out will-change-transform hover:-translate-y-2 hover:scale-[1.03] hover:drop-shadow-[0_25px_50px_rgba(105,190,40,0.45)]"
+    />
+    {/* Same rotating 118-years badge as the hero, anchored to the photo's
+        bottom-left via a flex overlay (percentage bottom won't resolve here).
+        Sits 10px lower at rest and rises back to its anchored spot as the image
+        lifts on hover. */}
+    <div class="pointer-events-none absolute inset-0 z-20 flex items-end justify-start">
+      <YearsBadge
+        years={business.yearsInBusiness}
+        year={business.founded}
+        class="mb-[2%] ml-[calc(6%+15px)] h-[clamp(104px,9.5vw,150px)] w-[clamp(104px,9.5vw,150px)] translate-y-[10px] transition-transform duration-500 ease-out group-hover:translate-y-0"
+      />
+    </div>
+  </div>
+</section>

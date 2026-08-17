@@ -1,0 +1,192 @@
+---
+import SectionHeading from "@components/ui/SectionHeading.astro";
+import { business } from "@data/site";
+
+const logoBadges = [
+  {
+    label: "BBB Accredited Business",
+    idle: "/pages/home/trust-bar/logos/bbb-idle.png",
+    hover: "/pages/home/trust-bar/logos/bbb-hover.png",
+  },
+  {
+    label: "Angi Super Service Award 2024",
+    idle: "/pages/home/trust-bar/logos/angi-idle.png",
+    hover: "/pages/home/trust-bar/logos/angi-hover.png",
+  },
+  {
+    label: "PHCC Certified Member",
+    idle: "/pages/home/trust-bar/logos/phcc-idle.png",
+    hover: "/pages/home/trust-bar/logos/phcc-hover.png",
+  },
+];
+
+// Repeated 3x for a seamless, long-feeling loop from just 3 logos.
+const marqueeLogos = [...logoBadges, ...logoBadges, ...logoBadges];
+---
+
+<section class="relative overflow-hidden pt-20 pb-[45px] lg:pt-28 lg:pb-[62px]">
+  <div class="container-page relative flex flex-col items-center gap-10">
+    <SectionHeading title="Licensed & Insured" subtitle="Your home is in good hands." />
+
+    <div class="license-tilt w-full max-w-sm sm:max-w-md" data-license-tilt>
+      <img
+        src="/pages/home/trust-bar/licence-badge.webp"
+        alt={`License No. ${business.licenses.join(", ")}`}
+        width="1152"
+        height="257"
+        class="license-tilt-img h-auto w-full"
+        draggable="false"
+      />
+    </div>
+  </div>
+
+  <div class="trustbar-viewport relative left-1/2 mt-14 w-screen -translate-x-1/2 lg:mt-[100px]">
+    <div
+      class="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-brand-green-50 via-brand-green-50/70 to-transparent backdrop-blur-[6px] [mask-image:linear-gradient(to_right,black,black_40%,transparent)] sm:w-24 md:w-40 lg:w-[228px] xl:w-[324px]"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-brand-green-50 via-brand-green-50/70 to-transparent backdrop-blur-[6px] [mask-image:linear-gradient(to_left,black,black_40%,transparent)] sm:w-24 md:w-40 lg:w-[228px] xl:w-[324px]"
+      aria-hidden="true"
+    >
+    </div>
+
+    {/* Badge size and gap scale with the viewport so phones show ~2 badges
+        instead of one clipped 304px-wide logo. The lg: values pin the desktop
+        marquee to exactly what it was before. */}
+    <div class="trustbar-track flex w-max items-center gap-[clamp(48px,14vw,160px)] lg:gap-40" aria-hidden="true">
+      {marqueeLogos.map(({ label, hover }) => (
+        <div class="trustbar-logo relative shrink-0">
+          <img
+            src={hover}
+            alt={label}
+            loading="lazy"
+            class="h-[clamp(88px,24vw,156px)] w-auto object-contain lg:h-[156px]"
+          />
+        </div>
+      ))}
+    </div>
+    <span class="sr-only">BBB Accredited Business, Angi Super Service Award 2024, PHCC Certified Member</span>
+  </div>
+</section>
+
+<style>
+  .trustbar-track {
+    animation: trustbar-scroll 28s linear infinite;
+  }
+
+  .trustbar-logo {
+    transition: transform 120ms linear;
+    will-change: transform;
+  }
+
+  @keyframes trustbar-scroll {
+    from {
+      transform: translateX(-33.3333%);
+    }
+    to {
+      transform: translateX(0%);
+    }
+  }
+</style>
+
+<script>
+  function initTrustbarPop(viewport: Element) {
+    const items = Array.from(viewport.querySelectorAll<HTMLElement>(".trustbar-logo"));
+    if (!items.length) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let raf = 0;
+
+    function tick() {
+      const vRect = viewport.getBoundingClientRect();
+      const centerX = vRect.left + vRect.width / 2;
+      const falloff = Math.max(vRect.width * 0.16, 90);
+
+      for (const item of items) {
+        const r = item.getBoundingClientRect();
+        const itemCenter = r.left + r.width / 2;
+        const distance = Math.abs(itemCenter - centerX);
+        const proximity = Math.max(0, 1 - distance / falloff);
+        // Badges always render in their official brand colours; only the
+        // subtle centre-of-marquee scale remains.
+        const scale = 1 + proximity * 0.4;
+        item.style.transform = `scale(${scale.toFixed(3)})`;
+      }
+
+      raf = requestAnimationFrame(tick);
+    }
+
+    raf = requestAnimationFrame(tick);
+
+    document.addEventListener(
+      "visibilitychange",
+      () => {
+        if (document.hidden) cancelAnimationFrame(raf);
+        else raf = requestAnimationFrame(tick);
+      },
+      { passive: true },
+    );
+  }
+
+  document.querySelectorAll(".trustbar-viewport").forEach(initTrustbarPop);
+</script>
+
+<style>
+  .license-tilt {
+    perspective: 900px;
+  }
+
+  .license-tilt-img {
+    display: block;
+    transform-style: preserve-3d;
+    transition:
+      transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+      filter 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+    filter: drop-shadow(0 6px 12px rgba(0, 34, 68, 0));
+  }
+
+  .license-tilt:hover .license-tilt-img {
+    filter: drop-shadow(0 16px 26px rgba(0, 34, 68, 0.28));
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .license-tilt-img {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  function initLicenseTilt(wrap: HTMLElement) {
+    const img = wrap.querySelector<HTMLElement>(".license-tilt-img");
+    if (!img) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const MAX = 12; // max tilt in degrees
+    let raf = 0;
+
+    const onMove = (e: PointerEvent) => {
+      const r = wrap.getBoundingClientRect();
+      const nx = (e.clientX - r.left) / r.width - 0.5;
+      const ny = (e.clientY - r.top) / r.height - 0.5;
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        img.style.transform = `rotateY(${(nx * MAX).toFixed(2)}deg) rotateX(${(-ny * MAX).toFixed(2)}deg) scale(1.035)`;
+      });
+    };
+    const reset = () => {
+      cancelAnimationFrame(raf);
+      img.style.transform = "";
+    };
+
+    wrap.addEventListener("pointermove", onMove);
+    wrap.addEventListener("pointerleave", reset);
+    wrap.addEventListener("pointercancel", reset);
+  }
+
+  document.querySelectorAll<HTMLElement>("[data-license-tilt]").forEach(initLicenseTilt);
+</script>

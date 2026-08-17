@@ -1,0 +1,48 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Hero from "@components/sections/Hero.astro";
+import TrustBar from "@components/sections/TrustBar.astro";
+import ServicesGrid from "@components/sections/ServicesGrid.astro";
+import LegacyBanner from "@components/sections/LegacyBanner.astro";
+import HowItWorksSection from "@components/sections/HowItWorksSection.astro";
+import ReviewsSection from "@components/sections/ReviewsSection.astro";
+import ContactSection from "@components/sections/ContactSection.astro";
+import ServiceAreaSection from "@components/sections/ServiceAreaSection.astro";
+import FinalCta from "@components/sections/FinalCta.astro";
+import { business } from "@data/site";
+---
+
+<Layout
+  title="Seattle's Plumber Since 1908 | Jim Dandy Sewer & Plumbing"
+  description={`Licensed plumbing & sewer experts serving the Puget Sound region 24/7. Upfront pricing, same-day service, and ${business.yearsInBusiness} years of trusted repairs.`}
+  path="/"
+>
+  {/* Hero LCP assets, scoped to the breakpoint that actually renders them:
+      phones/tablets paint the poster behind the video, desktop paints the
+      masked frame. */}
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    href="/pages/home/hero/seattle-hero-poster.webp"
+    media="(max-width: 1023px)"
+  />
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    href="/pages/home/hero/header-frame.webp"
+    media="(min-width: 1024px)"
+  />
+  <Hero />
+  <div class="bg-gradient-to-b from-[#e7f2fe] from-0% via-brand-green-50 via-30% to-white to-60%">
+    <TrustBar />
+    <ServicesGrid />
+  </div>
+  <LegacyBanner />
+  <HowItWorksSection />
+  <ReviewsSection />
+  <ContactSection />
+  <ServiceAreaSection />
+  <FinalCta />
+</Layout>

@@ -1,0 +1,20 @@
+---
+import SectionHeading from "@components/ui/SectionHeading.astro";
+import FaqAccordion from "./FaqAccordion";
+import { faqs } from "@data/site";
+import { faqSchema } from "@lib/seo";
+---
+
+<section id="faq" class="bg-surface py-20 lg:py-28">
+  <div class="container-page flex flex-col gap-14">
+    <SectionHeading
+      title="Frequently Asked Questions"
+      subtitle="Straight answers before you pick up the phone."
+    />
+    <div class="mx-auto w-full max-w-3xl">
+      <FaqAccordion client:visible />
+    </div>
+  </div>
+</section>
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema(faqs))} />
