@@ -14,44 +14,9 @@ Swiper · React Hook Form + Zod · Lucide icons · `@astrojs/vercel` adapter.
 | :----------------- | :------------------------------------------ |
 | `npm install`       | Install dependencies                        |
 | `npm run dev`       | Start dev server at `localhost:4321`        |
-| `npm run build`     | Build to `./dist` and `.vercel/output`      |
+| `npm run build`     | Type-check + build to `./dist` and `.vercel/output` |
 | `npm run preview`   | Preview the production build locally        |
 | `npx astro check`   | Type-check only                             |
-
-> `npm run build` does **not** type-check. Run `npx astro check` separately (or
-> add it to CI) before sign-off.
-
-## Deployment configuration
-
-Two files affect the deploy, owning strictly separate concerns:
-
-| File | Owns | Applied by |
-| :--- | :--- | :--- |
-| `astro.config.mjs` | Routing: `redirects`, output mode, adapter, integrations | Compiled into `.vercel/output/config.json` by `@astrojs/vercel` |
-| `vercel.json` | HTTP response headers **only** | Vercel, at the platform layer |
-
-`@astrojs/vercel` cannot express response headers, which is why `vercel.json`
-exists at all. **Do not add `redirects`, `rewrites`, or `routes` to
-`vercel.json`** — they would compete with the adapter's generated routes with no
-obvious winner. Redirects belong in `astro.config.mjs`, where they also work in
-`astro dev`.
-
-## Environment variables
-
-See [`.env.example`](.env.example) for the full annotated list with owners.
-Every variable is currently **optional** — the site builds and runs with none
-set (analytics renders nothing, Turnstile is off).
-
-**Rotation semantics differ by prefix, and this matters:**
-
-- **`PUBLIC_*` are inlined into the build.** They are embedded in the generated
-  HTML/JS, so they are visible in page source (never put a secret in one) and
-  changing the value in the Vercel dashboard does nothing until you **trigger a
-  new deployment that rebuilds**.
-- **Server secrets (`TURNSTILE_SECRET`) are read from `process.env` at request
-  time** and are deliberately kept out of the build output — verified by
-  grepping `.vercel/output` for the value after a build. Rotating one is a
-  dashboard edit plus a redeploy; no rebuild of the app is required.
 
 ## Project structure
 

@@ -1,12 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AnimatePresence, motion } from "framer-motion";
 import { Check, CheckCircle2, Loader2, XCircle } from "lucide-react";
 import { contactSchema, serviceOptions, type ContactFormValues } from "@lib/schemas/contact";
-import { trackLeadConversion } from "@lib/analytics";
-import TurnstileWidget, { turnstileConfigured } from "@components/security/TurnstileWidget";
-
 import ServiceIcon from "@components/ui/ServiceIcon";
 import allPlumbingIcon from "@assets/icons/all-plumbing.svg";
 import waterHeatersIcon from "@assets/icons/water-heaters.svg";
@@ -35,11 +32,6 @@ type Props = { onStepChange?: (step: number) => void };
 export default function ContactForm({ onStepChange }: Props) {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [consentExpanded, setConsentExpanded] = useState(false);
-  // Spam signals, kept outside react-hook-form so they never appear in the
-  // validation schema or surface an error to a real user.
-  const honeypotRef = useRef<HTMLInputElement>(null);
-  const mountedAtRef = useRef<number>(Date.now());
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const {
     register,
     handleSubmit,
@@ -72,21 +64,11 @@ export default function ContactForm({ onStepChange }: Props) {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...values,
-          company: honeypotRef.current?.value ?? "",
-          elapsedMs: Date.now() - mountedAtRef.current,
-          ...(turnstileToken ? { turnstileToken } : {}),
-        }),
+        body: JSON.stringify(values),
       });
       if (!res.ok) {
         throw new Error("Request failed");
       }
-      // Conversion fires here and nowhere else - after the server confirmed the
-      // lead. Firing on click would report leads the client never received.
-      trackLeadConversion("contact_form", {
-        services: values.serviceNeeded,
-      });
       reset();
     } catch {
       setSubmitError("Something went wrong sending your request. Please call us instead - we're happy to help.");
@@ -108,21 +90,6 @@ export default function ContactForm({ onStepChange }: Props) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-6">
-      {/* Honeypot. Off-screen rather than display:none (which some bots skip),
-          and removed from the tab order and the accessibility tree so no real
-          user - sighted, keyboard, or screen-reader - can ever reach it. */}
-      <div aria-hidden="true" className="absolute left-[-9999px] top-auto h-px w-px overflow-hidden">
-        <label htmlFor="company">Company (leave this field empty)</label>
-        <input
-          id="company"
-          type="text"
-          ref={honeypotRef}
-          tabIndex={-1}
-          autoComplete="off"
-          defaultValue=""
-        />
-      </div>
-
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <div className="flex flex-col gap-2 sm:col-span-2">
           <label htmlFor="fullName" className="font-sans text-sm font-semibold text-navy-700">
@@ -328,10 +295,6 @@ export default function ContactForm({ onStepChange }: Props) {
           </p>
         )}
       </div>
-
-      {turnstileConfigured && (
-        <TurnstileWidget onToken={setTurnstileToken} className="self-center" />
-      )}
 
       {submitError && <SubmitErrorBanner message={submitError} />}
       <SubmitState isSubmitting={isSubmitting} />

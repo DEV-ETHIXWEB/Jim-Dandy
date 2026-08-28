@@ -8,24 +8,17 @@ import { business } from "@data/site";
 
 <section class="hero-section relative overflow-hidden bg-navy-800 max-sm:flex max-sm:min-h-[calc(100svh-96px)] max-sm:flex-col">
   <div class="absolute inset-0 lg:hidden" aria-hidden="true">
-    {/* `media` on <source> is what actually gates the download. The wrapper's
-        `lg:hidden` only hides the element - a video with preload/autoplay still
-        fetches, so both this and the desktop framed video were each pulling the
-        same 4.3MB file on every viewport (one then aborted mid-flight).
-
-        fetchpriority="high" was also removed: this is an aria-hidden decorative
-        background at 30% opacity behind a gradient, and boosting it made a 4.3MB
-        video outrank the hero's own text for bandwidth. */}
     <video
       class="hero-video h-full w-full object-cover opacity-[0.3]"
       autoplay
       muted
       loop
       playsinline
-      preload="metadata"
-      poster="/pages/home/hero/seattle-hero-poster.webp"
+      preload="auto"
+      poster="/pages/home/hero/seattle-hero-poster.jpg"
+      fetchpriority="high"
     >
-      <source src="/pages/home/hero/seattle-hero.mp4" type="video/mp4" media="(max-width: 1023.98px)" />
+      <source src="/pages/home/hero/seattle-hero.mp4" type="video/mp4" />
     </video>
     <div class="absolute inset-0 bg-gradient-to-b from-navy-900/55 via-navy-800/65 to-navy-900/90"></div>
   </div>
@@ -58,12 +51,10 @@ import { business } from "@data/site";
           muted
           loop
           playsinline
-          preload="metadata"
-          poster="/pages/home/hero/seattle-hero-poster.webp"
+          preload="auto"
+          poster="/pages/home/hero/seattle-hero-poster.jpg"
         >
-          {/* Desktop-only counterpart to the background video above; see that
-              comment for why the download has to be gated on <source media>. */}
-          <source src="/pages/home/hero/seattle-hero.mp4" type="video/mp4" media="(min-width: 1024px)" />
+          <source src="/pages/home/hero/seattle-hero.mp4" type="video/mp4" />
         </video>
       </div>
     </div>
@@ -162,8 +153,10 @@ import { business } from "@data/site";
      between them); any slack while typing sits above the headline as breathing
      room. Desktop/tablet keep the original top-aligned headline. */
   @media (max-width: 639px) {
-    .hero-section h1 .rh-live {
-      align-self: end;
+    .hero-section h1 > span {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
     }
   }
 

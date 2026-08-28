@@ -18,9 +18,6 @@ import {
 import { STEP_PROMPT, STEP_QUICK_REPLIES, STEP_FIELD, nextStep, validateStep } from "@data/chatbot/flows";
 import { sanitizeInput, isThrottled } from "@lib/chatbot/security";
 import { pushEvent, CHAT_EVENTS } from "@lib/chatbot/analytics";
-import { trackLeadConversion } from "@lib/analytics";
-import TurnstileWidget, { turnstileConfigured } from "@components/security/TurnstileWidget";
-
 import { serviceNeededFromSlug, type ChatbotLeadValues } from "@lib/schemas/chatLead";
 // AVATAR RESTORE: uncomment this import when bringing the photo back.
 // import chatbotAvatar from "@assets/photos/chatbot-avatar-face.webp";
@@ -36,7 +33,7 @@ function derivePageContext(currentPath: string): PageContext {
     serviceSlug,
     isServiceArea: path.startsWith("/service-area"),
     isCoupons: path.startsWith("/coupons"),
-    isCommercial: path.startsWith("/commercial") || path.startsWith("/services/commercial"),
+    isCommercial: path.startsWith("/commercial"),
     isFinancing: path.startsWith("/financing"),
   };
 }
@@ -77,7 +74,6 @@ export default function ChatWidget({ currentPath = "/" }: Props) {
   });
   const [draft, setDraft] = useState("");
   const [typing, setTyping] = useState(false);
-  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const launcherRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -208,14 +204,11 @@ export default function ChatWidget({ currentPath = "/" }: Props) {
       const res = await fetch("/api/chat-lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(turnstileToken ? { ...payload, turnstileToken } : payload),
+        body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error("Request failed");
       dispatch({ type: "WIZARD_STEP", step: "success" });
       pushEvent(CHAT_EVENTS.WIZARD_SUCCESS, {});
-      // Same conversion event the contact form fires, so chat leads and form
-      // leads are counted identically - and only after a confirmed 2xx.
-      trackLeadConversion("chat_widget", { service: payload.serviceNeeded, urgency: payload.urgency });
       addBotMessage({
         text: "You're all set! A Jim Dandy dispatcher will follow up shortly to confirm the details.",
       });
@@ -454,15 +447,6 @@ export default function ChatWidget({ currentPath = "/" }: Props) {
                 </div>
               )}
             </div>
-
-            {/* Challenge, shown only while the wizard is waiting on the final
-                confirm - and only when Turnstile is configured at all. The
-                token rides along with the lead POST below. */}
-            {turnstileConfigured && context.wizard.active && context.wizard.step === "confirm" && (
-              <div className="border-t border-navy-100 bg-white px-3 pt-3">
-                <TurnstileWidget onToken={setTurnstileToken} />
-              </div>
-            )}
 
             {/* input */}
             <form
