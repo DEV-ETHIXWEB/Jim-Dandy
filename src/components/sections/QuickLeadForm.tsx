@@ -304,7 +304,7 @@ export default function QuickLeadForm({ defaultService, variant = "card" }: Prop
             onClick={() => setConsentOpen((v) => !v)}
             aria-expanded={consentOpen}
             aria-controls={id("consent-text")}
-            className={`font-bold underline underline-offset-2 ${ribbon ? "text-navy-900" : "text-brand-green-600 hover:text-navy-700"}`}
+            className={`-my-3 inline-block py-3 font-bold underline underline-offset-2 ${ribbon ? "text-navy-900" : "text-brand-green-600 hover:text-navy-700"}`}
           >
             {consentOpen ? "Hide details" : "Details"}
           </button>
@@ -386,7 +386,7 @@ export default function QuickLeadForm({ defaultService, variant = "card" }: Prop
       {submitButton("green")}
       <a
         href={business.phoneHref}
-        className="-mt-1 inline-flex items-center justify-center gap-1.5 self-center text-sm font-semibold text-navy-600 hover:text-navy-900"
+        className="-my-1 inline-flex min-h-11 items-center justify-center gap-1.5 self-center text-base font-semibold text-navy-700 hover:text-navy-900"
       >
         <Phone className="h-4 w-4 text-brand-green-600" aria-hidden="true" />
         Or call {business.phone} - 24/7

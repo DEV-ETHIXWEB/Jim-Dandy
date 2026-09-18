@@ -23,8 +23,9 @@ type Props = {
   /**
    * Puts the short quote form in the hero's right column: `true` for no
    * preselected service, or a service slug / "other" to preselect it. The
-   * page image, if any, is shown whole under the copy - at its own aspect
-   * ratio, so a face or hand is never cropped off.
+   * page's own photo is not shown in the hero: text and form are near-equal
+   * heights, and a photo under the text left the form floating beside a tall
+   * column. Each page shows its photos in its own content sections instead.
    */
   leadForm?: QuickServiceValue | true;
   class?: string;
@@ -100,7 +101,7 @@ const isSplit = !hasForm && align === "split" && !!image;
           <>
             {i > 0 && <ChevronRight className="h-3.5 w-3.5 shrink-0 text-white/35" aria-hidden="true" />}
             {crumb.href ? (
-              <a href={crumb.href} class="inline-flex min-h-6 items-center transition-colors hover:text-white">{crumb.name}</a>
+              <a href={crumb.href} class="-my-2.5 inline-flex min-h-11 items-center transition-colors hover:text-white">{crumb.name}</a>
             ) : (
               <span class="text-white">{crumb.name}</span>
             )}
@@ -121,7 +122,7 @@ const isSplit = !hasForm && align === "split" && !!image;
      </div>
 
       {hasForm && (
-        <div id="quick-quote" class="relative w-full max-w-xl scroll-mt-28 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-start lg:justify-self-end">
+        <div id="quick-quote" class="relative w-full scroll-mt-28 lg:col-start-2 lg:max-w-xl lg:row-span-2 lg:row-start-1 lg:self-start lg:justify-self-end">
           <div
             class="pointer-events-none absolute -inset-6 rounded-[48px] opacity-60 blur-2xl"
             style="background: radial-gradient(circle at 70% 30%, rgba(105,190,40,0.28), transparent 70%);"
@@ -169,23 +170,6 @@ const isSplit = !hasForm && align === "split" && !!image;
         </div>
       )}
 
-      {hasForm && image && (
-        <figure class="mt-2 w-full">
-          {/* Natural aspect ratio (no object-cover), capped in height; the
-              widths go well past the rendered size so it stays sharp on 2x
-              and 3x screens - Astro never upscales past the source. */}
-          <Image
-            src={image}
-            alt={imageAlt}
-            widths={[480, 720, 960, 1280, 1600, 2000]}
-            sizes="(min-width: 1280px) 620px, (min-width: 1024px) 50vw, calc(100vw - 2.5rem)"
-            quality={86}
-            loading="eager"
-            class="h-auto max-h-[380px] w-auto max-w-full rounded-[24px] [filter:drop-shadow(0_22px_28px_rgba(0,0,0,0.55))]"
-            style={{ maxWidth: `min(100%, ${Math.floor(image.width / 2)}px)` }}
-          />
-        </figure>
-      )}
      </div>
     </div>
 
