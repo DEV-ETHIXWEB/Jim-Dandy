@@ -2,7 +2,6 @@
 import Layout from "@layouts/Layout.astro";
 import Button from "@components/ui/Button.astro";
 import PageHero from "@components/sections/PageHero.astro";
-import ContactSection from "@components/sections/ContactSection.astro";
 import MotionInit from "@components/ui/MotionInit.astro";
 import StickyCta from "@components/ui/StickyCta.astro";
 import { business } from "@data/site";
@@ -35,12 +34,9 @@ const contactCards = [
   <PageHero
     eyebrow="We're Standing By"
     title="Let's Get It Fixed"
-    lead="Call anytime for emergencies, or send us the details below and a dispatcher will reach out to confirm your appointment - usually the same day."
+    lead="Call anytime for emergencies, or send us the details and a dispatcher will reach out to confirm your appointment - usually the same day."
     crumbs={[{ name: "Home", href: "/" }, { name: "Contact" }]}
-    ctas={[
-      { label: `Call ${business.phone}`, href: business.phoneHref, variant: "primary" },
-      { label: "Send a Message", href: "#contact", variant: "secondary" },
-    ]}
+    leadForm
   />
 
   <!-- Contact details + map -->
@@ -104,8 +100,6 @@ const contactCards = [
       </div>
     </div>
   </section>
-
-  <ContactSection />
 
   <StickyCta />
   <MotionInit />

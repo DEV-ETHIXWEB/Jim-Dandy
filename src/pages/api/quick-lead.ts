@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { quickLeadSchema, quickServiceLabel } from "@lib/schemas/quickLead";
+import { couponSummary, quickLeadSchema, quickServiceLabel } from "@lib/schemas/quickLead";
 import { CONSENT_TEXT } from "@lib/schemas/shared";
 import { handleLeadRequest } from "@lib/leads/handleLead";
 
@@ -19,6 +19,7 @@ export const POST: APIRoute = ({ request }) =>
       phone: data.phone,
       services: [quickServiceLabel(data.service)],
       otherServiceDetail: data.service === "other" ? data.otherServiceDetail : undefined,
+      coupon: couponSummary(data.coupon, data.couponEligible),
       sourcePage: data.sourcePage,
       consentText: CONSENT_TEXT,
     }),

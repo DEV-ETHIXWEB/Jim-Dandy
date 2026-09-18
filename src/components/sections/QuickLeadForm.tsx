@@ -1,10 +1,11 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckCircle2, ChevronDown, Loader2, Phone } from "lucide-react";
+import { CheckCircle2, ChevronDown, Loader2, Phone, TicketCheck, X } from "lucide-react";
 import { quickLeadSchema, quickServiceOptions, type QuickLeadValues, type QuickServiceValue } from "@lib/schemas/quickLead";
 import { CONSENT_TEXT } from "@lib/schemas/shared";
 import { business } from "@data/site";
+import { COUPON_APPLY_EVENT, COUPON_CHANGED_EVENT, findCoupon, type Coupon } from "@data/coupons";
 import { trackLeadConversion } from "@lib/analytics";
 import TurnstileWidget, { turnstileConfigured } from "@components/security/TurnstileWidget";
 import { SubmitErrorBanner } from "./ContactForm";
@@ -38,18 +39,61 @@ export default function QuickLeadForm({ defaultService, variant = "card" }: Prop
   useEffect(() => setHydrated(true), []);
   const honeypotRef = useRef<HTMLInputElement>(null);
   const mountedAtRef = useRef<number>(Date.now());
+  const [coupon, setCoupon] = useState<Coupon | null>(null);
+  const [couponFlash, setCouponFlash] = useState(false);
 
   const {
     register,
     handleSubmit,
     watch,
     setError,
+    setValue,
+    getValues,
+    clearErrors,
     formState: { errors, isSubmitting },
   } = useForm<QuickLeadValues>({
     resolver: zodResolver(quickLeadSchema),
     defaultValues: { service: defaultService, consent: undefined },
   });
   const service = watch("service");
+
+  // Coupons: tapped on /coupons (a custom event) or linked with ?coupon=<id>.
+  // The URL keeps the choice, so a tap before this form hydrated still lands.
+  const applyCoupon = (next: Coupon | null, announce = true) => {
+    setCoupon(next);
+    // In the form values too, so the eligibility rule is checked in the browser.
+    setValue("coupon", next?.id);
+    setValue("couponEligible", undefined);
+    clearErrors("couponEligible");
+    if (next?.service && !getValues("service")) setValue("service", next.service, { shouldValidate: false });
+    const url = new URL(window.location.href);
+    if (next) url.searchParams.set("coupon", next.id);
+    else url.searchParams.delete("coupon");
+    window.history.replaceState(window.history.state, "", url);
+    window.dispatchEvent(new CustomEvent(COUPON_CHANGED_EVENT, { detail: { id: next?.id ?? null } }));
+    if (next && announce) {
+      setCouponFlash(true);
+      window.setTimeout(() => setCouponFlash(false), 1400);
+    }
+  };
+
+  useEffect(() => {
+    const fromUrl = findCoupon(new URLSearchParams(window.location.search).get("coupon"));
+    if (fromUrl) applyCoupon(fromUrl, false);
+    const onApply = (e: Event) => {
+      const next = findCoupon((e as CustomEvent<{ id: string }>).detail?.id);
+      if (!next) return;
+      applyCoupon(next);
+      // Keyboard/mouse users land in the first field; on touch screens that
+      // would pop the keyboard over the coupon they just applied.
+      if (window.matchMedia("(hover: hover)").matches) {
+        window.setTimeout(() => document.getElementById(id("fullName"))?.focus({ preventScroll: true }), 450);
+      }
+    };
+    window.addEventListener(COUPON_APPLY_EVENT, onApply);
+    return () => window.removeEventListener(COUPON_APPLY_EVENT, onApply);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onSubmit = async (values: QuickLeadValues) => {
     setSubmitError(null);
@@ -61,6 +105,8 @@ export default function QuickLeadForm({ defaultService, variant = "card" }: Prop
         body: JSON.stringify({
           ...values,
           otherServiceDetail: values.service === "other" ? values.otherServiceDetail : undefined,
+          coupon: coupon?.id,
+          couponEligible: coupon?.eligibility ? values.couponEligible === true : undefined,
           sourcePage: window.location.pathname,
           company: honeypotRef.current?.value ?? "",
           elapsedMs: Date.now() - mountedAtRef.current,
@@ -83,7 +129,7 @@ export default function QuickLeadForm({ defaultService, variant = "card" }: Prop
     }
 
     // Conversion only after the server confirmed the lead was delivered.
-    trackLeadConversion("quick_form", { service: values.service, form_variant: variant });
+    trackLeadConversion("quick_form", { service: values.service, form_variant: variant, coupon: coupon?.id });
     setSent(true);
   };
 
@@ -100,6 +146,12 @@ export default function QuickLeadForm({ defaultService, variant = "card" }: Prop
         <p className="max-w-sm text-navy-600">
           A Jim Dandy dispatcher will call or text you shortly. We've also emailed you a confirmation.
         </p>
+        {coupon && (
+          <p className="inline-flex items-center gap-2 rounded-full bg-brand-green-50 px-4 py-1.5 text-sm font-semibold text-brand-green-600">
+            <TicketCheck className="h-4 w-4" aria-hidden="true" />
+            {coupon.title} is on your request
+          </p>
+        )}
       </div>
     );
   }
@@ -190,6 +242,52 @@ export default function QuickLeadForm({ defaultService, variant = "card" }: Prop
     </div>
   );
 
+  const couponBlock = coupon && (
+    <div
+      role="status"
+      className={`relative flex flex-col gap-2 rounded-xl border-2 border-dashed border-brand-green-500 bg-brand-green-50 px-4 py-3 transition-shadow duration-500 ${
+        couponFlash ? "shadow-[0_0_0_6px_rgba(105,190,40,0.35)]" : ""
+      }`}
+    >
+      <div className="flex items-start gap-3">
+        <TicketCheck className="mt-0.5 h-5 w-5 shrink-0 text-brand-green-600" aria-hidden="true" />
+        <div className="min-w-0 flex-1">
+          <p className="text-xs font-bold uppercase tracking-wider text-brand-green-600">Coupon applied</p>
+          <p className="font-semibold leading-snug text-navy-800">
+            {coupon.title} <span className="whitespace-nowrap font-mono text-sm text-navy-500">({coupon.code})</span>
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => applyCoupon(null)}
+          className="-m-1 inline-flex shrink-0 items-center gap-1 rounded-md p-1 text-sm font-semibold text-navy-500 hover:text-navy-900"
+        >
+          <X className="h-4 w-4" aria-hidden="true" />
+          Remove
+        </button>
+      </div>
+      {coupon.eligibility && (
+        <label className="flex cursor-pointer items-start gap-2.5 pl-8">
+          <input
+            type="checkbox"
+            className="mt-0.5 h-5 w-5 shrink-0 cursor-pointer accent-[#457c17]"
+            aria-invalid={!!errors.couponEligible}
+            {...register("couponEligible")}
+          />
+          <span className="text-sm font-semibold text-navy-800">
+            {coupon.eligibility}
+            <span className="block text-xs font-normal text-navy-500">Your dispatcher confirms eligibility when booking.</span>
+          </span>
+        </label>
+      )}
+      {errors.couponEligible && (
+        <p role="alert" className="pl-8 text-sm text-red-600">
+          {errors.couponEligible.message}
+        </p>
+      )}
+    </div>
+  );
+
   const consent = (
     <div className="flex flex-col gap-1">
       <label className="flex cursor-pointer items-start gap-2.5">
@@ -242,6 +340,7 @@ export default function QuickLeadForm({ defaultService, variant = "card" }: Prop
           {field("email", "Email", "email", "Eg. paul@email.com", "email")}
           {serviceSelect}
           {otherField && <div className="sm:col-span-2 lg:order-1">{otherField}</div>}
+          {couponBlock && <div className="sm:col-span-2 lg:order-1 lg:col-span-5">{couponBlock}</div>}
           <div className="sm:col-span-2 lg:order-1 lg:col-span-5">{consent}</div>
           {turnstileConfigured && (
             <div className="sm:col-span-2 lg:order-1 lg:col-span-5">
@@ -280,6 +379,7 @@ export default function QuickLeadForm({ defaultService, variant = "card" }: Prop
       </div>
       {serviceSelect}
       {otherField}
+      {couponBlock}
       {consent}
       {turnstileConfigured && <TurnstileWidget onToken={setTurnstileToken} className="self-center" />}
       {submitError && <SubmitErrorBanner message={submitError} />}

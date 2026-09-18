@@ -42,7 +42,9 @@ import { business } from "@data/site";
         <Button href={business.financingUrl} variant="secondary" fullWidth class="max-sm:px-3">Get Financed</Button>
       </div>
 
-      {/* Mobile/tablet image. Wrapped so the rotating badge can sit over its
+      {/* Mobile/tablet image, shown whole: it used to bleed to 125% width on
+          phones, which pushed the crew member on the far right off screen.
+          Wrapped so the rotating badge can sit over its
           bottom-left corner; the image keeps its exact bleed positioning. The
           badge is anchored with a flex overlay rather than percentage bottom,
           which wouldn't resolve against the image's auto height. */}
@@ -53,7 +55,7 @@ import { business } from "@data/site";
           width={2600}
           height={980}
           loading="lazy"
-          class="ml-[calc(1.25rem-10%)] mr-0 h-auto w-[125%] max-w-none md:mx-[-1.25rem] md:w-[calc(100%+2.5rem)] md:max-w-full"
+          class="h-auto w-full max-w-full md:mx-[-1.25rem] md:w-[calc(100%+2.5rem)]"
         />
         <div class="pointer-events-none absolute inset-0 z-20 flex items-end justify-start">
           <YearsBadge

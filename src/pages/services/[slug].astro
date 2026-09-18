@@ -138,15 +138,17 @@ const seo = serviceSeo[service.slug];
             style="background: radial-gradient(circle at 30% 30%, rgba(105,190,40,0.22), transparent 70%);"
             aria-hidden="true"
           ></div>
-          <div class="relative overflow-hidden rounded-[32px] border border-navy-100 shadow-card">
+          {/* Whole photo at its own aspect ratio (no crop), and never wider than
+              half its file width so it stays sharp on 2x screens. */}
+          <div class="relative mx-auto overflow-hidden rounded-[32px] border border-navy-100 shadow-card" style={{ maxWidth: `${Math.floor(media.overview.width / 2)}px` }}>
             <Image
               src={media.overview}
               alt={media.overviewAlt}
-              widths={[480, 720, 960]}
-              sizes="(min-width: 1024px) 45vw, 100vw"
-              quality={82}
+              widths={[480, 720, 960, 1280, 1600]}
+              sizes="(min-width: 1280px) 560px, (min-width: 1024px) 45vw, calc(100vw - 2.5rem)"
+              quality={85}
               loading="lazy"
-              class="aspect-[4/3] h-full w-full object-cover"
+              class="h-auto w-full"
             />
           </div>
         </div>

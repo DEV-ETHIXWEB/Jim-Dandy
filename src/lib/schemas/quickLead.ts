@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { services } from "@data/site";
+import { coupons, findCoupon, type CouponId } from "@data/coupons";
 import { fullNameField, emailField, phoneField, consentField, shortTextField, sourcePageField } from "./shared";
 
 /**
@@ -16,6 +17,7 @@ export const quickServiceOptions = [
 export type QuickServiceValue = (typeof services)[number]["slug"] | "other";
 
 const serviceValues = quickServiceOptions.map((o) => o.value) as [QuickServiceValue, ...QuickServiceValue[]];
+const couponIds = coupons.map((c) => c.id) as [CouponId, ...CouponId[]];
 
 export const quickLeadSchema = z
   .object({
@@ -26,13 +28,29 @@ export const quickLeadSchema = z
     otherServiceDetail: shortTextField(120).optional(),
     consent: consentField,
     sourcePage: sourcePageField,
+    /** A coupon tapped on /coupons. Unknown ids are dropped, not rejected. */
+    coupon: z.enum(couponIds).optional().catch(undefined),
+    /** The customer's tick on a conditional offer ("I'm a first-time customer"). */
+    couponEligible: z.boolean().optional(),
   })
   .refine((data) => data.service !== "other" || Boolean(data.otherServiceDetail?.trim()), {
     message: "Tell us briefly what you need",
     path: ["otherServiceDetail"],
+  })
+  .refine((data) => !findCoupon(data.coupon)?.eligibility || data.couponEligible === true, {
+    message: "Confirm you qualify for this offer, or remove the coupon",
+    path: ["couponEligible"],
   });
 
 export type QuickLeadValues = z.infer<typeof quickLeadSchema>;
+
+/** How a chosen coupon reads in the lead emails. */
+export function couponSummary(id: CouponId | undefined, eligible?: boolean): string | undefined {
+  const coupon = findCoupon(id);
+  if (!coupon) return undefined;
+  const confirmed = coupon.eligibility && eligible ? ` - customer confirmed: "${coupon.eligibility}"` : "";
+  return `${coupon.title} (code ${coupon.code})${confirmed}`;
+}
 
 export function quickServiceLabel(value: QuickServiceValue): string {
   return value === "other" ? "Other" : (services.find((s) => s.slug === value)?.label ?? value);

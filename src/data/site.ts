@@ -14,7 +14,9 @@ export const business = {
   yearsInBusiness: new Date().getFullYear() - 1908,
   licenses: ["JIMDADE791MG", "JIMDADS879B3"],
   rating: { value: 4.8, count: 177 },
-  scheduleUrl: "/contact",
+  // Every "Schedule Online" button lands directly on the quote form at the
+  // top of the contact page, not on the page's first screen of copy.
+  scheduleUrl: "/contact#quick-quote",
   // The "Get Financed" CTA in the hero and final CTA. This pointed at /coupons,
   // which meant the FAQ answer telling customers to "use the Get Financed link
   // to apply" landed them on a discounts page instead of the financing page.

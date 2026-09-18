@@ -23,7 +23,8 @@ type Props = {
   /**
    * Puts the short quote form in the hero's right column: `true` for no
    * preselected service, or a service slug / "other" to preselect it. The
-   * page image, if any, moves behind the hero as a dimmed backdrop.
+   * page image, if any, is shown whole under the copy - at its own aspect
+   * ratio, so a face or hand is never cropped off.
    */
   leadForm?: QuickServiceValue | true;
   class?: string;
@@ -63,20 +64,6 @@ const isSplit = !hasForm && align === "split" && !!image;
 ---
 
 <section class:list={["relative overflow-hidden bg-navy-900", className]}>
-  {hasForm && image && (
-    <div class="pointer-events-none absolute inset-0" aria-hidden="true">
-      <Image
-        src={image}
-        alt=""
-        widths={[640, 1024, 1600]}
-        sizes="100vw"
-        quality={70}
-        loading="eager"
-        class="h-full w-full object-cover opacity-30"
-      />
-      <div class="absolute inset-0 bg-gradient-to-b from-navy-900/80 via-navy-900/85 to-navy-900 lg:bg-gradient-to-r lg:from-navy-900 lg:via-navy-900/90 lg:to-navy-900/55"></div>
-    </div>
-  )}
   <!-- signature dual green glow, matched to the homepage hero -->
   <div
     class="pointer-events-none absolute inset-0 opacity-50"
@@ -96,7 +83,7 @@ const isSplit = !hasForm && align === "split" && !!image;
     class:list={[
       "container-page relative py-16 lg:py-24",
       hasForm
-        ? "grid grid-cols-1 gap-y-8 lg:grid-cols-[1.1fr_minmax(0,0.9fr)] lg:grid-rows-[auto_auto] lg:gap-x-14 lg:gap-y-6"
+        ? "grid grid-cols-1 gap-y-8 lg:grid-cols-[1.1fr_minmax(0,0.9fr)] lg:grid-rows-[auto_1fr] lg:gap-x-14 lg:gap-y-6"
         : isSplit
           ? "grid grid-cols-1 items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]"
           : "flex flex-col items-start",
@@ -107,7 +94,7 @@ const isSplit = !hasForm && align === "split" && !!image;
         while desktop places the form in the right column across both rows.
         Without the form both wrappers are display:contents - layout unchanged. */}
     <div class={hasForm ? "contents" : "flex flex-col items-start gap-6"}>
-     <div class={hasForm ? "flex flex-col items-start gap-6 lg:col-start-1 lg:row-start-1 lg:self-end" : "contents"}>
+     <div class={hasForm ? "flex flex-col items-start gap-6 lg:col-start-1 lg:row-start-1 lg:self-start" : "contents"}>
       <nav aria-label="Breadcrumb" class="flex flex-wrap items-center gap-1.5 text-sm text-white/60">
         {crumbs.map((crumb, i) => (
           <>
@@ -134,7 +121,7 @@ const isSplit = !hasForm && align === "split" && !!image;
      </div>
 
       {hasForm && (
-        <div id="quick-quote" class="relative w-full max-w-xl scroll-mt-28 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center lg:justify-self-end">
+        <div id="quick-quote" class="relative w-full max-w-xl scroll-mt-28 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-start lg:justify-self-end">
           <div
             class="pointer-events-none absolute -inset-6 rounded-[48px] opacity-60 blur-2xl"
             style="background: radial-gradient(circle at 70% 30%, rgba(105,190,40,0.28), transparent 70%);"
@@ -181,6 +168,24 @@ const isSplit = !hasForm && align === "split" && !!image;
           <span class="text-sm font-semibold text-white/70">Serving Puget Sound since {business.founded}</span>
         </div>
       )}
+
+      {hasForm && image && (
+        <figure class="mt-2 w-full">
+          {/* Natural aspect ratio (no object-cover), capped in height; the
+              widths go well past the rendered size so it stays sharp on 2x
+              and 3x screens - Astro never upscales past the source. */}
+          <Image
+            src={image}
+            alt={imageAlt}
+            widths={[480, 720, 960, 1280, 1600, 2000]}
+            sizes="(min-width: 1280px) 620px, (min-width: 1024px) 50vw, calc(100vw - 2.5rem)"
+            quality={86}
+            loading="eager"
+            class="h-auto max-h-[380px] w-auto max-w-full rounded-[24px] [filter:drop-shadow(0_22px_28px_rgba(0,0,0,0.55))]"
+            style={{ maxWidth: `min(100%, ${Math.floor(image.width / 2)}px)` }}
+          />
+        </figure>
+      )}
      </div>
     </div>
 
@@ -195,9 +200,9 @@ const isSplit = !hasForm && align === "split" && !!image;
           <Image
             src={image}
             alt={imageAlt}
-            widths={[480, 720, 960]}
-            sizes="(min-width: 1024px) 45vw, 100vw"
-            quality={82}
+            widths={[480, 720, 960, 1280, 1600]}
+            sizes="(min-width: 1280px) 560px, (min-width: 1024px) 45vw, calc(100vw - 2.5rem)"
+            quality={85}
             loading="eager"
             class="aspect-[4/3] h-full w-full object-cover"
           />
