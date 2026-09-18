@@ -94,6 +94,7 @@ const seo = serviceSeo[service.slug];
   {allFaqs.length > 0 && <script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema(allFaqs))} slot="head" />}
 
   <PageHero
+    leadForm={service.slug}
     eyebrow={extra?.tagline ?? "Licensed Plumbing"}
     title={seo.heading}
     lead={service.intro}

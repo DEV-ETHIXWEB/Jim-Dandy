@@ -10,6 +10,7 @@ import StickyCta from "@components/ui/StickyCta.astro";
 import { business, serviceAreaCities, serviceCounties } from "@data/site";
 import { breadcrumbSchema } from "@lib/seo";
 import { ChevronRight, MapPin, Phone } from "lucide-react";
+import QuickLeadForm from "@components/sections/QuickLeadForm";
 import skyline from "@assets/photos/seattle-skyline.webp";
 
 const crumbs = breadcrumbSchema([
@@ -43,7 +44,10 @@ const crumbs = breadcrumbSchema([
       aria-hidden="true"
     ></div>
 
-    <div class="container-page relative flex flex-col items-start gap-6 py-20 lg:py-32">
+    {/* Phones read title -> form -> details; desktop puts the form in the
+        right column across both rows (same layout as PageHero with a form). */}
+    <div class="container-page relative grid grid-cols-1 gap-y-8 py-20 lg:grid-cols-[1.1fr_minmax(0,0.9fr)] lg:grid-rows-[auto_auto] lg:gap-x-14 lg:gap-y-6 lg:py-24">
+      <div class="flex flex-col items-start gap-6 lg:col-start-1 lg:row-start-1 lg:self-end">
       <nav aria-label="Breadcrumb" class="flex items-center gap-1.5 text-sm text-white/60">
         <a href="/" class="hover:text-white">Home</a>
         <ChevronRight className="h-3.5 w-3.5 text-white/35" aria-hidden="true" />
@@ -56,13 +60,20 @@ const crumbs = breadcrumbSchema([
       <h1 class="max-w-3xl text-balance font-display text-[38px] font-black italic leading-[1.03] text-cloud sm:text-[52px] lg:text-[58px]">
         Proudly Serving the Puget Sound Region
       </h1>
+      </div>
+
+      <div id="quick-quote" class="w-full max-w-xl scroll-mt-28 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center lg:justify-self-end">
+        <QuickLeadForm client:idle />
+      </div>
+
+      <div class="flex flex-col items-start gap-6 lg:col-start-1 lg:row-start-2 lg:self-start">
       <p class="max-w-xl text-lg leading-relaxed text-white/80">
         Licensed plumbers dispatched same-day across King, Snohomish, and Pierce Counties - with 24/7
         emergency response in every community we cover.
       </p>
       <div class="mt-1 flex w-full flex-col gap-4 sm:w-auto sm:flex-row">
-        <Button href={business.scheduleUrl} variant="primary">Schedule Online</Button>
         <Button href={business.phoneHref} variant="secondary">Call {business.phone}</Button>
+      </div>
       </div>
     </div>
   </section>

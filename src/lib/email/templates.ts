@@ -9,7 +9,7 @@
  * render consistently.
  */
 
-export type LeadSource = "contact_form" | "chat";
+export type LeadSource = "contact_form" | "quick_form" | "chat";
 
 export type LeadRecord = {
   id: string;
@@ -171,7 +171,8 @@ function button(label: string, href: string, variant: "green" | "navy" = "green"
 }
 
 function sourceLabel(source: LeadSource): string {
-  return source === "chat" ? "Website chat assistant" : "Website contact form";
+  if (source === "chat") return "Website chat assistant";
+  return source === "quick_form" ? "Website quick quote form" : "Website contact form";
 }
 
 /** Internal notification: everything the dispatcher needs to call the customer back. */
