@@ -31,12 +31,8 @@ import { business } from "@data/site";
       subtitle={`Jim Dandy has served Seattle since ${business.founded}. We're available 24/7 - call or schedule online.`}
     />
 
-    {/* One photo for every breakpoint, kept inside the page width. It used to
-        bleed off the right edge on desktop (and to 125% on phones), which cut
-        off the crew member on the far right. The 118-years badge sits in the
-        frame's empty top-left corner, where it covers nobody. */}
-    <div class="grid grid-cols-1 items-center gap-10 lg:grid-cols-[18rem_1fr] lg:gap-14">
-      <div class="relative grid grid-cols-2 gap-3 sm:flex sm:flex-row sm:justify-center sm:gap-4 lg:flex-col">
+    <div class="grid grid-cols-1 items-center gap-10 lg:grid-cols-[auto_1fr] lg:[min-height:clamp(255px,27.6vw,706px)]">
+      <div class="relative grid grid-cols-2 gap-3 sm:flex sm:flex-row sm:gap-4 lg:flex-col lg:w-72">
         <div
           class="pointer-events-none absolute -inset-10 -z-10 rounded-full opacity-80 blur-3xl"
           style="background: radial-gradient(circle, rgba(105,190,40,0.16), rgba(105,190,40,0) 70%);"
@@ -46,24 +42,49 @@ import { business } from "@data/site";
         <Button href={business.financingUrl} variant="secondary" fullWidth class="max-sm:px-3">Get Financed</Button>
       </div>
 
-      <div class="group relative mx-auto w-full max-w-[1000px]">
+      {/* Mobile/tablet image. Wrapped so the rotating badge can sit over its
+          bottom-left corner; the image keeps its exact bleed positioning. The
+          badge is anchored with a flex overlay rather than percentage bottom,
+          which wouldn't resolve against the image's auto height. */}
+      <div class="relative lg:hidden">
         <Image
           src={finalCtaPhoto}
           alt="The full Jim Dandy Sewer & Plumbing crew standing together in front of a service truck"
-          widths={[640, 960, 1280, 1600, 2000, 2600]}
-          sizes="(min-width: 1280px) 900px, (min-width: 1024px) 68vw, calc(100vw - 2.5rem)"
-          quality={86}
+          width={2600}
+          height={980}
           loading="lazy"
-          class="h-auto w-full transition-transform duration-500 ease-out group-hover:-translate-y-1.5"
+          class="ml-[calc(1.25rem-10%)] mr-0 h-auto w-[125%] max-w-none md:mx-[-1.25rem] md:w-[calc(100%+2.5rem)] md:max-w-full"
         />
-        <div class="pointer-events-none absolute left-0 top-0 z-20 -translate-x-[8%] -translate-y-[22%]">
+        <div class="pointer-events-none absolute inset-0 z-20 flex items-end justify-start">
           <YearsBadge
             years={business.yearsInBusiness}
             year={business.founded}
-            class="h-[clamp(72px,13vw,132px)] w-[clamp(72px,13vw,132px)]"
+            class="mb-[2%] ml-[4%] h-[clamp(78px,17vw,122px)] w-[clamp(78px,17vw,122px)] max-sm:h-[clamp(68px,14.8vw,106px)] max-sm:w-[clamp(68px,14.8vw,106px)]"
           />
         </div>
       </div>
+    </div>
+  </div>
+
+  <div class="group pointer-events-none absolute -right-[50px] hidden lg:block lg:bottom-28 lg:[width:clamp(630px,calc(60.5vw_+_70px),1620px)]" aria-hidden="true">
+    <Image
+      src={finalCtaPhoto}
+      alt=""
+      width={2600}
+      height={980}
+      loading="lazy"
+      class="pointer-events-auto h-auto w-full transition-all duration-500 ease-out will-change-transform hover:-translate-y-2 hover:scale-[1.03] hover:drop-shadow-[0_25px_50px_rgba(105,190,40,0.45)]"
+    />
+    {/* Same rotating 118-years badge as the hero, anchored to the photo's
+        bottom-left via a flex overlay (percentage bottom won't resolve here).
+        Sits 10px lower at rest and rises back to its anchored spot as the image
+        lifts on hover. */}
+    <div class="pointer-events-none absolute inset-0 z-20 flex items-end justify-start">
+      <YearsBadge
+        years={business.yearsInBusiness}
+        year={business.founded}
+        class="mb-[2%] ml-[calc(6%+15px)] h-[clamp(104px,9.5vw,150px)] w-[clamp(104px,9.5vw,150px)] translate-y-[10px] transition-transform duration-500 ease-out group-hover:translate-y-0"
+      />
     </div>
   </div>
 </section>
