@@ -41,8 +41,8 @@ For Jim Dandy Sewer & Plumbing, trenchless technology offers significant advanta
 - Saves Your Yard: The most obvious benefit. No massive trenches means your lawn, trees, patio, and driveway remain undisturbed.
 - Faster Completion: Traditional sewer line replacement can take a week or more. Trenchless methods are often completed in one to three days.
 - Cost-Effective Over Time: While the initial cost can sometimes be similar to traditional digging, you save thousands by eliminating the need for extensive landscaping, concrete, or asphalt restoration.
-- Superior Materials: Both CIPP liners and HDPE replacement pipes are non-corrosive and impervious to tree roots, meaning the repair often lasts longer than the original clay or concrete pipes.If you have slow drains, recurring clogs, or suspect sewer line damage, contact us immediately. Jim Dandy can use a **sewer scope inspection** to determine if trenchless technology is the right solution for your home!
+- Superior Materials: Both CIPP liners and HDPE replacement pipes are non-corrosive and impervious to tree roots, meaning the repair often lasts longer than the original clay or concrete pipes.
+
+If you have slow drains, recurring clogs, or suspect sewer line damage, contact us immediately. Jim Dandy can use a **sewer scope inspection** to determine if trenchless technology is the right solution for your home!
 
 **Ready to explore a less destructive way to repair your sewer line? Contact us today to schedule your consultation!**
-
-<div

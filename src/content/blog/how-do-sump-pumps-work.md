@@ -50,10 +50,10 @@ While basic maintenance can be handled by most homeowners, there are times when 
 
 - If the pump is making unusual noises or running constantly.
 - If you notice the pump not activating when it should.
-- If the water is not being discharged properly, leading to potential flooding.A sump pump is a vital component in protecting your home from water damage. By understanding how it works and keeping it well-maintained, you can ensure it performs effectively when you need it most.
+- If the water is not being discharged properly, leading to potential flooding.
+
+A sump pump is a vital component in protecting your home from water damage. By understanding how it works and keeping it well-maintained, you can ensure it performs effectively when you need it most.
 
 ## Conclusion: Keeping Your Basement Dry with a Well-Maintained Sump Pump
 
 By following these guidelines, you can keep your sump pump in top condition and your basement dry. Regular checks and maintenance will go a long way in preventing potential water damage and ensuring your home's safety. If you encounter any issues that you're not comfortable addressing, don't hesitate to reach out to a professional for assistance.
-
-<div

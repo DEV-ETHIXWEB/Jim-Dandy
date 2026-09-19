@@ -168,7 +168,8 @@ const articleSchema = {
   .article-body strong {
     color: var(--color-navy-900);
   }
-  .article-body a {
+  /* Inline links in the article text only - not buttons placed inside it. */
+  .article-body :is(p, li) > a {
     color: var(--color-brand-green-600);
     font-weight: 600;
     text-decoration: underline;

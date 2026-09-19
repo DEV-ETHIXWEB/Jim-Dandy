@@ -40,12 +40,12 @@ You can actually check your own water pressure quite easily. Most hardware store
 
 - Screw the gauge onto the faucet.
 - Ensure all other water in the house is turned off (no showers, dishwashers, or sprinklers running).
-- Turn the faucet all the way on and read the dial.If that dial reads **above 75 or 80 PSI**, you should take action immediately to protect your appliances and pipes.
+- Turn the faucet all the way on and read the dial.
+
+If that dial reads **above 75 or 80 PSI**, you should take action immediately to protect your appliances and pipes.
 
 ### Get Your Plumbing Back in Balance
 
 Whether you are tired of a weak shower or worried that your pipes are under too much stress, Jim Dandy Sewer & Plumbing is here to help. Our expert team can test your system, diagnose the root cause of the pressure issue, and provide a lasting solution that keeps your home safe and functional.
 
 Don't let pressure problems damage your home or ruin your morning routine. **Contact us today** to schedule a professional pressure test and plumbing inspection!
-
-<div

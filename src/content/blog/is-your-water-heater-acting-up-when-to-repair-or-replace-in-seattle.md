@@ -57,5 +57,3 @@ When you do replace it, consider upgrading to a **tankless water heater**. They 
 Whether you need a quick repair or a full system upgrade, don't let a temperamental water heater ruin your winter. Call the trusted professionals at Jim Dandy Sewer & Plumbing. We'll give you an honest assessment and get your hot water flowing reliably again!
 
 **Need a professional opinion on your water heater? Call Jim Dandy to schedule an appointment today!**
-
-<div

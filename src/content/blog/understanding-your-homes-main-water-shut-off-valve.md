@@ -44,12 +44,12 @@ Often found in older Seattle homes, these can be more problematic.
 Once you've located your valve, it's crucial to test it periodically. Valves that go untouched for years can become corroded or frozen in position.
 
 - Testing a Ball Valve: Turn it a quarter-turn, confirm the water flow stops (e.g., by checking a running faucet), and then turn it back on.
-- Testing a Gate Valve: Turn it just a half-turn clockwise, then turn it back. If it feels stiff, do not force it. Forcing a stuck gate valve can cause it to break.If your valve is old, corroded, or you have a gate valve that you cannot turn easily, we strongly recommend having a professional plumber replace it with a modern, reliable ball valve. This simple preventative measure is the best insurance you can buy against water damage.
+- Testing a Gate Valve: Turn it just a half-turn clockwise, then turn it back. If it feels stiff, do not force it. Forcing a stuck gate valve can cause it to break.
+
+If your valve is old, corroded, or you have a gate valve that you cannot turn easily, we strongly recommend having a professional plumber replace it with a modern, reliable ball valve. This simple preventative measure is the best insurance you can buy against water damage.
 
 ## Don't Wait for an Emergency—Secure Your Valve Today
 
 Knowing where and how to shut off your water is the first step in plumbing preparedness. If you are unsure about the condition of your main shut-off valve, if it’s rusted, or if you can’t find it, the Jim Dandy team is ready to help you locate and service it.
 
 A functioning, easy-to-use main water shut-off valve is peace of mind. **Contact us today** to schedule a home plumbing inspection and valve maintenance service! We’ll ensure you’re ready for any unexpected plumbing emergency.
-
-<div

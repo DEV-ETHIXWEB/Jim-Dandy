@@ -74,5 +74,3 @@ No matter how well you prepare, emergencies can happen.
 - Contact Professionals: If you suspect a frozen pipe, leak, or sewer backup, do not attempt a major DIY repair. Using an open flame to thaw a pipe is extremely dangerous.**Call Jim Dandy Sewer & Plumbing!** We are your local Seattle experts, ready to handle everything from emergency drain cleaning to full sewer line repair, keeping your home safe and dry all winter long.
 
 **Don't let the Seattle winter wreak havoc on your plumbing. Contact Us today to schedule a pre-winter inspection!**
-
-<div
