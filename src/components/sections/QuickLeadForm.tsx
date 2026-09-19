@@ -1,8 +1,14 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CheckCircle2, ChevronDown, Loader2, Phone, TicketCheck, X } from "lucide-react";
-import { quickLeadSchema, quickServiceOptions, type QuickLeadValues, type QuickServiceValue } from "@lib/schemas/quickLead";
+import { Check, CheckCircle2, ChevronDown, Loader2, MoreHorizontal, Phone, TicketCheck, X } from "lucide-react";
+import emergencyIcon from "@assets/icons/emergency.svg";
+import drainsIcon from "@assets/icons/drains-clogs.svg";
+import sewerIcon from "@assets/icons/sewer-services.svg";
+import waterHeaterIcon from "@assets/icons/water-heaters.svg";
+import allPlumbingIcon from "@assets/icons/all-plumbing.svg";
+import commercialIcon from "@assets/icons/commercial.svg";
+import { quickLeadFormSchema, quickServiceOptions, type QuickLeadValues, type QuickServiceValue } from "@lib/schemas/quickLead";
 import { CONSENT_TEXT } from "@lib/schemas/shared";
 import { business } from "@data/site";
 import { COUPON_APPLY_EVENT, COUPON_CHANGED_EVENT, findCoupon, type Coupon } from "@data/coupons";
@@ -15,6 +21,21 @@ type Props = {
   defaultService?: QuickServiceValue;
   /** "card" sits in a page hero; "ribbon" is the horizontal band under the home hero. */
   variant?: "card" | "ribbon";
+  /**
+   * "dropdown" (compact, one service) or "chips": tappable icon tiles where the
+   * visitor can pick as many services as they need. Both send a `services` list.
+   */
+  serviceStyle?: "dropdown" | "chips";
+};
+
+/** The same full-colour brand icons as the service cards. */
+const SERVICE_ICONS: Partial<Record<QuickServiceValue, { src: string }>> = {
+  emergency: emergencyIcon,
+  "drains-clogs": drainsIcon,
+  "sewer-services": sewerIcon,
+  "water-heaters": waterHeaterIcon,
+  "all-plumbing": allPlumbingIcon,
+  commercial: commercialIcon,
 };
 
 /**
@@ -23,7 +44,7 @@ type Props = {
  * same pipeline as the full contact form - origin check, rate limit, honeypot,
  * fill timing, Turnstile, validation, then the office + customer emails.
  */
-export default function QuickLeadForm({ defaultService, variant = "card" }: Props) {
+export default function QuickLeadForm({ defaultService, variant = "card", serviceStyle = "dropdown" }: Props) {
   const uid = useId();
   const id = (name: string) => `${uid}-${name}`;
   const ribbon = variant === "ribbon";
@@ -52,10 +73,14 @@ export default function QuickLeadForm({ defaultService, variant = "card" }: Prop
     clearErrors,
     formState: { errors, isSubmitting },
   } = useForm<QuickLeadValues>({
-    resolver: zodResolver(quickLeadSchema),
-    defaultValues: { service: defaultService, consent: undefined },
+    resolver: zodResolver(quickLeadFormSchema),
+    defaultValues: { services: defaultService ? [defaultService] : [], consent: undefined },
   });
-  const service = watch("service");
+  const chosen: QuickServiceValue[] = watch("services") ?? [];
+  const toggleService = (value: QuickServiceValue) => {
+    const next = chosen.includes(value) ? chosen.filter((v) => v !== value) : [...chosen, value];
+    setValue("services", next, { shouldValidate: !!errors.services });
+  };
 
   // Coupons: tapped on /coupons (a custom event) or linked with ?coupon=<id>.
   // The URL keeps the choice, so a tap before this form hydrated still lands.
@@ -65,7 +90,7 @@ export default function QuickLeadForm({ defaultService, variant = "card" }: Prop
     setValue("coupon", next?.id);
     setValue("couponEligible", undefined);
     clearErrors("couponEligible");
-    if (next?.service && !getValues("service")) setValue("service", next.service, { shouldValidate: false });
+    if (next?.service && !(getValues("services") ?? []).length) setValue("services", [next.service], { shouldValidate: false });
     const url = new URL(window.location.href);
     if (next) url.searchParams.set("coupon", next.id);
     else url.searchParams.delete("coupon");
@@ -104,7 +129,7 @@ export default function QuickLeadForm({ defaultService, variant = "card" }: Prop
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...values,
-          otherServiceDetail: values.service === "other" ? values.otherServiceDetail : undefined,
+          otherServiceDetail: values.services.includes("other") ? values.otherServiceDetail : undefined,
           coupon: coupon?.id,
           couponEligible: coupon?.eligibility ? values.couponEligible === true : undefined,
           sourcePage: window.location.pathname,
@@ -129,7 +154,7 @@ export default function QuickLeadForm({ defaultService, variant = "card" }: Prop
     }
 
     // Conversion only after the server confirmed the lead was delivered.
-    trackLeadConversion("quick_form", { service: values.service, form_variant: variant, coupon: coupon?.id });
+    trackLeadConversion("quick_form", { services: values.services, form_variant: variant, coupon: coupon?.id });
     setSent(true);
   };
 
@@ -194,11 +219,11 @@ export default function QuickLeadForm({ defaultService, variant = "card" }: Prop
       <div className="relative">
         <select
           id={id("service")}
-          aria-invalid={!!errors.service}
-          aria-describedby={errors.service ? id("service-error") : undefined}
-          className={`${inputClass(!!errors.service)} cursor-pointer appearance-none pr-10 ${service ? "" : "text-navy-400"}`}
-          defaultValue={defaultService ?? ""}
-          {...register("service")}
+          aria-invalid={!!errors.services}
+          aria-describedby={errors.services ? id("service-error") : undefined}
+          className={`${inputClass(!!errors.services)} cursor-pointer appearance-none pr-10 ${chosen.length ? "" : "text-navy-400"}`}
+          value={chosen[0] ?? ""}
+          onChange={(e) => setValue("services", e.target.value ? [e.target.value as QuickServiceValue] : [], { shouldValidate: !!errors.services })}
         >
           <option value="" disabled>
             Select a service
@@ -211,18 +236,81 @@ export default function QuickLeadForm({ defaultService, variant = "card" }: Prop
         </select>
         <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-navy-400" aria-hidden="true" />
       </div>
-      {errors.service && (
+      {errors.services && (
         <p id={id("service-error")} role="alert" className={errorClass}>
-          {errors.service.message}
+          {errors.services.message}
         </p>
       )}
     </div>
   );
 
-  const otherField = service === "other" && (
+  const serviceChips = (
+    <fieldset className="flex min-w-0 flex-col gap-2" aria-describedby={errors.services ? id("service-error") : id("service-hint")}>
+      <legend className="text-sm font-semibold text-navy-700">
+        What do you need help with?{" "}
+        <span id={id("service-hint")} className="font-normal text-navy-500">
+          Tap all that apply
+        </span>
+      </legend>
+      {/* Two columns so every label fits on its tile; "Other" spans the last row. */}
+      <div className="mt-1 grid grid-cols-2 gap-2.5">
+        {quickServiceOptions.map((o) => {
+          const on = chosen.includes(o.value);
+          const icon = SERVICE_ICONS[o.value];
+          return (
+            <button
+              key={o.value}
+              type="button"
+              role="checkbox"
+              aria-checked={on}
+              onClick={() => toggleService(o.value)}
+              className={`relative flex min-h-[60px] min-w-0 items-center gap-2.5 rounded-xl border-2 px-3 py-2.5 ${
+                // Narrow phones: icon above the label so whole words fit the tile.
+                o.value === "other" ? "col-span-2 text-left" : "flex-col justify-center text-center min-[420px]:flex-row min-[420px]:justify-start min-[420px]:text-left"
+              } transition-all duration-150 active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-green-500 ${
+                on
+                  ? "border-navy-800 bg-navy-800 text-white shadow-[0_8px_18px_-8px_rgba(0,34,68,0.7)]"
+                  : "border-navy-200 bg-white text-navy-800 hover:border-navy-400 hover:shadow-md"
+              }`}
+            >
+              {icon ? (
+                <img
+                  src={icon.src}
+                  alt=""
+                  aria-hidden="true"
+                  className={`h-8 w-8 shrink-0 object-contain ${on ? "[filter:drop-shadow(0_0_1px_#fff)_drop-shadow(0_0_1px_#fff)]" : ""}`}
+                />
+              ) : (
+                <MoreHorizontal className={`h-8 w-8 shrink-0 ${on ? "text-brand-green-400" : "text-navy-800"}`} aria-hidden="true" />
+              )}
+              <span className="min-w-0 text-[15px] font-semibold leading-tight [hyphens:none]">{o.value === "other" ? "Other - tell us what you need" : o.label}</span>
+              <span
+                className={`absolute -right-2 -top-2 grid h-6 w-6 place-items-center rounded-full bg-brand-green-500 text-navy-900 shadow transition-transform duration-150 ${on ? "scale-100" : "scale-0"}`}
+                aria-hidden="true"
+              >
+                <Check className="h-3.5 w-3.5" strokeWidth={3} />
+              </span>
+            </button>
+          );
+        })}
+      </div>
+      {chosen.length > 1 && (
+        <p className="text-sm font-semibold text-brand-green-600" aria-live="polite">
+          {chosen.length} services selected - we'll cover them in one visit where we can.
+        </p>
+      )}
+      {errors.services && (
+        <p id={id("service-error")} role="alert" className={errorClass}>
+          {errors.services.message}
+        </p>
+      )}
+    </fieldset>
+  );
+
+  const otherField = chosen.includes("other") && (
     <div className="flex min-w-0 flex-col gap-1.5">
       <label htmlFor={id("other")} className={ribbon ? "text-sm font-bold text-navy-900" : labelClass}>
-        What do you need help with?
+        {serviceStyle === "chips" ? "Tell us about the \"Other\" job" : "What do you need help with?"}
       </label>
       <input
         id={id("other")}
@@ -377,7 +465,7 @@ export default function QuickLeadForm({ defaultService, variant = "card" }: Prop
         {field("phone", "Phone number", "tel", "Eg. (206) 555-0134", "tel")}
         {field("email", "Email", "email", "Eg. paul@email.com", "email")}
       </div>
-      {serviceSelect}
+      {serviceStyle === "chips" ? serviceChips : serviceSelect}
       {otherField}
       {couponBlock}
       {consent}

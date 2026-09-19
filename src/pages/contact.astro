@@ -4,6 +4,7 @@ import Button from "@components/ui/Button.astro";
 import PageHero from "@components/sections/PageHero.astro";
 import MotionInit from "@components/ui/MotionInit.astro";
 import StickyCta from "@components/ui/StickyCta.astro";
+import ProcessSteps from "@components/sections/ProcessSteps.astro";
 import { business } from "@data/site";
 import { breadcrumbSchema } from "@lib/seo";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
@@ -15,6 +16,12 @@ const crumbs = breadcrumbSchema([
 
 const directionsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(business.address.full)}`;
 const mapEmbedUrl = `https://maps.google.com/maps?q=${encodeURIComponent(business.address.full)}&z=13&output=embed`;
+
+const nextSteps = [
+  { title: "We Call You Back", description: "A real dispatcher calls or texts you - usually within the hour during business hours, right away for emergencies." },
+  { title: "Upfront Price, No Surprises", description: "A licensed technician diagnoses the problem and gives you a flat price before any work starts." },
+  { title: "Fixed Right, Guaranteed", description: "We do the work cleanly, explain what we did, and stand behind it with our workmanship guarantee." },
+];
 
 const contactCards = [
   { icon: Phone, label: "Call or Text", value: business.phone, href: business.phoneHref, note: "24/7 live dispatch" },
@@ -37,6 +44,15 @@ const contactCards = [
     lead="Call anytime for emergencies, or send us the details and a dispatcher will reach out to confirm your appointment - usually the same day."
     crumbs={[{ name: "Home", href: "/" }, { name: "Contact" }]}
     leadForm
+    leadFormStyle="chips"
+  />
+
+  <ProcessSteps
+    eyebrow="No Surprises"
+    title="What Happens After You Send It"
+    subtitle="Three simple steps between your request and a problem solved."
+    steps={nextSteps}
+    tone="surface"
   />
 
   <!-- Contact details + map -->
