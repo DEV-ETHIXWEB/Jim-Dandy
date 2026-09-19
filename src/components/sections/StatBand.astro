@@ -1,6 +1,6 @@
 ---
 import AnimatedCounter from "@components/ui/AnimatedCounter";
-import { business } from "@data/site";
+import { business, serviceAreaCities } from "@data/site";
 
 type Stat = { target: number; decimals?: number; suffix?: string; label: string };
 
@@ -15,7 +15,7 @@ const {
     { target: business.rating.value, decimals: 1, suffix: "/ 5", label: "Google Rating" },
     // Total Google reviews (the 4.8 average means not every one is 5 stars).
     { target: business.rating.count, suffix: "+", label: "Google Reviews" },
-    { target: 25, suffix: "+", label: "Cities Served" },
+    { target: serviceAreaCities.length, suffix: "+", label: "Cities Served" },
   ],
   tone = "navy",
 } = Astro.props;

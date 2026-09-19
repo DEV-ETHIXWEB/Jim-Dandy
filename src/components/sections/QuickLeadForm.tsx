@@ -182,6 +182,7 @@ export default function QuickLeadForm({ defaultService, variant = "card", servic
   }
 
   const inputBase =
+    (serviceStyle === "chips" ? "lg:py-2.5 " : "") +
     "w-full rounded-xl border bg-white px-4 py-3 text-base text-navy-900 outline-none transition-colors placeholder:text-navy-300 focus:border-brand-green-500 focus:ring-2 focus:ring-brand-green-500/25";
   const inputClass = (invalid: boolean) => `${inputBase} ${invalid ? "border-red-500" : "border-navy-200"}`;
   const labelClass = ribbon ? "sr-only" : "text-sm font-semibold text-navy-700";
@@ -253,7 +254,7 @@ export default function QuickLeadForm({ defaultService, variant = "card", servic
         </span>
       </legend>
       {/* Two columns so every label fits on its tile; "Other" spans the last row. */}
-      <div className="mt-1 grid grid-cols-2 gap-2.5">
+      <div className="mt-1 grid grid-cols-2 gap-2.5 lg:grid-cols-3 lg:gap-2">
         {quickServiceOptions.map((o) => {
           const on = chosen.includes(o.value);
           const icon = SERVICE_ICONS[o.value];
@@ -264,9 +265,11 @@ export default function QuickLeadForm({ defaultService, variant = "card", servic
               role="checkbox"
               aria-checked={on}
               onClick={() => toggleService(o.value)}
-              className={`relative flex min-h-[60px] min-w-0 items-center gap-2.5 rounded-xl border-2 px-3 py-2.5 ${
+              className={`relative flex min-h-[60px] min-w-0 items-center gap-2.5 rounded-xl border-2 px-3 py-2.5 lg:min-h-[54px] lg:gap-2 lg:px-2.5 lg:py-2 ${
                 // Narrow phones: icon above the label so whole words fit the tile.
-                o.value === "other" ? "col-span-2 text-left" : "flex-col justify-center text-center min-[420px]:flex-row min-[420px]:justify-start min-[420px]:text-left"
+                o.value === "other"
+                  ? "col-span-2 text-left lg:col-span-3"
+                  : "flex-col justify-center text-center min-[420px]:flex-row min-[420px]:justify-start min-[420px]:text-left"
               } transition-all duration-150 active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-green-500 ${
                 on
                   ? "border-navy-800 bg-navy-800 text-white shadow-[0_8px_18px_-8px_rgba(0,34,68,0.7)]"
@@ -278,12 +281,12 @@ export default function QuickLeadForm({ defaultService, variant = "card", servic
                   src={icon.src}
                   alt=""
                   aria-hidden="true"
-                  className={`h-8 w-8 shrink-0 object-contain ${on ? "[filter:drop-shadow(0_0_1px_#fff)_drop-shadow(0_0_1px_#fff)]" : ""}`}
+                  className={`h-8 w-8 shrink-0 object-contain lg:h-7 lg:w-7 ${on ? "[filter:drop-shadow(0_0_1px_#fff)_drop-shadow(0_0_1px_#fff)]" : ""}`}
                 />
               ) : (
-                <MoreHorizontal className={`h-8 w-8 shrink-0 ${on ? "text-brand-green-400" : "text-navy-800"}`} aria-hidden="true" />
+                <MoreHorizontal className={`h-8 w-8 shrink-0 lg:h-7 lg:w-7 ${on ? "text-brand-green-400" : "text-navy-800"}`} aria-hidden="true" />
               )}
-              <span className="min-w-0 text-[15px] font-semibold leading-tight [hyphens:none]">{o.value === "other" ? "Other - tell us what you need" : o.label}</span>
+              <span className="min-w-0 text-[15px] font-semibold leading-tight [hyphens:none] lg:text-[14.5px]">{o.value === "other" ? "Other - tell us what you need" : o.label}</span>
               <span
                 className={`absolute -right-2 -top-2 grid h-6 w-6 place-items-center rounded-full bg-brand-green-500 text-navy-900 shadow transition-transform duration-150 ${on ? "scale-100" : "scale-0"}`}
                 aria-hidden="true"
@@ -451,7 +454,11 @@ export default function QuickLeadForm({ defaultService, variant = "card", servic
       onSubmit={handleSubmit(onSubmit)}
       noValidate
       aria-labelledby={id("title")}
-      className="relative flex flex-col gap-4 rounded-[28px] border border-white/10 bg-white p-6 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.55)] sm:p-7"
+      className={`@container relative flex flex-col rounded-[28px] border border-white/10 bg-white p-6 shadow-[0_30px_60px_-20px_rgba(0,0,0,0.55)] sm:p-7 ${
+        // The tile picker is taller than a dropdown; tighter rhythm keeps the
+        // submit button above the fold on a 900px-tall laptop screen.
+        serviceStyle === "chips" ? "gap-4 lg:gap-3 lg:p-6" : "gap-4"
+      }`}
     >
       {honeypot}
       <div>
@@ -461,7 +468,9 @@ export default function QuickLeadForm({ defaultService, variant = "card", servic
         <p className="mt-1.5 text-sm text-navy-500">Tell us what you need - a dispatcher will call or text you shortly.</p>
       </div>
       {field("fullName", "Full name", "text", "Eg. Paul Allen", "name")}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      {/* Side by side only when the form itself is wide enough (container
+          query), so a narrow sidebar form stacks them instead of cropping. */}
+      <div className="grid grid-cols-1 gap-4 @sm:grid-cols-2">
         {field("phone", "Phone number", "tel", "Eg. (206) 555-0134", "tel")}
         {field("email", "Email", "email", "Eg. paul@email.com", "email")}
       </div>

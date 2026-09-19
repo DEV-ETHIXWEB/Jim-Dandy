@@ -106,6 +106,7 @@ export const services = [
       "Tank and tankless install, repair, and replacement",
       "Same-day replacement for most standard tank units",
       "Gas, electric, and hybrid heat-pump systems",
+      "Boiler repair, maintenance, and replacement",
       "Manufacturer warranty registration handled for you",
     ],
     signs: [
@@ -124,9 +125,13 @@ export const services = [
       "Not every plumbing job is an emergency - sometimes it's a leaky faucet, a fixture install, or a repipe you've been putting off. Our licensed techs handle the full range of residential plumbing with the same upfront pricing and workmanship guarantee.",
     benefits: [
       "Faucet, toilet, and fixture installs or repairs",
-      "Whole-home and partial repiping",
+      "Whole-home and partial repiping (copper and galvanized to PEX)",
       "Leak detection and slab leak repair",
       "Gas line inspection, repair, and installation",
+      "Garbage disposal install, repair, and replacement",
+      "Sump pump install, repair, and annual maintenance",
+      "Whole-home water filtration and water softeners",
+      "Water line replacement from the meter to the house",
     ],
     signs: [
       "A dripping faucet or running toilet",
@@ -193,6 +198,7 @@ export const footerSitemapLinks = [
   { label: "Coupons", href: "/coupons" },
   { label: "Service Area", href: "/service-area" },
   { label: "About", href: "/about" },
+  { label: "Plumbing Tips", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
 
@@ -247,22 +253,43 @@ export const reviews = [
   },
 ] as const;
 
+/**
+ * Cities served. The first 25 are exactly the list on the previous
+ * jimdandysewerandplumbing.com (Service Area page, fetched 2026-09-19), which
+ * is the business's own published coverage. The last four came with the new
+ * design and are NOT on the old site - confirm with the client before launch.
+ * The first 10 appear as chips on the home page, so the busiest markets lead.
+ */
 export const serviceAreaCities = [
   "Seattle",
   "Bellevue",
-  "Redmond",
-  "Kirkland",
-  "Renton",
-  "Tacoma",
-  "Burien",
   "Mountlake Terrace",
   "Shoreline",
-  "Everett",
-  "Edmonds",
   "Lynnwood",
+  "Edmonds",
+  "Everett",
   "Bothell",
-  "Federal Way",
+  "Kirkland",
+  "Redmond",
+  "Ballard",
+  "Renton",
+  "Mercer Island",
+  "Medina",
+  "Sammamish",
+  "Newcastle",
+  "Woodinville",
+  "Cottage Lake",
+  "Brier",
+  "Mukilteo",
+  "Snohomish",
+  "Lake Stevens",
+  "Marysville",
+  "Arlington",
   "Auburn",
+  // Not on the previous site - confirm:
+  "Tacoma",
+  "Burien",
+  "Federal Way",
   "Kent",
 ];
 
@@ -576,8 +603,8 @@ export const aboutMilestones = [
 
 /** Counties in the coverage footprint, for the Service Area page. */
 export const serviceCounties = [
-  { name: "King County", cities: "Seattle, Bellevue, Redmond, Kirkland, Renton, Kent, Auburn, Federal Way, Burien, Shoreline" },
-  { name: "Snohomish County", cities: "Everett, Edmonds, Lynnwood, Bothell, Mountlake Terrace" },
+  { name: "King County", cities: "Seattle, Ballard, Bellevue, Mercer Island, Medina, Redmond, Kirkland, Sammamish, Woodinville, Renton, Newcastle, Kent, Auburn, Federal Way, Burien, Shoreline" },
+  { name: "Snohomish County", cities: "Everett, Edmonds, Lynnwood, Bothell, Mountlake Terrace, Brier, Mukilteo, Snohomish, Lake Stevens, Marysville, Arlington, Cottage Lake" },
   { name: "Pierce County", cities: "Tacoma and the surrounding South Sound communities" },
 ];
 

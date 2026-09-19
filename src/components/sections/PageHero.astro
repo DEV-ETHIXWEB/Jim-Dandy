@@ -3,7 +3,7 @@ import { Image } from "astro:assets";
 import type { ImageMetadata } from "astro";
 import Button from "@components/ui/Button.astro";
 import { business } from "@data/site";
-import { ChevronRight } from "lucide-react";
+import { CheckCircle2, ChevronRight, Phone } from "lucide-react";
 import QuickLeadForm from "./QuickLeadForm";
 import type { QuickServiceValue } from "@lib/schemas/quickLead";
 
@@ -30,6 +30,11 @@ type Props = {
   leadForm?: QuickServiceValue | true;
   /** "chips" shows tappable, multi-select service tiles instead of the dropdown. */
   leadFormStyle?: "dropdown" | "chips";
+  /**
+   * Short reassurance points shown under the copy, plus a large call card.
+   * Balances the left column against a tall form (the contact page).
+   */
+  highlights?: string[];
   class?: string;
 };
 
@@ -45,6 +50,7 @@ const {
   showRating = true,
   leadForm,
   leadFormStyle = "dropdown",
+  highlights,
   class: className = "",
 } = Astro.props;
 
@@ -56,7 +62,9 @@ const formService = typeof leadForm === "string" ? leadForm : undefined;
 const resolvedCtas: Cta[] =
   ctas === false
     ? []
-    : ctas ??
+    : highlights
+      ? []
+      : ctas ??
       (hasForm
         ? [{ label: `Call ${business.phone}`, href: business.phoneHref, variant: "secondary" }]
         : [
@@ -85,11 +93,12 @@ const isSplit = !hasForm && align === "split" && !!image;
 
   <div
     class:list={[
-      "container-page relative py-16 lg:py-24",
+      "container-page relative py-16",
+      leadFormStyle === "chips" ? "lg:py-14" : "lg:py-24",
       hasForm
         ? [
             "grid grid-cols-1 gap-y-8 lg:grid-rows-[auto_1fr] lg:gap-x-14 lg:gap-y-6",
-            leadFormStyle === "chips" ? "lg:grid-cols-[1fr_minmax(0,1fr)]" : "lg:grid-cols-[1.1fr_minmax(0,0.9fr)]",
+            leadFormStyle === "chips" ? "lg:grid-cols-[0.85fr_minmax(0,1.15fr)] xl:grid-cols-[1fr_minmax(0,1fr)]" : "lg:grid-cols-[1.1fr_minmax(0,0.9fr)]",
           ]
         : isSplit
           ? "grid grid-cols-1 items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]"
@@ -159,6 +168,32 @@ const isSplit = !hasForm && align === "split" && !!image;
             <Button href={cta.href} variant={cta.variant ?? "primary"}>{cta.label}</Button>
           ))}
         </div>
+      )}
+
+      {highlights && highlights.length > 0 && (
+        <ul class="grid w-full grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+          {highlights.map((item) => (
+            <li class="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/5 p-4 text-base font-semibold leading-snug text-white">
+              <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-brand-green-400" aria-hidden="true" />
+              {item}
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {highlights && (
+        <a
+          href={business.phoneHref}
+          class="group flex w-full items-center gap-4 rounded-2xl border border-brand-green-500/40 bg-brand-green-500/10 p-5 transition-colors hover:bg-brand-green-500/20"
+        >
+          <span class="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-[image:var(--btn-primary)] text-navy-900 shadow-[var(--shadow-btn-green)]">
+            <Phone className="h-6 w-6" aria-hidden="true" />
+          </span>
+          <span class="flex flex-col">
+            <span class="text-sm font-semibold uppercase tracking-[0.14em] text-brand-green-400">Prefer to talk? Call 24/7</span>
+            <span class="font-display text-[32px] font-bold leading-none text-white">{business.phone}</span>
+          </span>
+        </a>
       )}
 
       {showRating && (

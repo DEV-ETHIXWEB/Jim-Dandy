@@ -114,13 +114,13 @@ const crumbs = breadcrumbSchema([
       <div data-reveal>
         <SectionHeading title="Cities We Serve" subtitle="Licensed plumbers dispatched same-day - with 24/7 emergency response - in every city below." />
       </div>
-      {/* 16 cities -> a clean 4x4 on desktop (it was 3 columns with one city
+      {/* Cities in an even grid on desktop (it was 3 columns with one city
           left alone on the last row, and the same sentence repeated 16 times). */}
-      <ul class="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4" data-reveal-group data-reveal-step="40">
+      <ul class="flex flex-wrap justify-center gap-3 sm:gap-4" data-reveal-group data-reveal-step="30">
         {serviceAreaCities.map((city) => {
           const slug = city.toLowerCase().replace(/\s+/g, "-");
           return (
-            <li id={slug} class="scroll-mt-28">
+            <li id={slug} class="w-[calc(50%-0.375rem)] scroll-mt-28 sm:w-[calc(33.333%-0.667rem)] lg:w-[calc(25%-0.75rem)] xl:w-[calc(20%-0.8rem)]">
               {/* The whole tile calls dispatch - one big, obvious tap target. */}
               <a
                 href={business.phoneHref}

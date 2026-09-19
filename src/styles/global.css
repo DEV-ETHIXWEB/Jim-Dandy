@@ -233,3 +233,27 @@ html[data-chat-open] .floating-launcher:not(:has([role="dialog"])) {
   pointer-events: none;
   visibility: hidden;
 }
+
+/* Moving review cards (Reviews.tsx). Each row holds its cards twice, so a
+   -50% slide loops seamlessly. The speed is per card count, so rows of any
+   length drift at the same comfortable reading pace. */
+.review-row {
+  animation: review-slide 90s linear infinite;
+}
+.review-row-reverse {
+  animation-direction: reverse;
+  animation-duration: 100s;
+}
+.review-marquee[data-hover] .review-row,
+.review-marquee[data-paused] .review-row,
+.review-marquee:focus-within .review-row {
+  animation-play-state: paused;
+}
+@keyframes review-slide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-50% - 0.75rem));
+  }
+}
