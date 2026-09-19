@@ -51,11 +51,6 @@ const crumbs = breadcrumbSchema([
   <section class="bg-white py-20 lg:py-28">
     <div class="container-page grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
       <div class="relative order-first" data-reveal="left">
-        <div
-          class="pointer-events-none absolute -inset-5 -z-0 rounded-[44px] opacity-70 blur-2xl"
-          style="background: radial-gradient(circle at 30% 30%, rgba(105,190,40,0.20), transparent 70%);"
-          aria-hidden="true"
-        ></div>
         {/* Whole photo at its own aspect ratio (no crop), and never wider than
               half its file width so it stays sharp on 2x screens. */}
           <div class="relative mx-auto overflow-hidden rounded-[32px] border border-navy-100 shadow-card" style={{ maxWidth: `${Math.floor(jdTruck.width / 2)}px` }}>
@@ -127,7 +122,7 @@ const crumbs = breadcrumbSchema([
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4" data-reveal-group>
         {values.map(({ icon: Icon, title, description }) => (
           <div class="group flex flex-col items-start gap-4 rounded-[28px] border border-navy-200 bg-surface p-7 transition-all duration-300 ease-brand hover:-translate-y-1.5 hover:border-navy-800 hover:bg-white hover:shadow-card">
-            <span class="grid h-14 w-14 place-items-center rounded-2xl bg-brand-green-50 text-brand-green-600 transition-colors duration-300 group-hover:bg-brand-green-500 group-hover:text-navy-900">
+            <span class="grid h-14 w-14 place-items-center rounded-2xl icon-chip transition-all duration-300 group-hover:icon-chip-green">
               <Icon className="h-7 w-7" strokeWidth={1.75} aria-hidden="true" />
             </span>
             <h3 class="font-display text-xl font-bold text-navy-800">{title}</h3>
@@ -142,7 +137,7 @@ const crumbs = breadcrumbSchema([
   <section class="bg-navy-900 py-20 lg:py-28">
     <div class="container-page grid grid-cols-1 items-stretch gap-8 lg:grid-cols-3">
       <div class="flex flex-col gap-5 rounded-[32px] border border-white/10 bg-white/5 p-8 backdrop-blur-sm lg:col-span-2">
-        <span class="grid h-14 w-14 place-items-center rounded-2xl bg-brand-green-500/15 text-brand-green-400">
+        <span class="grid h-14 w-14 place-items-center rounded-2xl icon-chip-glass">
           <ShieldCheck className="h-7 w-7" aria-hidden="true" />
         </span>
         <h2 class="font-heading text-2xl font-bold text-white sm:text-3xl">Licensed, Bonded &amp; Insured</h2>

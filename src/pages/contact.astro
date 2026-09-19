@@ -7,7 +7,7 @@ import StickyCta from "@components/ui/StickyCta.astro";
 import ProcessSteps from "@components/sections/ProcessSteps.astro";
 import { business } from "@data/site";
 import { breadcrumbSchema } from "@lib/seo";
-import { Clock, Mail, MapPin, Phone } from "lucide-react";
+import { ArrowRight, Clock, Mail, MapPin, Phone } from "lucide-react";
 
 const crumbs = breadcrumbSchema([
   { name: "Home", path: "/" },
@@ -79,7 +79,7 @@ const contactCards = [
                 href={href}
                 class="group flex flex-col gap-3 rounded-[24px] border border-navy-200 bg-surface p-6 transition-all duration-300 ease-brand hover:-translate-y-1 hover:border-brand-green-500 hover:bg-white hover:shadow-card"
               >
-                <span class="grid h-12 w-12 place-items-center rounded-xl bg-navy-900 text-brand-green-400 transition-colors duration-300 group-hover:bg-brand-green-500 group-hover:text-navy-900">
+                <span class="grid h-12 w-12 place-items-center rounded-xl icon-chip transition-all duration-300 group-hover:icon-chip-green">
                   <Icon className="h-5 w-5" aria-hidden="true" />
                 </span>
                 <div>
@@ -126,7 +126,7 @@ const contactCards = [
             <MapPin className="h-5 w-5 text-brand-green-600" aria-hidden="true" />
             Get driving directions
           </span>
-          <span aria-hidden="true" class="text-brand-green-600">→</span>
+          <ArrowRight className="h-5 w-5 text-brand-green-600" aria-hidden="true" />
           <span class="sr-only">(opens Google Maps in a new tab)</span>
         </a>
       </div>

@@ -28,7 +28,7 @@ const AVATAR_TONES = ["bg-navy-800", "bg-brand-green-600", "bg-[#2a4158]", "bg-[
 function ReviewCard({ review, index, hidden }: { review: Review; index: number; hidden?: boolean }) {
   return (
     <article
-      className="flex w-[300px] shrink-0 flex-col gap-4 rounded-3xl border border-navy-100 border-b-4 border-b-navy-800 bg-white p-6 shadow-review sm:w-[360px]"
+      className="flex w-[300px] shrink-0 flex-col gap-4 rounded-3xl border border-navy-100 bg-white p-6 shadow-card sm:w-[360px]"
       aria-hidden={hidden || undefined}
     >
       <div className="flex items-center gap-3">
@@ -93,7 +93,7 @@ export default function Reviews() {
     <div className="flex flex-col gap-5">
       <div
         ref={rootRef}
-        className="review-marquee relative flex flex-col gap-6 overflow-hidden py-2 [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]"
+        className="review-marquee relative flex flex-col gap-4 overflow-hidden pb-9 pt-3 [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]"
         data-paused={paused || undefined}
         onPointerEnter={(e) => e.pointerType === "mouse" && rootRef.current?.setAttribute("data-hover", "")}
         onPointerLeave={() => rootRef.current?.removeAttribute("data-hover")}
