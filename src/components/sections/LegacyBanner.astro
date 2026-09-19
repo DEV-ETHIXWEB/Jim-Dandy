@@ -83,7 +83,7 @@ const slideSizes = (photo: { width: number; height: number }) =>
       </svg>
     </button>
 
-    <div class="legacy-dots absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 gap-4">
+    <div class="legacy-dots absolute bottom-4 left-1/2 z-20 flex -translate-x-1/2 gap-5">
       {slides.map((_, index) => (
         <button type="button" class:list={["legacy-dot", index === 0 && "is-active"]} data-dot aria-label={`Show photo ${index + 1}`}></button>
       ))}
@@ -167,8 +167,8 @@ const slideSizes = (photo: { width: number; height: number }) =>
 
   .legacy-dot {
     position: relative;
-    height: 8px;
-    width: 8px;
+    height: 12px;
+    width: 12px;
     border-radius: 9999px;
     background-color: rgba(255, 255, 255, 0.5);
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
@@ -185,10 +185,11 @@ const slideSizes = (photo: { width: number; height: number }) =>
   .legacy-dot::before {
     content: "";
     position: absolute;
-    inset: -18px -8px;
+    /* 32x44 hit area around the 12px dot (gap-5 keeps neighbours apart). */
+    inset: -16px -10px;
   }
   .legacy-dot.is-active {
-    width: 24px;
+    width: 32px;
     background-color: var(--color-brand-green-500);
   }
 
