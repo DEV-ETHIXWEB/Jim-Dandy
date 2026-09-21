@@ -122,7 +122,7 @@ for (const s of services) {
 differentiators.forEach((d, i) =>
   docs.push({
     id: `why-${i}`,
-    questions: [d.title, `do you ${d.title.toLowerCase()}`, ...(/original|1908/i.test(d.title) ? ["how long have you been in business", "how old is jim dandy", "when did you start"] : []), ...(/eco/i.test(d.title) ? ["are you eco friendly", "do you use environmentally friendly methods"] : [])],
+    questions: [d.title, `do you ${d.title.toLowerCase()}`, ...(/background/i.test(d.title) ? ["are your plumbers background checked", "are your techs vetted", "can i trust your technicians in my home"] : [])],
     answer: d.description,
   }),
 );
@@ -211,7 +211,7 @@ docs.push({
 docs.push({
   id: "same-day",
   questions: ["how fast can you come", "can you come today", "same day service", "how soon can someone come out", "when can you get here", "how long until a tech arrives", "can you come tomorrow"],
-  answer: `Same-day appointments are available for most jobs, and emergencies are dispatched right away - most are seen within the hour. We also call ahead before your technician arrives. For the fastest slot, call ${business.phone}, or I can send your details to dispatch now.`,
+  answer: `Same-day appointments are available for most jobs, and emergencies are dispatched right away - most are seen within the hour. We also call with a 30-minute heads-up before we arrive. For the fastest slot, call ${business.phone}, or I can send your details to dispatch now.`,
   offerHelp: true,
 });
 docs.push({

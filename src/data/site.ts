@@ -303,11 +303,14 @@ export const certifications = [
 ];
 
 /**
- * The six promises that set Jim Dandy apart. Every one is a claim the business
- * already makes in print (the previous site's value props, service pages and
- * about page) - do not add promises here that the office hasn't made, because
- * customers read them as commitments. `icon` maps to a key in the
- * TrustFeatures icon table.
+ * The six promises that set Jim Dandy apart. Each one maps to a value-prop
+ * badge the business publishes itself - the previous site's
+ * "Fully Licensed and Insured", "Upfront Pricing", "one stop shop",
+ * "30 min arrival notice", "background checked" and "reliable repairs"
+ * artwork. Those badges are images, so a text search of the old site will not
+ * find them: check the image filenames before concluding a promise is
+ * unsourced. Do not add promises the office hasn't made - customers read them
+ * as commitments. `icon` maps to a key in the TrustFeatures icon table.
  */
 export const differentiators = [
   {
@@ -329,16 +332,16 @@ export const differentiators = [
       "Residential and commercial, a dripping faucet to a full sewer replacement - one licensed team handles the entire job.",
   },
   {
-    icon: "history",
-    title: "Seattle's Original Plumbers",
+    icon: "timer",
+    title: "30-Minute Arrival Notice",
     description:
-      "Established in 1908. Over a century of local authority on Puget Sound pipe, sewer, and soil - and we're still here.",
+      "We call ahead with a 30-minute heads-up before we arrive, so you're never left waiting inside an all-day window.",
   },
   {
-    icon: "leaf",
-    title: "Eco-Friendly Solutions",
+    icon: "user-check",
+    title: "Background-Checked Techs",
     description:
-      "We're committed to practices that conserve water, reduce waste, and protect your property while we work.",
+      "The person at your door is vetted, uniformed, and trained - someone you can trust in your home or business.",
   },
   {
     icon: "handshake",
@@ -377,7 +380,7 @@ export const serviceExtras: Record<
       { title: "Fixed & Upfront", description: "You get a flat price before work begins, and we repair most issues in a single visit." },
     ],
     faqs: [
-      { question: "How fast can you actually get here?", answer: "For true emergencies we dispatch the nearest available technician immediately - most Puget Sound customers are seen within the hour, and we call ahead before we pull up so you are not left waiting." },
+      { question: "How fast can you actually get here?", answer: "For true emergencies we dispatch the nearest available technician immediately - most Puget Sound customers are seen within the hour, and we give you a 30-minute arrival notice before we pull up." },
       { question: "Do you charge extra for nights and weekends?", answer: "After-hours emergency dispatch may carry a service fee, but you'll always know the full price before any work starts. No surprises added to the invoice later." },
       { question: "What should I do while I wait?", answer: "Shut off your main water valve if you can reach it safely, clear the area, and stay on with our dispatcher - we'll talk you through limiting the damage until the tech arrives." },
     ],

@@ -3,11 +3,11 @@ import SectionHeading from "@components/ui/SectionHeading.astro";
 import { differentiators } from "@data/site";
 import {
   HeartHandshake,
-  History,
-  Leaf,
   ReceiptText,
   ShieldCheck,
   Store,
+  Timer,
+  UserCheck,
   type LucideProps,
 } from "lucide-react";
 import type { FunctionComponent } from "react";
@@ -28,8 +28,8 @@ const iconMap: Record<string, FunctionComponent<LucideProps>> = {
   shield: ShieldCheck,
   receipt: ReceiptText,
   store: Store,
-  history: History,
-  leaf: Leaf,
+  timer: Timer,
+  "user-check": UserCheck,
   handshake: HeartHandshake,
 };
 ---
