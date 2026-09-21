@@ -1,8 +1,13 @@
 export const business = {
   name: "Jim Dandy Sewer & Plumbing",
   shortName: "Jim Dandy",
-  phone: "(206) 633-1141",
-  phoneHref: "tel:+12066331141",
+  // The number the business actually publishes: every tel: link on the previous
+  // site (50 of them) and every visible instance is 206-237-5966. Two other
+  // numbers exist there and are NOT the office line - +12069443509 appears only
+  // inside the old LocalBusiness schema, and 206-633-1141 only in a photo
+  // caption. Confirmed with the client on 2026-09-21.
+  phone: "(206) 237-5966",
+  phoneHref: "tel:+12062375966",
   email: "Contact@JimDandySewer.com",
   address: {
     line1: "6202 214th St SW",

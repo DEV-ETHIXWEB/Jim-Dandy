@@ -6,6 +6,12 @@
  * The artwork carries no promo codes - each one reads "must present coupon at
  * time of service" - so the site never shows a code the office can't look up.
  *
+ * Expiry: the printed artwork says 9/30/2026; the client extended every offer
+ * to 10/30/2026 on 2026-09-21, so both `expires` and the terms line say that.
+ * When the next artwork arrives, update both together - a card that promises
+ * "Valid through" one date and prints another in its terms is worse than no
+ * date at all.
+ *
  * Tapping one on /coupons adds it to the quote form at the top of that page
  * (the form also reads ?coupon=<id>), and the lead email tells the dispatcher
  * which offer the customer chose.
@@ -23,8 +29,8 @@ export const coupons = [
     description:
       "Drain cleaning for $63 with a one-year guarantee, and a complimentary camera inspection included. If the drain doesn't clear, it's free.",
     terms:
-      "Mainlines included. Offer not valid with any other offers or discounts. Must present coupon at time of service. Expires 9/30/2026.",
-    expires: "2026-09-30",
+      "Mainlines included. Offer not valid with any other offers or discounts. Must present coupon at time of service. Expires 10/30/2026.",
+    expires: "2026-10-30",
     service: "drains-clogs",
   },
   {
@@ -34,8 +40,8 @@ export const coupons = [
     title: "$2,863 Fully Installed Water Heater",
     description: "Price includes a select 50-gallon electric water heater and installation.",
     terms:
-      "Select water heater models only. Offer not valid with any other offers or discounts. Must present coupon at time of service. Expires 9/30/2026.",
-    expires: "2026-09-30",
+      "Select water heater models only. Offer not valid with any other offers or discounts. Must present coupon at time of service. Expires 10/30/2026.",
+    expires: "2026-10-30",
     service: "water-heaters",
   },
   {
@@ -45,8 +51,8 @@ export const coupons = [
     title: "$500 Off Any Tankless Water Heater",
     description: "With the purchase and installation of your new tankless water heater.",
     terms:
-      "Offer not valid with any other offers or discounts. Must present coupon at time of service. Expires 9/30/2026.",
-    expires: "2026-09-30",
+      "Offer not valid with any other offers or discounts. Must present coupon at time of service. Expires 10/30/2026.",
+    expires: "2026-10-30",
     service: "water-heaters",
   },
   {
@@ -56,8 +62,8 @@ export const coupons = [
     title: "$100 Off Any Plumbing Service",
     description: "Take $100 off any plumbing service from our licensed team.",
     terms:
-      "Offer not valid with any other offers or discounts. Must present coupon at time of service. Expires 9/30/2026.",
-    expires: "2026-09-30",
+      "Offer not valid with any other offers or discounts. Must present coupon at time of service. Expires 10/30/2026.",
+    expires: "2026-10-30",
     service: "all-plumbing",
   },
   {
@@ -68,8 +74,8 @@ export const coupons = [
     description:
       "Buy one qualifying Jim Dandy Select Model toilet and get a second toilet of equal or lesser value free.",
     terms:
-      "Valid on the purchase and installation of any model within the Jim Dandy Select Series collection (Toto, American Standard, Kohler, Glacier Bay). Not valid with any other offers or discounts. Must present coupon at time of service. Expires 9/30/2026.",
-    expires: "2026-09-30",
+      "Valid on the purchase and installation of any model within the Jim Dandy Select Series collection (Toto, American Standard, Kohler, Glacier Bay). Not valid with any other offers or discounts. Must present coupon at time of service. Expires 10/30/2026.",
+    expires: "2026-10-30",
     service: "all-plumbing",
   },
   {
@@ -80,8 +86,8 @@ export const coupons = [
     description:
       "With the purchase and installation of your new chrome, matte black, oil-rubbed bronze, or spot-resistant stainless steel Moen Arbor kitchen faucet.",
     terms:
-      "Offer not valid with any other offers or discounts. Must present coupon at time of service. Expires 9/30/2026.",
-    expires: "2026-09-30",
+      "Offer not valid with any other offers or discounts. Must present coupon at time of service. Expires 10/30/2026.",
+    expires: "2026-10-30",
     service: "all-plumbing",
   },
   {
@@ -91,8 +97,8 @@ export const coupons = [
     title: "Free Second Opinions",
     description: "Getting the run-around from the competition? Call today for your free second opinion.",
     terms:
-      "Offer not valid with any other offers or discounts. Must present coupon at time of service. Expires 9/30/2026.",
-    expires: "2026-09-30",
+      "Offer not valid with any other offers or discounts. Must present coupon at time of service. Expires 10/30/2026.",
+    expires: "2026-10-30",
   },
   {
     id: "service-5-percent",

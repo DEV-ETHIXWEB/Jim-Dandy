@@ -24,7 +24,7 @@ regulator could hold the business to.
 | Established 1908 | Verified | "Seattle's Original Plumbers: Established in 1908" |
 | Serving King and Snohomish Counties | Verified | Existing site service area |
 | The 25 cities listed | Verified | Existing site service area, city for city |
-| **Phone: (206) 633-1141** | **Needs your confirmation** | Three different numbers appear in your current material — see §7 |
+| Phone: (206) 237-5966 | Verified | Every clickable phone link on your current site (50 of them) and every visible instance. Confirmed by the client 21 Sep 2026 |
 | **Hours: Mon–Fri 7am–7pm, 24/7 emergency** | **Needs your confirmation** | Your current site states no hours on the page; its hidden code claims open 24 hours every day |
 
 ## 2. Promises we make to customers
@@ -57,7 +57,8 @@ Transcribed from your coupon artwork, word for word, including each offer's own 
 | $200 off a Moen faucet | Verified |
 | Free second opinions | Verified |
 | 5% off service | Verified |
-| **All eight expire 30 September 2026** | **Needs your confirmation** — nine days away |
+| Seven offers expire 30 October 2026 | Verified — extended by the client 21 Sep 2026 |
+| The 5% military / first responder / senior discount runs with no end date | Verified — the artwork prints no expiry, so it is an ongoing offer |
 
 There are **no promo codes** on your coupon artwork — each one reads "must present
 coupon at time of service" — so the website does not show a code. It tells the customer
@@ -102,33 +103,26 @@ hold — but please confirm all three.
 | Photographs | Verified | Carried over from your existing site |
 | Layout, spacing and accessibility | Verified | 0 overflow, 0 accessibility violations, 0 errors across 20 pages × 3 screen sizes |
 | **Company history milestones (1950s, 1990s)** | **Needs your confirmation** | The 1908 founding is confirmed. The two milestones between then and now are written from general industry history, not from your records |
-| **Careers page role list** | **Needs your confirmation** | Lists the kinds of roles you hire for. Confirm you are hiring and that the list is right |
+| **Careers page role list** | **Needs your confirmation** | Your current site has no careers or hiring page at all — we checked all 47 of its addresses and probed seven likely ones live. So there was nothing to copy. The page lists the roles a plumbing company would obviously hire for; send us your real openings and we will replace it, or say the word and we will remove the page |
 
 ## 7. What we need from you
 
-Four questions, then the site is fully confirmed.
+Three questions, then the site is fully confirmed.
 
-**1. Which phone number should the website use?**
-Your current material has three:
-
-- **206-237-5966** — used in the body and footer of your current site, in 50 places
-- **206-944-3509** — the number in your site's hidden business listing data
-- **206-633-1141** — appears only in a photo caption, and is the one the new site currently uses on every page
-
-This is the single most important item. If it is wrong, calls go nowhere.
-
-**2. What are your office hours?**
+**1. What are your office hours?**
 The new site says Mon–Fri 7am–7pm with 24/7 emergency service. Your current site says
 nothing on the page but tells Google you are open 24 hours, 7 days. Which is right?
 
-**3. Are the coupons being renewed after 30 September?**
-All eight expire that day. Send us the new artwork or new dates and we will update them.
-If nothing is renewed, the coupons page will tell visitors to call for current offers
-rather than show expired deals.
+**2. Confirm three credentials and your rating:** your Google rating and review count,
+and whether you are currently a BBB Accredited Business, an Angi Super Service Award
+winner, and a PHCC member.
 
-**4. Confirm three things:** your Google rating and review count, and whether you are
-currently a BBB Accredited Business, an Angi Super Service Award winner, and a PHCC
-member.
+**3. What are you actually hiring for?**
+Your current site has no careers page, so we had nothing to copy. Send us your real
+openings and we will put them up — or tell us to take the careers page down.
+
+Answered on 21 September 2026: the phone number is **(206) 237-5966**, and every dated
+coupon now runs to **30 October 2026**.
 
 ## 8. Before the site goes live
 
