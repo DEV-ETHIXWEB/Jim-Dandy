@@ -30,7 +30,7 @@ const CITIES: CityPin[] = [
   { label: "Kirkland", x: 68, y: 31 },
   { label: "Bellevue", x: 84, y: 50 },
   { label: "Renton", x: 72, y: 72 },
-  { label: "Tacoma", x: 18, y: 86 },
+  { label: "Edmonds", x: 30, y: 26 },
 ];
 
 const ALL_PINS: CityPin[] = [HUB, ...CITIES];

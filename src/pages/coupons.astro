@@ -6,7 +6,11 @@ import ProcessSteps from "@components/sections/ProcessSteps.astro";
 import FinalCta from "@components/sections/FinalCta.astro";
 import MotionInit from "@components/ui/MotionInit.astro";
 import StickyCta from "@components/ui/StickyCta.astro";
-import { coupons, type Coupon } from "@data/coupons";
+import { activeCoupons, type Coupon } from "@data/coupons";
+import { business } from "@data/site";
+
+const coupons = activeCoupons();
+const expiryFmt = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
 import { breadcrumbSchema } from "@lib/seo";
 import { ArrowUpRight, BadgeCheck, Check, Scissors } from "lucide-react";
 
@@ -43,6 +47,18 @@ const redeemSteps = [
       <div data-reveal>
         <SectionHeading eyebrow="Current Offers" title="Tap a Coupon to Apply It" subtitle="It's added to your request form instantly - valid across our Puget Sound coverage area." />
       </div>
+      {coupons.length === 0 ? (
+        <div class="mx-auto flex max-w-2xl flex-col items-center gap-3 rounded-[28px] border border-navy-200 bg-white p-10 text-center shadow-card" data-reveal>
+          <h3 class="font-display text-2xl font-bold text-navy-800">Our offers are being refreshed</h3>
+          <p class="text-base leading-relaxed text-navy-600">
+            Last season's coupons have expired and the new ones aren't posted yet. Call us and we'll tell you
+            exactly what's running today - we'd rather quote you honestly than show an offer we can't honour.
+          </p>
+          <a href={business.phoneHref} class="mt-2 inline-flex min-h-12 items-center gap-2 rounded-full bg-[image:var(--btn-primary)] px-6 font-display text-lg text-navy-900 shadow-[var(--shadow-btn-green)]">
+            Call {business.phone}
+          </a>
+        </div>
+      ) : (
       <div class="grid grid-cols-1 gap-8 lg:grid-cols-2" data-reveal-group>
         {(coupons as readonly Coupon[]).map((coupon) => (
           <a
@@ -89,6 +105,11 @@ const redeemSteps = [
                   </p>
                 )}
                 <p class="text-sm leading-snug text-navy-500">{coupon.terms}</p>
+                {coupon.expires && (
+                  <p class="text-sm font-semibold text-navy-600">
+                    Valid through {expiryFmt.format(new Date(`${coupon.expires}T12:00:00Z`))}
+                  </p>
+                )}
 
                 <div class="mt-auto flex flex-wrap items-center justify-between gap-3 pt-2">
                   <span class="rounded-md border-2 border-dashed border-navy-200 bg-navy-50/60 px-2.5 py-1 font-mono text-xs font-bold tracking-widest text-navy-700">
@@ -113,6 +134,7 @@ const redeemSteps = [
           </a>
         ))}
       </div>
+      )}
       <p class="mx-auto max-w-2xl text-center text-sm text-navy-400">
         One offer per job unless noted. Offers subject to change without notice - your dispatcher confirms the coupon and eligibility when booking.
       </p>

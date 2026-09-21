@@ -62,8 +62,8 @@ function realProfileUrls() {
 }
 
 /** The cities actually advertised on /service-area, stated explicitly.
- *  A GeoCircle was previously used instead, and its radius excluded Everett
- *  and Tacoma - both of which the site says are served. */
+ *  A GeoCircle was previously used instead, and its radius excluded the
+ *  northern cities (Everett, Marysville, Arlington) the site says are served. */
 function areaServed() {
   return serviceAreaCities.map((city) => ({
     "@type": "City",

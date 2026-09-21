@@ -138,7 +138,7 @@ export function resolve(message: string, ctx: ChatContext, match: IntentMatch): 
       return { text: `You can email us at ${business.email} - we reply within one business day. For anything urgent, call ${business.phone}.` };
 
     case "ADDRESS":
-      return { text: `We're based at ${business.address.full.replace(/, United States$/, "")}, and our technicians come to you anywhere in King, Snohomish, and Pierce Counties.`, links: [{ label: "Directions & contact", href: "/contact" }] };
+      return { text: `We're based at ${business.address.full.replace(/, United States$/, "")}, and our technicians come to you anywhere in King and Snohomish Counties.`, links: [{ label: "Directions & contact", href: "/contact" }] };
 
     case "HOURS":
       return { text: `Office hours are ${business.hours.split(" · ")[0]}, and emergency service runs 24/7 - nights, weekends, and holidays included. Call ${business.phone} anytime.` };
@@ -198,7 +198,7 @@ export function resolve(message: string, ctx: ChatContext, match: IntentMatch): 
         };
       }
       return {
-        text: `I don't see that city in our core service area, but we cover King, Snohomish, and Pierce Counties${cityList.length ? ` (including ${cityList.slice(0, 5).join(", ")}, and more)` : ""}. The fastest way to know for sure is a quick call to ${business.phone}.`,
+        text: `I don't see that city in our core service area, but we cover King and Snohomish Counties${cityList.length ? ` (including ${cityList.slice(0, 5).join(", ")}, and more)` : ""}. The fastest way to know for sure is a quick call to ${business.phone}.`,
         quickReplies: [{ label: `Call ${business.phone}`, value: "call" }, { label: "See full service area", value: "service area" }],
       };
     }

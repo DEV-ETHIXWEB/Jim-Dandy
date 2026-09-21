@@ -83,7 +83,7 @@ export default function FloatingCenterIcon({
             marker on short/narrow map cards - dropped there, kept from sm up
             where the map has room. */}
         <p className="hidden whitespace-nowrap text-xs font-medium text-white/80 sm:block sm:text-base">
-          King · Snohomish · Pierce Counties
+          King · Snohomish Counties
         </p>
       </div>
     </motion.div>

@@ -321,7 +321,7 @@ ${emergencyNote}
       ${[
         ["1", "We call or text to confirm", "A dispatcher reviews your request and reaches out to schedule."],
         ["2", "Upfront quote before any work", "A licensed technician diagnoses the problem and prices the job first."],
-        ["3", "30-minute arrival notice", "You'll hear from your tech before they head your way."],
+        ["3", "We call ahead before we arrive", "You'll hear from your technician before they head your way."],
       ]
         .map(
           ([n, title, copy]) => `<tr>
@@ -372,7 +372,7 @@ ${emergencyNote}
     "What happens next:",
     "1. We call or text to confirm your appointment.",
     "2. A licensed technician quotes the job upfront before any work.",
-    "3. You get a 30-minute arrival notice.",
+    "3. We call ahead before your technician heads your way.",
     "",
     `Questions? Call ${business.phone} or reply to this email.`,
     "",

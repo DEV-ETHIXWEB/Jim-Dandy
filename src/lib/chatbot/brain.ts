@@ -558,19 +558,19 @@ function areaReply(_state: ChatContext, city: string | undefined, unlistedMentio
   }
   if (zip) {
     return {
-      text: `${zip} is a Washington ZIP - we cover King, Snohomish, and Pierce Counties, so there's a good chance we're nearby. Which city is that in? Or call ${business.phone} and dispatch will confirm right away.`,
+      text: `${zip} is a Washington ZIP - we cover King and Snohomish Counties, so there's a good chance we're nearby. Which city is that in? Or call ${business.phone} and dispatch will confirm right away.`,
       quickReplies: [CALL, { label: "See service area", value: "service area" }],
     };
   }
   if (unlistedMention) {
     return {
-      text: `That one isn't in our regular service area - we cover King, Snohomish, and Pierce Counties in Washington (${cityList.slice(0, 6).join(", ")}, and more). If you're close to the edge, call ${business.phone} and dispatch can confirm.`,
+      text: `That one isn't in our regular service area - we cover King and Snohomish Counties in Washington (${cityList.slice(0, 6).join(", ")}, and more). If you're close to the edge, call ${business.phone} and dispatch can confirm.`,
       quickReplies: [CALL, { label: "See service area", value: "service area" }],
       links: [{ label: "Service area", href: "/service-area" }],
     };
   }
   return {
-    text: `We cover King, Snohomish, and Pierce Counties - including ${cityList.join(", ")}. What city are you in?`,
+    text: `We cover King and Snohomish Counties - including ${cityList.join(", ")}. What city are you in?`,
     pending: "check_area",
     links: [{ label: "Service area", href: "/service-area" }],
   };
@@ -668,7 +668,7 @@ function answerFreely(state: ChatContext, raw: string, text: string, opts: { inW
   }
   if (zip && text.replace(/\D/g, "").length <= 5) return areaReply(state, undefined, false, zip);
   if (/^\d{5}$/.test(text.trim())) {
-    return { text: `${text.trim()} doesn't look like a Washington ZIP code - we serve King, Snohomish, and Pierce Counties. Which city are you in?`, pending: "check_area" };
+    return { text: `${text.trim()} doesn't look like a Washington ZIP code - we serve King and Snohomish Counties. Which city are you in?`, pending: "check_area" };
   }
   if (match.intent === "SERVICE_AREA_CITY_CHECK") return areaReply(state, entities.city, Boolean(entities.cityMentionedButUnlisted));
 

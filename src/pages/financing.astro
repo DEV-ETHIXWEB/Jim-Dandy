@@ -10,7 +10,7 @@ import MotionInit from "@components/ui/MotionInit.astro";
 import StickyCta from "@components/ui/StickyCta.astro";
 import { business, financing } from "@data/site";
 import { breadcrumbSchema, faqSchema } from "@lib/seo";
-import { CalendarCheck, Droplets, Flame, PiggyBank, Route, ShieldCheck, Wrench } from "lucide-react";
+import { CalendarCheck, Check, Droplets, Flame, PiggyBank, Route, ShieldCheck, Wrench } from "lucide-react";
 import heroPhoto from "@assets/photos/legacy-copper-valves.webp";
 
 const crumbs = breadcrumbSchema([
@@ -101,6 +101,27 @@ const whyFinance = [
             <p class="text-sm leading-relaxed text-white/75">{description}</p>
           </div>
         ))}
+      </div>
+
+      <!-- Lender terms, worded as the lender states them -->
+      <div class="flex flex-col gap-6 rounded-[28px] border border-brand-green-500/30 bg-white/5 p-8 backdrop-blur-sm lg:p-10" data-reveal>
+        <div class="flex flex-col gap-2">
+          <span class="inline-flex w-fit items-center gap-2 rounded-full border border-brand-green-500/40 bg-brand-green-500/10 px-4 py-1.5 font-sans text-xs font-bold uppercase tracking-[0.18em] text-brand-green-400">
+            Our Lending Partner
+          </span>
+          <h3 class="font-display text-2xl font-bold text-white">Financing through {financing.partner}</h3>
+        </div>
+        <ul class="grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
+          {financing.highlights.map((point) => (
+            <li class="flex items-start gap-3 text-base leading-snug text-white/85">
+              <span class="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-brand-green-500/20 text-brand-green-400">
+                <Check className="h-4 w-4" strokeWidth={2.5} aria-hidden="true" />
+              </span>
+              {point}
+            </li>
+          ))}
+        </ul>
+        <p class="text-xs leading-relaxed text-white/50">{financing.disclaimer}</p>
       </div>
     </div>
   </section>

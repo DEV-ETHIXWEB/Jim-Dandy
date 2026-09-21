@@ -21,10 +21,17 @@ export const business = {
   // which meant the FAQ answer telling customers to "use the Get Financed link
   // to apply" landed them on a discounts page instead of the financing page.
   financingUrl: "/financing",
+  // Real profiles only - these are published as the business's `sameAs` in
+  // structured data (src/lib/seo.ts), so a bare domain root would be a false
+  // claim. Taken from the previous site's footer and LocalBusiness schema.
   social: {
-    facebook: "https://www.facebook.com/",
+    facebook: "https://www.facebook.com/JimDandySewerAndPlumbing/",
+    instagram: "https://www.instagram.com/jimdandysewer/",
     google: "https://share.google/L2jpUnfSMJK7ZRCk8",
-    x: "https://x.com/",
+    yelp: "https://www.yelp.com/biz/jim-dandy-sewer-and-plumbing-mountlake-terrace",
+    bbb: "https://www.bbb.org/us/wa/mountlake-ter/profile/plumber/jim-dandy-sewer-plumbing-1296-500702",
+    angi: "https://www.angi.com/companylist/us/wa/mountlake-terrace/jim-dandy-sewer-and-plumbing-reviews-162696.htm",
+    thumbtack: "https://www.thumbtack.com/wa/mountlake-terrace/drain-cleaning/jim-dandy-sewer-plumbing/service/436041929158705164",
   },
 } as const;
 
@@ -64,7 +71,7 @@ export const services = [
       "Slow or backed-up drains are almost never just a surface clog. We clear the line and then run a camera to confirm the real cause is gone - not just pushed further down the pipe - so the same drain doesn't back up again in a month.",
     benefits: [
       "Camera inspection included on repeat or stubborn clogs",
-      "Hydro-jetting for grease, roots, and scale buildup",
+      "Hydro-jetting and rooter service for grease, roots, and scale buildup",
       "Kitchen, bathroom, floor, and main line drains",
       "Same-day appointments available",
     ],
@@ -253,11 +260,6 @@ export const serviceAreaCities = [
   "Marysville",
   "Arlington",
   "Auburn",
-  // Not on the previous site - confirm:
-  "Tacoma",
-  "Burien",
-  "Federal Way",
-  "Kent",
 ];
 
 export const faqs = [
@@ -284,7 +286,7 @@ export const faqs = [
   {
     question: "What areas do you service?",
     answer:
-      "We dispatch same-day across the Puget Sound region, including Seattle, Bellevue, Redmond, Kirkland, Renton, Tacoma, and the surrounding King, Snohomish, and Pierce County communities. See our full service area for the complete list.",
+      "We dispatch same-day across the Puget Sound region, including Seattle, Bellevue, Redmond, Kirkland, Everett, Lynnwood, and the surrounding King and Snohomish County communities. See our full service area for the complete list.",
   },
   {
     question: "Is your work guaranteed?",
@@ -301,8 +303,11 @@ export const certifications = [
 ];
 
 /**
- * The six promises that set Jim Dandy apart, sourced from the live site's
- * value props. `icon` maps to a key in the TrustFeatures icon table.
+ * The six promises that set Jim Dandy apart. Every one is a claim the business
+ * already makes in print (the previous site's value props, service pages and
+ * about page) - do not add promises here that the office hasn't made, because
+ * customers read them as commitments. `icon` maps to a key in the
+ * TrustFeatures icon table.
  */
 export const differentiators = [
   {
@@ -324,16 +329,16 @@ export const differentiators = [
       "Residential and commercial, a dripping faucet to a full sewer replacement - one licensed team handles the entire job.",
   },
   {
-    icon: "timer",
-    title: "30-Minute Arrival Notice",
+    icon: "history",
+    title: "Seattle's Original Plumbers",
     description:
-      "We call ahead with a 30-minute heads-up before we arrive, so you're never left waiting inside an all-day window.",
+      "Established in 1908. Over a century of local authority on Puget Sound pipe, sewer, and soil - and we're still here.",
   },
   {
-    icon: "user-check",
-    title: "Background-Checked Techs",
+    icon: "leaf",
+    title: "Eco-Friendly Solutions",
     description:
-      "The person at your door is vetted, uniformed, and trained - someone you can trust in your home or business.",
+      "We're committed to practices that conserve water, reduce waste, and protect your property while we work.",
   },
   {
     icon: "handshake",
@@ -372,7 +377,7 @@ export const serviceExtras: Record<
       { title: "Fixed & Upfront", description: "You get a flat price before work begins, and we repair most issues in a single visit." },
     ],
     faqs: [
-      { question: "How fast can you actually get here?", answer: "For true emergencies we dispatch the nearest available technician immediately - most Puget Sound customers are seen within the hour, and we give you a 30-minute arrival notice before we pull up." },
+      { question: "How fast can you actually get here?", answer: "For true emergencies we dispatch the nearest available technician immediately - most Puget Sound customers are seen within the hour, and we call ahead before we pull up so you are not left waiting." },
       { question: "Do you charge extra for nights and weekends?", answer: "After-hours emergency dispatch may carry a service fee, but you'll always know the full price before any work starts. No surprises added to the invoice later." },
       { question: "What should I do while I wait?", answer: "Shut off your main water valve if you can reach it safely, clear the area, and stay on with our dispatcher - we'll talk you through limiting the damage until the tech arrives." },
     ],
@@ -570,9 +575,8 @@ export const aboutMilestones = [
 
 /** Counties in the coverage footprint, for the Service Area page. */
 export const serviceCounties = [
-  { name: "King County", cities: "Seattle, Ballard, Bellevue, Mercer Island, Medina, Redmond, Kirkland, Sammamish, Woodinville, Renton, Newcastle, Kent, Auburn, Federal Way, Burien, Shoreline" },
+  { name: "King County", cities: "Seattle, Ballard, Bellevue, Mercer Island, Medina, Redmond, Kirkland, Sammamish, Woodinville, Renton, Newcastle, Auburn" },
   { name: "Snohomish County", cities: "Everett, Edmonds, Lynnwood, Bothell, Mountlake Terrace, Brier, Mukilteo, Snohomish, Lake Stevens, Marysville, Arlington, Cottage Lake" },
-  { name: "Pierce County", cities: "Tacoma and the surrounding South Sound communities" },
 ];
 
 /**
@@ -734,9 +738,26 @@ export const serviceGuides: Record<
 };
 
 /** Financing page content. Deliberately generic pending client's lender details. */
+/**
+ * Financing. Lender, limits and disclaimer are taken verbatim from the
+ * previous site's /financing page (BuyFin, powered by Momnt Technologies) -
+ * do not soften or restate them; lending copy is regulated.
+ */
 export const financing = {
   intro:
-    "Some plumbing problems can't wait for the perfect time - and the right repair shouldn't have to. Qualified customers can spread the cost of larger jobs over affordable monthly payments, so you can fix it right now and pay over time.",
+    "Some plumbing problems can't wait for the perfect time - and the right repair shouldn't have to. We work with BuyFin* to offer financing that's simple, fast, and affordable, so you can pay for your home project over time.",
+  partner: "BuyFin",
+  highlights: [
+    "Finance projects up to $55,000",
+    "Simple, fast application with instant decisions",
+    "Completely digital process",
+    "View loan offers with a soft credit pull that doesn't affect your credit score",
+    "Multiple loan offers for qualified borrowers to choose from",
+    "Convenient monthly payments",
+    "No early payment penalties on any loans",
+  ],
+  disclaimer:
+    "*BuyFin powered by Momnt Technologies, Inc. arranges consumer loans used to purchase goods and services from its participating merchant businesses. All loans are originated by participating financial institutions.",
   financeable: [
     { label: "Water Heater Replacement", description: "Tank and tankless installs, including full conversions." },
     { label: "Sewer Repair & Replacement", description: "Trenchless lining, pipe bursting, and full line replacement." },
@@ -745,15 +766,16 @@ export const financing = {
   ],
   steps: [
     { title: "Get Your Quote", description: "Your technician diagnoses the issue and gives you a flat, upfront price - no obligation." },
-    { title: "Apply in Minutes", description: "Ask about financing and complete a quick application through our lending partners." },
-    { title: "Get a Fast Decision", description: "Most applicants receive a decision quickly, with a range of monthly payment options." },
-    { title: "Fix It Now, Pay Over Time", description: "Approve the work and spread the cost across manageable monthly payments." },
+    { title: "Apply in Minutes", description: "Ask about financing and complete BuyFin's short, fully digital application." },
+    { title: "See Your Offers", description: "Qualified borrowers get multiple loan offers, with a soft credit pull that doesn't affect your score." },
+    { title: "Fix It Now, Pay Over Time", description: "Approve the work and spread the cost across convenient monthly payments, with no early payment penalties." },
   ],
   faqs: [
-    { question: "What can I finance?", answer: "Financing is best suited to larger investments - water heater replacement, sewer repair or replacement, whole-home repiping, and major leak or drain work. Ask your technician whether your job qualifies." },
-    { question: "How do I apply?", answer: "It's simple: let your technician or our office know you'd like to explore financing, and we'll guide you through a short application with one of our lending partners. It only takes a few minutes." },
-    { question: "Will checking my options affect my credit?", answer: "Terms and credit requirements are set by the lending partner, and many offer a prequalification step. We'll point you to the current options so you can review the details before committing." },
-    { question: "Can I combine financing with a coupon?", answer: "Some promotions can be combined and some can't. Ask your technician - we'll always help you find the most affordable path for your specific job." },
+    { question: "What can I finance?", answer: "Financing is best suited to larger investments - water heater replacement, sewer repair or replacement, whole-home repiping, and major leak or drain work. Projects up to $55,000 can be financed through BuyFin. Ask your technician whether your job qualifies." },
+    { question: "How do I apply?", answer: "Let your technician or our office know you'd like to explore financing, and we'll send you BuyFin's application. It's completely digital and takes just a few minutes, with instant decisions." },
+    { question: "Will checking my options affect my credit?", answer: "No. You can view your loan offers with a soft credit pull that doesn't affect your credit score. Only if you accept an offer does the lender complete the process." },
+    { question: "Are there penalties for paying early?", answer: "No. There are no early payment penalties on any loans, so you can pay the balance off whenever it suits you." },
+    { question: "Can I combine financing with a coupon?", answer: "Some promotions can be combined and some can't - each coupon lists its own terms. Ask your technician and we'll help you find the most affordable path for your job." },
   ],
 };
 
