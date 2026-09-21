@@ -1,8 +1,10 @@
 /**
  * Current offers - transcribed from the coupon artwork on the previous
  * jimdandysewerandplumbing.com/coupons (fetched 2026-09-21), including each
- * offer's own terms and expiry. Do not invent offers or codes here: the
- * coupons a customer sees must match what the office will honour.
+ * offer's own terms and expiry. Do not invent offers, codes or discounts
+ * here: the coupons a customer sees must match what the office will honour.
+ * The artwork carries no promo codes - each one reads "must present coupon at
+ * time of service" - so the site never shows a code the office can't look up.
  *
  * Tapping one on /coupons adds it to the quote form at the top of that page
  * (the form also reads ?coupon=<id>), and the lead email tells the dispatcher
@@ -15,7 +17,6 @@
 export const coupons = [
   {
     id: "drain-cleaning-63",
-    code: "DRAIN63",
     value: "$63",
     unit: "Or Free",
     title: "$63 Drain Cleaning - Or It's Free",
@@ -28,7 +29,6 @@ export const coupons = [
   },
   {
     id: "water-heater-2863",
-    code: "WH2863",
     value: "$2,863",
     unit: "Installed",
     title: "$2,863 Fully Installed Water Heater",
@@ -40,7 +40,6 @@ export const coupons = [
   },
   {
     id: "tankless-500",
-    code: "TANKLESS500",
     value: "$500",
     unit: "Off",
     title: "$500 Off Any Tankless Water Heater",
@@ -52,7 +51,6 @@ export const coupons = [
   },
   {
     id: "plumbing-100",
-    code: "PLUMB100",
     value: "$100",
     unit: "Off",
     title: "$100 Off Any Plumbing Service",
@@ -64,7 +62,6 @@ export const coupons = [
   },
   {
     id: "toilet-bogo",
-    code: "BOGO",
     value: "BOGO",
     unit: "Toilets",
     title: "Buy One Toilet, Get One Free",
@@ -77,7 +74,6 @@ export const coupons = [
   },
   {
     id: "moen-faucet-200",
-    code: "MOEN200",
     value: "$200",
     unit: "Off",
     title: "$200 Off a Moen Arbor Touchless Kitchen Faucet",
@@ -90,7 +86,6 @@ export const coupons = [
   },
   {
     id: "second-opinion",
-    code: "2NDLOOK",
     value: "Free",
     unit: "2nd Opinion",
     title: "Free Second Opinions",
@@ -101,7 +96,6 @@ export const coupons = [
   },
   {
     id: "service-5-percent",
-    code: "SERVE5",
     value: "5%",
     unit: "Off",
     title: "5% Off for Military, First Responders & Seniors",
@@ -113,7 +107,6 @@ export const coupons = [
 
 type CouponDef = {
   id: string;
-  code: string;
   value: string;
   unit: string;
   title: string;

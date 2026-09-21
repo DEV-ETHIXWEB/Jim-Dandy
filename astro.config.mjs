@@ -122,8 +122,9 @@ export default defineConfig({
     '/schedule-online': { status: 301, destination: '/contact' },
     '/jim-dandy-sewer-and-plumbing': { status: 301, destination: '/about' },
     '/recent-projects': { status: 301, destination: '/gallery' },
-    '/service-area/mountlake-terrace': { status: 301, destination: '/service-area' },
-    '/service-area/shoreline': { status: 301, destination: '/service-area' },
+    // NOTE: /service-area/shoreline and /service-area/mountlake-terrace are NOT
+    // redirected - they are real pages again (src/pages/service-area/[city].astro),
+    // rebuilt from the local landing pages the old site ranked on.
     '/services/commercial-plumbing': { status: 301, destination: '/services/commercial' },
     '/services/commercial-plumbing/drain-cleaning': { status: 301, destination: '/services/commercial' },
     '/services/drain-cleaning': { status: 301, destination: '/services/drains-clogs' },

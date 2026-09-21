@@ -345,7 +345,7 @@ export default function QuickLeadForm({ defaultService, variant = "card", servic
         <div className="min-w-0 flex-1">
           <p className="text-xs font-bold uppercase tracking-wider text-brand-green-600">Coupon applied</p>
           <p className="font-semibold leading-snug text-navy-800">
-            {coupon.title} <span className="whitespace-nowrap font-mono text-sm text-navy-500">({coupon.code})</span>
+            {coupon.title}
           </p>
         </div>
         <button

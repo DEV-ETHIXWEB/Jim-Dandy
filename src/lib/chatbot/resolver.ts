@@ -11,6 +11,7 @@ import {
   differentiators,
   type ServiceSlug,
 } from "@data/chatbot/knowledge";
+import { findCityPage } from "@data/cityPages";
 import type { IntentMatch } from "./intent-engine";
 import type { ChatContext, PendingOffer, WizardStep } from "./context";
 import type { KbLink } from "@data/chatbot/kb";
@@ -190,10 +191,12 @@ export function resolve(message: string, ctx: ChatContext, match: IntentMatch): 
       const city = entities.city;
       if (city && citySet.has(city.toLowerCase())) {
         const county = cityToCounty.get(city.toLowerCase());
+        const page = findCityPage(city.toLowerCase().replace(/\s+/g, "-"));
         return {
           text: `Yes - we dispatch same-day in ${city}${county ? ` (${county})` : ""}. Want to get something scheduled?`,
           pending: "start_wizard",
           quickReplies: [{ label: "Book a service", value: "Book a service" }, { label: "Get an estimate", value: "Get an estimate" }],
+          links: page ? [{ label: `Plumbing in ${page.city}`, href: `/service-area/${page.slug}` }] : undefined,
           setEntity: { city },
         };
       }

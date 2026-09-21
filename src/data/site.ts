@@ -787,7 +787,7 @@ export const careers = {
     { title: "Craftsmanship First", description: "We do the job right, not just fast. If you take pride in clean, code-compliant work, you'll fit in here." },
     { title: "Honest, Every Time", description: "Upfront pricing and straight talk aren't a marketing line - they're how we treat customers and each other." },
     { title: "Invested in You", description: "From apprentices to master plumbers, we support training, licensing, and real career growth." },
-    { title: "Family Since 1908", description: "We're a local, multi-generation company - not a faceless franchise. People here know your name." },
+    { title: "Local Since 1908", description: "We're an independent, locally owned company - not a faceless franchise. People here know your name." },
   ],
   benefits: [
     "Competitive, experience-based pay",

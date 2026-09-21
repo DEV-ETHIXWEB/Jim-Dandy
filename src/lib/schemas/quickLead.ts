@@ -68,7 +68,7 @@ export function couponSummary(id: CouponId | undefined, eligible?: boolean): str
   const coupon = findCoupon(id);
   if (!coupon) return undefined;
   const confirmed = coupon.eligibility && eligible ? ` - customer confirmed: "${coupon.eligibility}"` : "";
-  return `${coupon.title} (code ${coupon.code})${confirmed}`;
+  return `${coupon.title}${confirmed}`;
 }
 
 export function quickServiceLabel(value: QuickServiceValue): string {

@@ -282,7 +282,7 @@ docs.push({
 docs.push({
   id: "franchise",
   questions: ["are you a franchise", "are you locally owned", "are you a national chain", "is jim dandy local"],
-  answer: `No - ${business.shortName} is a local, multi-generation Puget Sound company that's been serving the area since ${business.founded}, not a franchise or national chain.`,
+  answer: `No - ${business.shortName} is an independent, locally owned Puget Sound company that's been serving the area since ${business.founded}, not a franchise or national chain.`,
   link: { label: "About us", href: "/about" },
 });
 docs.push({

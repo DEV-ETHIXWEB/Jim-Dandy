@@ -9,6 +9,7 @@
  * suite run exactly the same code.
  */
 import { business, serviceBySlug, allFaqs, citySet, cityToCounty, cityList, coupons, type ServiceSlug } from "@data/chatbot/knowledge";
+import { findCityPage } from "@data/cityPages";
 import { serviceCounties } from "@data/site";
 
 const serviceCountiesByName = new Map(serviceCounties.map((c) => [c.name.toLowerCase(), c.cities]));
@@ -549,9 +550,12 @@ function gasReply(): Reply {
 function areaReply(_state: ChatContext, city: string | undefined, unlistedMention: boolean, zip?: string): Reply {
   if (city && citySet.has(city.toLowerCase())) {
     const county = cityToCounty.get(city.toLowerCase());
+    // A few cities have their own page; point there rather than describing it.
+    const page = findCityPage(city.toLowerCase().replace(/\s+/g, "-"));
     return {
       text: `Yes! We serve ${city}${county ? ` in ${county}` : ""}, with same-day appointments for most jobs. Want me to get a technician scheduled?`,
       quickReplies: [{ label: "Yes, book it", value: "Book a service" }, { label: "Pricing", value: "How much does it cost?" }],
+      links: page ? [{ label: `Plumbing in ${page.city}`, href: `/service-area/${page.slug}` }] : undefined,
       setEntity: { city },
       pending: "start_wizard",
     };

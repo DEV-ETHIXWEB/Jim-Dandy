@@ -9,7 +9,8 @@ import MotionInit from "@components/ui/MotionInit.astro";
 import StickyCta from "@components/ui/StickyCta.astro";
 import { business, serviceAreaCities, serviceCounties } from "@data/site";
 import { breadcrumbSchema } from "@lib/seo";
-import { ChevronRight, MapPin, Phone } from "lucide-react";
+import { findCityPage } from "@data/cityPages";
+import { ArrowRight, ChevronRight, MapPin, Phone } from "lucide-react";
 import QuickLeadForm from "@components/sections/QuickLeadForm";
 import skyline from "@assets/photos/seattle-skyline.webp";
 
@@ -119,12 +120,14 @@ const crumbs = breadcrumbSchema([
       <ul class="flex flex-wrap justify-center gap-3 sm:gap-4" data-reveal-group data-reveal-step="30">
         {serviceAreaCities.map((city) => {
           const slug = city.toLowerCase().replace(/\s+/g, "-");
+          // Cities with their own landing page send you there; the rest call
+          // dispatch, so every tile is still one big, obvious tap target.
+          const cityPage = findCityPage(slug);
           return (
             <li id={slug} class="w-[calc(50%-0.375rem)] scroll-mt-28 sm:w-[calc(33.333%-0.667rem)] lg:w-[calc(25%-0.75rem)] xl:w-[calc(20%-0.8rem)]">
-              {/* The whole tile calls dispatch - one big, obvious tap target. */}
               <a
-                href={business.phoneHref}
-                aria-label={`Call Jim Dandy for plumbing in ${city}: ${business.phone}`}
+                href={cityPage ? `/service-area/${cityPage.slug}` : business.phoneHref}
+                aria-label={cityPage ? `Plumbing services in ${city}` : `Call Jim Dandy for plumbing in ${city}: ${business.phone}`}
                 class="group flex h-full flex-col gap-2 rounded-[20px] border border-navy-200 bg-surface p-4 transition-all duration-300 ease-brand hover:-translate-y-1 hover:border-brand-green-500 hover:bg-white hover:shadow-card sm:p-5"
               >
                 <span class="flex items-center gap-2.5">
@@ -134,9 +137,18 @@ const crumbs = breadcrumbSchema([
                   <h3 class="font-display text-xl font-bold leading-tight text-navy-800 sm:text-[22px]">{city}</h3>
                 </span>
                 <span class="mt-auto inline-flex items-center gap-1.5 text-sm font-semibold text-brand-green-600 group-hover:text-navy-800 sm:text-base">
-                  <Phone className="h-4 w-4 shrink-0" aria-hidden="true" />
-                  <span class="sm:hidden">Tap to call</span>
-                  <span class="max-sm:hidden">{business.phone}</span>
+                  {cityPage ? (
+                    <>
+                      <ArrowRight className="h-4 w-4 shrink-0" aria-hidden="true" />
+                      <span>See {city} services</span>
+                    </>
+                  ) : (
+                    <>
+                      <Phone className="h-4 w-4 shrink-0" aria-hidden="true" />
+                      <span class="sm:hidden">Tap to call</span>
+                      <span class="max-sm:hidden">{business.phone}</span>
+                    </>
+                  )}
                 </span>
               </a>
             </li>
