@@ -54,6 +54,9 @@ export const businessInfo: BusinessInfo = {
   address: business.address.full.replace(/, United States$/, ""),
   licenses: business.licenses,
   siteUrl: SITE_URL,
+  rating: business.rating,
+  yearsInBusiness: business.yearsInBusiness,
+  founded: business.founded,
 };
 
 type SendResult = { ok: true; id?: string } | { ok: false; reason: string };

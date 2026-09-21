@@ -228,7 +228,16 @@ import { business } from "@data/site";
     });
   };
 
-  syncHeroVideos();
+  // The file is 4.3MB of decoration. Attaching it during load competed with
+  // the hero frame and the rest of the page, so it waits for the page to
+  // finish loading and then for an idle moment.
+  const startHeroVideos = () => {
+    const idle = window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 300));
+    idle(() => syncHeroVideos());
+  };
+  if (document.readyState === "complete") startHeroVideos();
+  else window.addEventListener("load", startHeroVideos, { once: true });
+
   window.addEventListener("resize", syncHeroVideos, { passive: true });
   reduceMotion.addEventListener("change", syncHeroVideos);
 </script>

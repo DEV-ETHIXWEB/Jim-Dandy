@@ -177,8 +177,11 @@ export default defineConfig({
   image: {
     domains: [],
   },
+  // Prefetch on intent (hover on desktop, touchstart on phones) rather than
+  // for every link that scrolls into view: the viewport strategy pulled ~1.5MB
+  // of other pages on the home page alone, much of it over mobile data.
   prefetch: {
     prefetchAll: true,
-    defaultStrategy: 'viewport',
+    defaultStrategy: 'hover',
   },
 });

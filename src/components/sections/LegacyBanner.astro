@@ -52,8 +52,9 @@ const slideSizes = (photo: { width: number; height: number }) =>
             widths={[768, 1280, 1920, 2560, 3200, 4000]}
             sizes={slideSizes(slide.src)}
             quality={82}
-            loading={index < 2 ? "eager" : "lazy"}
+            loading="lazy"
             class="legacy-img h-full w-full object-cover"
+            decoding="async"
             style={{ objectPosition: slide.focus ?? "center" }}
           />
           <span class="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-900/90 via-navy-900/25 to-navy-900/10" aria-hidden="true"></span>

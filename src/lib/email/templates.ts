@@ -43,6 +43,10 @@ export type BusinessInfo = {
   address: string;
   licenses: readonly string[];
   siteUrl: string;
+  /** Shown as proof points in the customer confirmation. */
+  rating?: { value: number; count: number };
+  yearsInBusiness?: number;
+  founded?: number;
 };
 
 export type RenderedEmail = { subject: string; html: string; text: string };
@@ -186,6 +190,10 @@ export function leadNotificationEmail(lead: LeadRecord, business: BusinessInfo):
   );
   const when = formatWhen(lead.submittedAt);
   const pageUrl = lead.sourcePage ? `${business.siteUrl}${lead.sourcePage}` : undefined;
+  // The full URL wrapped over two lines in the table; the path reads better and
+  // still links to the page.
+  const pageLabel = lead.sourcePage === "/" ? "Home page" : lead.sourcePage;
+  const shortRef = lead.id.split("-")[0].toUpperCase();
 
   const banner = lead.isEmergency
     ? `<tr><td style="background:${COLORS.redTint};padding:14px 28px;border-bottom:1px solid #fecdca;font-family:${FONT};font-size:15px;font-weight:700;color:${COLORS.red};">Emergency - the customer marked this as urgent. Call right away.</td></tr>`
@@ -217,12 +225,15 @@ export function leadNotificationEmail(lead: LeadRecord, business: BusinessInfo):
         ["Preferred timing", lead.timing],
         ["Notes", lead.notes],
         ["Coupon", lead.coupon, { strong: true }],
-        ["Submitted from", pageUrl, pageUrl ? { href: pageUrl } : undefined],
+        ["Submitted from", pageLabel, pageUrl ? { href: pageUrl } : undefined],
         ["Consent", "Customer agreed to be contacted (call, text, email) about this request."],
-        ["Reference", lead.id],
+        ["Reference", shortRef],
       ])}
     </table>
-    <p style="margin:18px 0 0;font-family:${FONT};font-size:12px;line-height:18px;color:${COLORS.muted};">
+    <p style="margin:18px 0 0;font-family:${FONT};font-size:14px;line-height:21px;color:${COLORS.ink};">
+      <strong>Reply to this email</strong> to answer ${escapeHtml(firstName(lead.fullName))} directly - replies go to ${escapeHtml(lead.email)}.
+    </p>
+    <p style="margin:12px 0 0;font-family:${FONT};font-size:12px;line-height:18px;color:${COLORS.muted};">
       Consent language shown to the customer: "${escapeHtml(lead.consentText)}"
     </p>
   </td>
@@ -247,7 +258,9 @@ export function leadNotificationEmail(lead: LeadRecord, business: BusinessInfo):
     lead.coupon ? `Coupon: ${lead.coupon}` : null,
     pageUrl ? `Submitted from: ${pageUrl}` : null,
     "Consent: customer agreed to be contacted about this request.",
-    `Reference: ${lead.id}`,
+    `Reference: ${shortRef}`,
+    "",
+    `Reply to this email to answer ${firstName(lead.fullName)} directly (replies go to ${lead.email}).`,
   ]
     .filter((line): line is string => line !== null)
     .join("\n");
@@ -321,7 +334,18 @@ ${emergencyNote}
   </td>
 </tr>
 <tr>
-  <td style="padding:6px 28px 30px;font-family:${FONT};">
+  <td style="padding:6px 28px 8px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${COLORS.greenTint};border:1px solid ${COLORS.green}40;border-radius:12px;">
+      <tr>
+        <td style="padding:14px 18px;font-family:${FONT};font-size:14px;line-height:21px;color:${COLORS.ink};">
+          <strong>Licensed, bonded &amp; insured</strong>${business.rating ? ` &nbsp;·&nbsp; ${business.rating.value}&#9733; from ${business.rating.count} Google reviews` : ""}${business.founded ? ` &nbsp;·&nbsp; Serving Puget Sound since ${business.founded}` : ""}
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+  <td style="padding:14px 28px 30px;font-family:${FONT};">
     <p style="margin:0 0 14px;font-size:15px;line-height:22px;color:${COLORS.body};">Need us sooner, or want to change something? Just call - or reply to this email.</p>
     ${button(`Call ${business.phone}`, business.phoneHref)}
     <p style="margin:16px 0 0;font-size:12px;line-height:18px;color:${COLORS.muted};">
@@ -342,6 +366,8 @@ ${emergencyNote}
     lead.urgency ? `Urgency: ${lead.urgency}` : null,
     lead.city ? `City: ${lead.city}` : null,
     lead.coupon ? `Coupon: ${lead.coupon}` : null,
+    "",
+    business.rating ? `Licensed, bonded & insured - rated ${business.rating.value} from ${business.rating.count} Google reviews.` : null,
     "",
     "What happens next:",
     "1. We call or text to confirm your appointment.",

@@ -139,9 +139,8 @@ export function localBusinessSchema({ includeRating = false } = {}) {
  * Organization and WebSite describe the publisher and the site itself, as
  * opposed to the physical place of business. Emitted once, on the homepage.
  *
- * TODO: add `logo` once a square raster logo is exported to /public. The only
- * logo in the repo is a wide lockup under src/assets, and pointing `logo` at
- * the OG banner instead would be inaccurate.
+ * `logo` points at the square 512x512 app icon - Google requires a real logo
+ * image here, and the wide lockup under src/assets is not square.
  */
 export function organizationSchema() {
   return {
@@ -150,6 +149,7 @@ export function organizationSchema() {
     "@id": ORG_ID,
     name: business.name,
     url: SITE_URL,
+    logo: `${SITE_URL}/icon-512.png`,
     telephone: business.phoneHref.replace("tel:", ""),
     email: business.email,
     foundingDate: `${business.founded}`,
